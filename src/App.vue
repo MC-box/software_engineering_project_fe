@@ -66,7 +66,7 @@ import HelloWorld from './components/HelloWorld.vue'
           <a-menu-item key="6">Team 1</a-menu-item>
           <a-menu-item key="8">Team 2</a-menu-item>
         </a-sub-menu>
-        <a-menu-item key="9">
+        <a-menu-item key="9" @click="router.push({ name : 'discussion' })">
           <file-outlined />
           <span>交流区</span>
         </a-menu-item>
