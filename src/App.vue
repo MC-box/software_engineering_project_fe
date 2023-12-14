@@ -81,7 +81,6 @@ import HelloWorld from './components/HelloWorld.vue'
         </a-breadcrumb>
         <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
           <router-view overflow="hidden"/>
-          Bill is a cat.
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
