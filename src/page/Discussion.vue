@@ -1,8 +1,13 @@
 <template>
-    <div>这是交流区页面</div>
+    <div>
+      <a @click="router.back">
+      <ArrowLeftOutlined :style="{fontSize: '30px', color: '#08c'} "/>
+      </a>
+    这是交流区页面</div>
     <!-- <u-comment relative-time>
   </u-comment> -->
   <u-comment :config="config" @submit="submit" @like="like" relative-time>
+    <div>这里编写主题帖内容</div>
     <!-- <div>导航栏卡槽</div> -->
     <!-- <template #header>头部卡槽</template> -->
     <!-- <template #info>用户信息卡槽</template> -->
@@ -15,6 +20,9 @@
 import emoji from '../assets/emoji.ts'
 import { reactive } from 'vue'
 import { CommentApi, ConfigApi, SubmitParamApi, UToast, createObjectURL, dayjs } from 'undraw-ui'
+import {ArrowLeftOutlined} from '@ant-design/icons-vue';
+import { useRouter} from 'vue-router';
+const router = useRouter()
 // 这是一个主页面，而主页面的comments是在本页面中含有的评论，而下面的每一个comment评论实际上也会有评论，猜测是视为一个comment对象
 const config = reactive<ConfigApi>({
   user: {
@@ -81,12 +89,29 @@ config.comments = [
     uid: '1',
     address: '来自上海',
     content:
-      '缘生缘灭，缘起缘落，我在看别人的故事，别人何尝不是在看我的故事?别人在演绎人生，我又何尝不是在这场戏里?谁的眼神沧桑了谁?我的眼神，只是沧桑了自己[喝酒]',
+     '缘生缘灭，缘起缘落，我在看别人的故事，别人何尝不是在看我的故事?别人在演绎人生，我又何尝不是在这场戏里?谁的眼神沧桑了谁?我的眼神，只是沧桑了自己[喝酒]',
     likes: 2,
     contentImg: 'https://gitee.com/undraw/undraw-ui/raw/master/public/docs/normal.webp',
     createTime: dayjs().subtract(10, 'minute').toString(),
     user: {
       username: '落🤍尘',
+      avatar: 'https://static.juzicon.com/avatars/avatar-200602130320-HMR2.jpeg?x-oss-process=image/resize,w_100', // 头像
+      level: 6, // 指示等级
+      homeLink: '/1' // 如何设置不进行跳转?
+    }
+  },
+  {
+    id: '2',
+    parentId: null,
+    uid: '2',
+    address: '来自上海',
+    content:
+     '这道题怎么做啊我吐了，好难啊，有无大佬指教[喝酒]',
+    likes: 5,
+    contentImg: 'https://gitee.com/undraw/undraw-ui/raw/master/public/docs/normal.webp',
+    createTime: dayjs().subtract(10, 'minute').toString(),
+    user: {
+      username: '你妈边哭边',
       avatar: 'https://static.juzicon.com/avatars/avatar-200602130320-HMR2.jpeg?x-oss-process=image/resize,w_100', // 头像
       level: 6, // 指示等级
       homeLink: '/1' // 如何设置不进行跳转?
