@@ -41,9 +41,9 @@ import HelloWorld from './components/HelloWorld.vue'
            -->
           <span>主页面</span>
         </a-menu-item>
-        <a-menu-item key="2" @click="router.push({ name : 'exercise' })">
+        <a-menu-item key="2" @click="router.push({ name : 'execenter' })">
           <desktop-outlined />
-          <span>题目中心</span>
+          <span>查看题库</span>
         </a-menu-item>
         <a-sub-menu key="sub1">
           <template #title>
