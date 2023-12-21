@@ -11,7 +11,7 @@
   
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'name'">
-          <a @click="enter">
+          <a @click="enter(record.key)"> <!--须根据后端传入题目的id-->
             {{ record.name }}
           </a>
         </template>
@@ -20,8 +20,7 @@
             <a-tag
               v-for="tag in record.tags"
               :key="tag"
-              :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'"
->
+              :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'">
               {{ tag.toUpperCase() }}
             </a-tag>
           </span>
@@ -46,10 +45,12 @@
   const router = useRouter()
   import { SmileOutlined, DownOutlined } from '@ant-design/icons-vue';
   let ifDisplay = true;
-  const enter = () => {
+  const enter = (key : string) => {
     ifDisplay = true;
-    router.push({ name : "exercise"});// 根据存放的discussing的id进行指定访问
+    router.push({ name : "exercise", params : { id : key }});// 根据存放的exercise的id进行指定访问
   }  
+
+  // 表格头
   const columns = [
     {
       name: '题目名称',
@@ -82,6 +83,7 @@
     },
   ];
   
+  // 须从后端接收的数据
   const data = [
     {
       key: '1',

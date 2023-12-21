@@ -32,6 +32,8 @@
   "exclude": [
     "node_modules"
   ],
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
+
+//"module": "ESNext",

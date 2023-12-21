@@ -3,7 +3,7 @@
 import '@wangeditor/editor/dist/css/style.css';
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 import { IToolbarConfig } from '@wangeditor/editor';
-
+import { shallowRef, computed, onMounted, onBeforeUnmount } from 'vue';
 const props = withDefaults(defineProps<{
   modelValue: string
   placeholder: string

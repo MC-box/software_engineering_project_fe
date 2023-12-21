@@ -1,11 +1,9 @@
 <template>
     <div>
       <a @click="router.back">
-      <ArrowLeftOutlined :style="{fontSize: '30px', color: '#08c'} "/>
+        <CloseCircleOutlined :style="{fontSize: '20px', color: '#08c'} "/>
       </a>
     这是交流区页面</div>
-    <!-- <u-comment relative-time>
-  </u-comment> -->
   <u-comment :config="config" @submit="submit" @like="like" relative-time>
     <div>这里编写主题帖内容</div>
     <!-- <div>导航栏卡槽</div> -->
@@ -20,10 +18,13 @@
 import emoji from '../assets/emoji.ts'
 import { reactive } from 'vue'
 import { CommentApi, ConfigApi, SubmitParamApi, UToast, createObjectURL, dayjs } from 'undraw-ui'
-import {ArrowLeftOutlined} from '@ant-design/icons-vue';
-import { useRouter} from 'vue-router';
+import { CloseCircleOutlined } from '@ant-design/icons-vue';
+import { useRouter } from 'vue-router';
 const router = useRouter()
+
+
 // 这是一个主页面，而主页面的comments是在本页面中含有的评论，而下面的每一个comment评论实际上也会有评论，猜测是视为一个comment对象
+// 须根据后端传入的内容确定主要是user内的内容
 const config = reactive<ConfigApi>({
   user: {
     id: 1,
@@ -52,6 +53,7 @@ const submit = ({ content, parentId, files, finish, reply }: SubmitParamApi) => 
   let contentImg = files?.map(e => createObjectURL(e)).join('||')
 
   temp_id += 1
+  // 根据后端传入数据，这里就是当前用户个人数据
   const comment: CommentApi = {
     id: String(temp_id),
     parentId: parentId,
@@ -82,6 +84,7 @@ const like = (id: string, finish: () => void) => {
   }, 200)
 }
 
+// 须根据后端数据传入
 config.comments = [
   {
     id: '1',

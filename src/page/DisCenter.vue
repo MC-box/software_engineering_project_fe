@@ -11,7 +11,7 @@
   
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'name'">
-          <a @click="enter">
+          <a @click="enter(record.key)">
             {{ record.name }}
           </a>
         </template>
@@ -54,9 +54,9 @@
   const router = useRouter()
 import {DownOutlined, MessageOutlined  } from '@ant-design/icons-vue';
   let ifDisplay = true;
-  const enter = () => {
+  const enter = (key : string) => {
     ifDisplay = true;
-    router.push({ name : "discussing"});// 根据存放的discussing的id进行指定访问
+    router.push({ name : "discussion", params: { id : key }});// 根据存放的discussing的id进行指定访问
   }  
   const columns = [
     {
