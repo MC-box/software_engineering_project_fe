@@ -46,6 +46,7 @@ let temp_id = 100
 const submit = ({ content, parentId, files, finish, reply }: SubmitParamApi) => {
   let str = '提交评论:' + content + ';\t父id: ' + parentId + ';\t图片:' + files + ';\t被回复评论:'
   console.log(str, reply)
+  console.log(config)
 
   /**
    * 上传文件后端返回图片访问地址，格式以'||'为分割; 如:  '/static/img/program.gif||/static/img/normal.webp'
@@ -118,8 +119,30 @@ config.comments = [
       avatar: 'https://static.juzicon.com/avatars/avatar-200602130320-HMR2.jpeg?x-oss-process=image/resize,w_100', // 头像
       level: 6, // 指示等级
       homeLink: '/1' // 如何设置不进行跳转?
-    }
-  }
+    },
+    reply: {
+      total : 1,
+      list: [
+            {
+                "id": "105",
+                "parentId": "2",
+                "uid": 1,
+                "address": "来自江苏",
+                "content": "回复 <span style=\"color: var(--u-color-success-dark-2);\">@你妈边哭边:</span> 你好",
+                "likes": 0,
+                "createTime": "Fri, 22 Dec 2023 13:29:59 GMT",
+                "contentImg": "",
+                "user": {
+                    "username": "jack",
+                    "avatar": "https://static.juzicon.com/avatars/avatar-200602130320-HMR2.jpeg?x-oss-process=image/resize,w_100",
+                    "level": 6,
+                    "homeLink": "/105"
+                },
+                "reply": null
+            },
+        ]
+    },
+  },
 ]
 </script>
 <!-- 问题：1.finish函数是接口本身提供的？ 2.comment下的评论也是视为comment? -->

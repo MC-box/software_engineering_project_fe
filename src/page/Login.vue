@@ -9,12 +9,14 @@
                 <el-card class="el-card">
                     <h2>欢迎登录</h2>
                     <form  class="login" action="">
-                        <input v-shake type="text" v-model="userLoginForm.username" placeholder="请输入账号">
+                        <input v-shake type="text" v-model="userLoginForm.username" placeholder="请输入账号(邮箱)">
                         <input v-shake type="password" v-model="userLoginForm.password" placeholder="请输入密码">
                     </form>
-                    <div class="remember">
+                    <!-- <div class="remember">
                         <input type="radio" name="" id="psd" class="radio"><label for="psd"></label>记住密码
-                    </div>
+                    </div> -->
+                    <a-checkbox v-model:checked="checked">记住密码</a-checkbox>
+                    <span style="float: left; margin-top: 30px"><a href="">忘记密码</a></span>
                     <div class="message">
                         <span v-html="error"></span>
                     </div>
@@ -33,13 +35,13 @@
     import { useRouter } from 'vue-router'
     import { getCurrentInstance, reactive , ref  } from '@vue/runtime-core'
     
-    
+    const checked = ref(false)
     export default {
         name:"appLogin",
         setup(){
             let userLoginForm = reactive({
-                username:" ",
-                password:" "
+                username:"",
+                password:""
             })
             const store = useStore()
             const router = useRouter()

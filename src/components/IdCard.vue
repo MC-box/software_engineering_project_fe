@@ -17,7 +17,7 @@
 				<span class="interests_item">Technology</span>
 				<span class="interests_item">Coding</span>
 				<span class="interests_item">Python</span>
-								<span class="interests_item">shit</span>
+				<span class="interests_item">shit</span>
 			</div>
 		</div>
 		<div ref="chart" style="width: 20%; height: 160px; margin-left: 150px;"></div>
@@ -27,16 +27,43 @@
     <a-row :gutter="16">
       <a-col :span="8">
         <a-card title="我的题库" :bordered="false">
-          <p>card content</p>
-        </a-card>
-      </a-col>
-      <a-col :span="8">
-        <a-card title="我的收藏" :bordered="false">
-          <p>card content</p>
+			<div class="icon_box">
+				<div class="iconItem">
+					<FileAddTwoTone two-tone-color="#05b2f6" class="card_icon"></FileAddTwoTone>
+					<div class="info">上传题解</div>
+				</div>
+				<div class="iconItem">
+					<CheckCircleTwoTone two-tone-color="#0af545" class="card_icon"></CheckCircleTwoTone>
+					<div class="info">完成题目</div>
+				</div>
+				<div class="iconItem">
+					<ExperimentTwoTone two-tone-color="#d10cf0" class="card_icon"></ExperimentTwoTone>
+					<div class="info">尝试题目</div>
+				</div>
+			</div>
+
         </a-card>
       </a-col>
       <a-col :span="8">
         <a-card title="我的点赞" :bordered="false">
+			<div class="icon_box">
+				<div class="iconItem">
+					<FileWordTwoTone two-tone-color="#0c48ed" class="card_icon"></FileWordTwoTone>
+					<div class="info">题解</div>
+				</div>
+				<div class="iconItem">
+					<MessageTwoTone two-tone-color="#686868" class="card_icon"></MessageTwoTone>
+					<div class="info">评论</div>
+				</div>
+				<div class="iconItem">
+					<ContainerTwoTone two-tone-color="#edb10c" class="card_icon"></ContainerTwoTone>
+					<div class="info">题目</div>
+				</div>
+			</div>
+        </a-card>
+      </a-col>
+      <a-col :span="8">
+        <a-card title="我的荣誉" :bordered="false">
           <p>card content</p>
         </a-card>
       </a-col>
@@ -150,10 +177,40 @@
 .son_card {
 	min-height: 60px;
 }
+
+.card_icon{
+	font-size: 50px;
+	/* margin-left: 20%; */
+}
+
+.icon_between{
+	min-height: 100%;
+	min-width: 20%;
+}
+.icon_box{
+	width: calc(100% - 20px);
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+.iconItem{
+    margin: 10px;
+    cursor: pointer;
+}
+
+.info{
+    text-align: center;
+    color: #444;
+	padding-top: 10px;
+}
 </style>
 <script setup lang="ts">
 import initChart from '../utils/useCharts'
+import { FileAddTwoTone, CheckCircleTwoTone, ExperimentTwoTone, FileWordTwoTone, MessageTwoTone, ContainerTwoTone } from '@ant-design/icons-vue'
+// import { ref } from "vue"
 const chart = initChart();
+// const size = ref(10);
 // import {useChart} from 'echarts';
 // const { chartEle, changeChart, cardActiveKey, evaluteChartData } = useCharts()
 </script>

@@ -1,4 +1,8 @@
 <template>
+  <div style="margin-bottom: 20px;">
+    <ArrowLeftOutlined two-tone-color="#686868" style="font-size: 20px;" @click="router.back()"/>
+    &nbsp;<span style="margin-top:10px;">返回</span>
+  </div>
     <a-table :columns="columns" :data-source="data" v-if="ifDisplay">
       <template #headerCell="{ column }">
         <template v-if="column.key === 'name'">
@@ -43,7 +47,7 @@
   <script lang="ts" setup>
   import { useRouter, RouterView } from 'vue-router';
   const router = useRouter()
-  import { SmileOutlined, DownOutlined } from '@ant-design/icons-vue';
+  import { SmileOutlined, DownOutlined, ArrowLeftOutlined } from '@ant-design/icons-vue';
   let ifDisplay = true;
   const enter = (key : string) => {
     ifDisplay = true;
@@ -111,5 +115,6 @@
     },
   ];
   </script>
+  
   
   

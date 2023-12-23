@@ -59,11 +59,27 @@ export const mainRoutes: RouteRecordRaw = {
             }
         },
         {
+            path: "/unit/:id",
+            name: "unit",
+            component: () => import("../page/Unit.vue"),
+            meta: {
+                title: "实验"
+            }
+        },
+        {
             path: "/discenter",
             name: "discenter",
             component: () => import("../page/DisCenter.vue"),
             meta: {
                 title: "讨论区"
+            }
+        },
+        {
+            path: "/writeup",
+            name: "writeup",
+            component: () => import("../page/WriteUp.vue"),
+            meta: {
+                title: "题解"
             }
         }
     ]

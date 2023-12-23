@@ -23,7 +23,7 @@
           <!-- <a-menu-item key="3">Tom</a-menu-item>
           <a-menu-item key="4">Bill</a-menu-item>
           <a-menu-item key="5">Alex</a-menu-item> -->
-          <a-menu-item v-for="course in courses" :key=course.key @click="router.push({ name : 'execenter' , params: {id: course.key }})">{{course.name}}</a-menu-item>
+          <a-menu-item v-for="course in courses" :key=course.key @click="router.push({ name : 'unit' , params: {id: course.key }})">{{course.name}}</a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="sub2">
           <template #title>
@@ -44,7 +44,7 @@
     <a-layout>
       <a-layout-header style="background: #fff; padding: 0" >
         <!-- <span style="padding-right: 20px;"><a-divider type="vertical" style="height: 20px"/></span> -->
-        <span class="icon" style="font-size: 18px;"><a href="/login">登录</a></span>
+        <span class="icon" style="font-size: 18px;"><a href="/#/login">登录</a></span>
         <span class="icon" style="font-size: 18px;">登出</span>
         <span class="icon" ><LogoutOutlined :style="{ fontSize: '20px'}"/></span>
         <span class="icon" ><a-divider type="vertical" style="height: 20px; background-color: rgb(97, 92, 92)" /></span>
