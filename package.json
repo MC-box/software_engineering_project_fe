@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@kangc/v-md-editor": "^1.2.6",
+    "@kangc/v-md-editor": "^2.3.18",
     "@types/tinymce": "^4.6.9",
     "@wangeditor/editor": "^5.1.23",
     "@wangeditor/editor-for-vue": "^5.1.12",
@@ -28,6 +28,12 @@
     "@vitejs/plugin-vue": "^4.5.0",
     "typescript": "^5.2.2",
     "vite": "^5.0.0",
+    "vite-plugin-prismjs": "^0.0.8",
     "vue-tsc": "^1.8.22"
-  }
+  },
+  "description": "```bash\r npm install\r npm run dev\r ```",
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

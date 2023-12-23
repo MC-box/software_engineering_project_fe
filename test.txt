@@ -1,17 +1,1 @@
-{
-    "id": "105",
-    "parentId": "2",
-    "uid": 1,
-    "address": "来自江苏",
-    "content": "回复 <span style=\"color: var(--u-color-success-dark-2);\">@你妈边哭边:</span> 你好",
-    "likes": 0,
-    "createTime": "Fri, 22 Dec 2023 13:29:59 GMT",
-    "contentImg": "",
-    "user": {
-        "username": "jack",
-        "avatar": "https://static.juzicon.com/avatars/avatar-200602130320-HMR2.jpeg?x-oss-process=image/resize,w_100",
-        "level": 6,
-        "homeLink": "/105"
-    },
-    "reply": null
-}
+{}

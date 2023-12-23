@@ -75,13 +75,13 @@ export const mainRoutes: RouteRecordRaw = {
             }
         },
         {
-            path: "/writeup",
+            path: "/writeup/:id",
             name: "writeup",
             component: () => import("../page/WriteUp.vue"),
             meta: {
                 title: "题解"
             }
-        }
+        },
     ]
 }
 

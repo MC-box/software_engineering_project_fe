@@ -20,10 +20,31 @@
       </a-card>
       <br />
       <section class="description">
-        <div class="title">题目描述</div>
+        <div class="title"><span>题目描述</span><a-button type="primary" style="min-width: 80px" @click="reverse()">查看题解</a-button></div>
         <!-- <RichTextEditor></RichTextEditor> -->
         <div class="p_">123</div>
-        <div class="title">题目选项</div>
+        <div v-if="ifWriteUp" style="background-color: white;">
+          <div class="title" >题解列表</div>
+          <a-list item-layout="horizontal" :data-source="data" style="height: 6cm;">
+              <template #renderItem="{ item }">
+                <a-list-item>
+                  <a-list-item-meta
+                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                  >
+                    <template #title>
+                      <span @click="router.push({ name: 'writeup', params: { id: item.key } })" style="cursor: pointer;">{{ item.title }}</span>
+                      <!-- <a @click="{ router.push({ name: 'writeup', params: { id: item.key } }) }">{{ item.title }}</a> -->
+                    </template>
+                    <template #avatar>
+                      <a-avatar src="https://joeschmoe.io/api/v1/random" />
+                    </template>
+                  </a-list-item-meta>
+                </a-list-item>
+              </template>
+            </a-list>
+        </div>
+        <div v-else>
+        <div class="title" >题目选项</div>
         <div class="doing">
           <a-checkbox-group
             name="checkboxgroup"
@@ -38,6 +59,7 @@
             >提交</a-button
           >
         </div>
+      </div>
         <RouterView></RouterView>
         <!-- 这一部分需要换成router-view以展示不同题型的选项 -->
       </section>
@@ -46,6 +68,9 @@
   <template v-if="ifBlankFill">
     填空题 / 简答题
     <div style="background-color: #ececec; padding: 20px">
+      <a @click="router.back">
+        <CloseCircleOutlined :style="{ fontSize: '20px', color: '#08c' }" />
+      </a>
       <a-card
         class="main"
         title="题目"
@@ -102,10 +127,11 @@ import Editor from "../components/RichTextEditor.vue";
 import { message } from "ant-design-vue";
 import { useRouter, RouterView } from "vue-router";
 import { CloseCircleOutlined } from "@ant-design/icons-vue";
+let ifWriteUp = ref(false);
 const router = useRouter();
 const BlankFillAnswer = ref("");
-let ifMulChoice = false; // 选择题
-let ifBlankFill = true; // 填空题/简答题
+let ifMulChoice = true; // 选择题
+let ifBlankFill = false; // 填空题/简答题
 let difficultyArr = reactive(["简单", "中等", "困难"]);
 const problem = reactive({
   id: 1,
@@ -170,6 +196,29 @@ const submitBlank = () => {
   message.success("提交成功");
   // TODO: 填空题：接下来直接读取BlankFillAnswer的数据并与后端交互即可(上传图片功能暂未解决)
 };
+
+
+
+interface DataItem {
+  title: string;
+  key: number;
+}
+const data: DataItem[] = [
+  {
+    title: 'Ant Design Title 1',
+    key: 1,
+  },
+  {
+    title: 'Ant Design Title 2',
+    key: 2,
+  }
+];
+
+
+let reverse = () => {
+  ifWriteUp.value = !ifWriteUp.value;
+}
+
 </script>
 
 <style>
