@@ -50,10 +50,20 @@ const data = [
 const rowClick = (record) => {
     return {
         onClick: () => {
-            router.push({ name : 'execenter', params : { id : record.key } })
+            router.push({ name : 'execenter', params : { id : record.key } });
+            setExerciseCenterTitle();
         }
     }
 }
+
+const setCourseTitle = (): void => {
+  document.title = "课程";
+};
+
+const setExerciseCenterTitle = (): void => {
+  document.title = "题目中心";
+};
+
 </script>
 
 <style>

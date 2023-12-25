@@ -1,5 +1,5 @@
 <template>
-  <div style="margin-bottom: 20px;" @click="router.back()">
+  <div style="margin-bottom: 20px;" @click="router.back();">
     <ArrowLeftOutlined two-tone-color="#686868" style="font-size: 20px;" />
     &nbsp;<span style="margin-top:10px;">返回</span>
   </div>
@@ -53,6 +53,7 @@
     ifDisplay = true;
     router.push({ name : "exercise", params : { id : key }});// 根据存放的exercise的id进行指定访问
   }  
+
 
   // 表格头
   const columns = [

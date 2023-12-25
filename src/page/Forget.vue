@@ -10,7 +10,7 @@
                     <h2>找回密码</h2>
                     <form class="forget" action="">
                         <input v-shake type="text" v-model="userLoginForm.username" placeholder="请输入账号(邮箱)">
-                        <input v-shake type="password" v-model="userLoginForm.password" placeholder="请输入验证码">
+                        <input v-shake type="text" v-model="userLoginForm.password" placeholder="请输入验证码">
                         <!-- 发送验证码，调用API -->
                     </form>
                     <!-- <div class="remember">
@@ -62,6 +62,7 @@ export default {
     }
 }
 </script>
+
 <style lang="less" scoped>
 @keyframes animate {
     0% {
