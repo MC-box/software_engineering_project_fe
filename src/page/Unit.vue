@@ -56,10 +56,6 @@ const rowClick = (record) => {
     }
 }
 
-const setCourseTitle = (): void => {
-  document.title = "课程";
-};
-
 const setExerciseCenterTitle = (): void => {
   document.title = "题目中心";
 };

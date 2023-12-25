@@ -1,0 +1,2 @@
+function setExersiceTitle(): void {
+}
