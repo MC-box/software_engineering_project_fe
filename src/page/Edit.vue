@@ -1,0 +1,244 @@
+<script lang="ts" setup>
+import problemStore from "../store/problem";
+import { message } from "ant-design-vue";
+import problemApi from "../api/problem.ts";
+import { reactive, onBeforeMount, ref, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import RichTextEditor from "../components/RichTextEditor.vue";
+
+const router = useRouter();
+const id = useRoute().query?.id;
+
+const store = problemStore();
+const { difficultyArr, categoryArr, courses } = store;
+const tags = computed(() => store.tags.map((tag) => tag["tagName"]));
+const problem = reactive({
+  title: "",
+  question: "",
+  category: "填空",
+  courseName: "",
+  difficulty: 1,
+  tags: [],
+  ans: "",
+});
+
+onBeforeMount(async () => {
+  const tags = await problemApi.problemTags();
+  store.setTags(tags);
+  if (id !== undefined) {
+    const res = await problemApi.problemDetail(Number(id));
+    console.log(res);
+    problem.title = res.title;
+    problem.question = res.question;
+    problem.category = res.category;
+    problem.courseName = res.courseName;
+    problem.difficulty = res.difficulty;
+    problem.tags = res.tags;
+    problem.ans = res.ans;
+    showTags.value = res.tags.map((tag) => tag["tagName"]);
+  }
+});
+
+const options = ref([]);
+const onSearch = (searchText: string) => {
+  options.value = !searchText
+    ? []
+    : courses
+        .map((course) => (course.includes(searchText) ? { value: course } : ""))
+        .filter(Boolean);
+};
+const onSelect = (value: string) => {
+  problem.courseName = value;
+};
+const onChange = (value: string) => {
+  problem.courseName = value;
+};
+// const selectTags = (tags: any[]) => {
+//   // @ts-ignore
+//   problem.tags = tags.map(val => ({ tagName: val }))
+// }
+
+const isSelectProblem = computed(() => {
+  return problem.category == categoryArr[1];
+});
+
+const showTags = ref([]);
+// const questionTinymce = ref(null)
+
+//多选开关
+const checked = ref<boolean>(false);
+// const ansNum = ref(4)
+// const addAns = () => {
+//   ansNum.value++
+// }
+// const delAns = () => {
+//   ansNum.value--
+// }
+
+async function handleEdit() {
+  const isFinish = Object.values(problem).every(Boolean);
+  console.log(problem);
+  if (isFinish) {
+    if (id !== undefined) {
+      const res: any = await problemApi.problemModify(Number(id), problem);
+      if (res.code === 0) {
+        message.success("修改成功");
+        router.push("/problem");
+      }
+    } else {
+      const res: any = await problemApi.problemCreate(problem);
+      if (res.code === 0) {
+        message.success("新建题目");
+        router.push("/problem");
+      }
+    }
+  } else {
+    message.error("数据缺失，无法新建题目");
+  }
+}
+</script>
+
+<template>
+  <div class="edit">
+    <section>
+      <ASelect
+        style="width: 120px"
+        size="large"
+        v-model:value="problem.category"
+        class="tagSelect"
+      >
+        <ASelectOption v-for="item in categoryArr.slice(1)" :value="item">
+        </ASelectOption>
+      </ASelect>
+    </section>
+    <ADivider />
+    <main style="width: 80%" class="edit-problem">
+      <div style="box-sizing: border-box; width: 70%">
+        <div class="font-strong" style="margin-top: 20px; margin-bottom: 20px">
+          题目答案
+        </div>
+        <AInput
+          size="large"
+          placeholder="请输入题目标题"
+          v-model:value="problem.title"
+        />
+        <div class="font-strong" style="margin-top: 20px; margin-bottom: 20px">
+          题目描述
+        </div>
+        <RichTextEditor
+          placeholder="请输入题目描述，如需填空请使用下划线替代"
+          v-model="problem.question"
+          style="margin-top: 30px"
+        />
+        <div
+          v-if="isSelectProblem"
+          class="font-strong"
+          style="margin-top: 20px"
+        >
+          <!-- <div v-if="problem.category==='选择'">
+            <label >多选：</label>
+            <ASwitch v-model:checked="checked"></ASwitch>
+          </div> -->
+
+          <!-- <div class="font-strong" style="margin-top:20px">
+          <span> {{ isSelectProblem ? "选项" : isDati ? problem.category == categoryArr[4] ? "代码题解" : "大题答案" : "填空答案" }}
+          </span>
+          <span v-show="isSelectProblem" class="right" style="margin-right: 30px;">正确答案</span>
+        </div> -->
+          <!-- <div v-for="(_, index) in ansNum" class="flex-center" style="margin:20px 0">
+            <span style="width: 30px;">{{ index + 1 }}.</span>
+            <AInput style="background-color: #fafafa;" />
+             <ACheckbox v-if="isSelectProblem" style="transform: scale(1.2);margin-left:30px;" /> 
+            <MinusOutlined @click="delAns" style="margin-left:30px;" />
+          </div> -->
+          <!-- <PlusOutlined @click="addAns" /> -->
+        </div>
+        <!-- 因无判题故修改 -->
+        <!-- <div class="font-strong" style="margin-top:20px">题目答案</div>
+        <RichTextEditor placeholder="请输入题目答案" v-model="problem.ans" style="margin: 20px 0;" />
+        <ADivider /> -->
+      </div>
+      <div class="property">
+        <p class="property-title">属性（必填）</p>
+        <AForm name="Property">
+          <AFormItem name="难度" label="难度">
+            <ASelect
+              placeholder="请选择难度"
+              v-model:value="problem.difficulty"
+            >
+              <ASelectOption
+                v-for="(item, index) in difficultyArr.slice(1)"
+                :value="index + 1"
+                >{{ item }}
+              </ASelectOption>
+            </ASelect>
+          </AFormItem>
+          <AFormItem name="课程" label="课程">
+            <AAutoComplete
+              v-model:value="problem.courseName"
+              :options="options"
+              allowClear
+              defaultOpen
+              placeholder="请输入课程"
+              @select="onSelect"
+              @search="onSearch"
+              @change="onChange"
+            />
+          </AFormItem>
+          <AFormItem name="标签" label="标签">
+            <ASelect
+              mode="tags"
+              placeholder="请输入标签"
+              v-model:value="showTags"
+              @change=""
+            >
+              <ASelectOption v-for="tag in tags" :value="tag">{{
+                tag
+              }}</ASelectOption>
+            </ASelect>
+          </AFormItem>
+        </AForm>
+      </div>
+    </main>
+    <div>
+      <!-- <AButton type="default" class="shadow" style="margin-right:1rem;border-radius: 8px;">保存草稿</AButton> -->
+      <AButton
+        type="primary"
+        class="shadow"
+        style="border-radius: 8px"
+        @click="handleEdit"
+        >发布题目</AButton
+      >
+    </div>
+  </div>
+  <!-- 需要区分选择题和填空题，选择题需要添加选项的选择，而填空题不需要，增加单变量即可 -->
+</template>
+
+<style scoped lang="less">
+.edit {
+  padding: 50px;
+}
+
+.edit-problem {
+  display: flex;
+  width: 100%;
+}
+
+.property {
+  margin-top: 70px;
+  border-radius: 10px;
+  margin-left: 30px;
+  width: 200px;
+
+  &-title {
+    font-size: 18px;
+    color: blue;
+    font-weight: bold;
+  }
+}
+
+.font-strong {
+  font-size: 16px;
+  font-weight: bold;
+}
+</style>

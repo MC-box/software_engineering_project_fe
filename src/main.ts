@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 // import './style.css'
 import Ant from 'ant-design-vue'
 import 'ant-design-vue/dist/reset.css'
@@ -6,7 +7,6 @@ import App from './App.vue'
 import router from './router/index.ts'
 import UndrawUi from 'undraw-ui'
 import ElementPlus from 'element-plus'
-import { createPinia } from 'pinia'
 import 'undraw-ui/dist/style.css'
 import VMdPreview from '@kangc/v-md-editor/lib/preview';
 import '@kangc/v-md-editor/lib/style/preview.css';
@@ -49,4 +49,4 @@ VMdPreview.use(githubTheme, {
     Hljs: hljs,
 });
 
-createApp(App).use(Ant).use(router).use(UndrawUi).use(ElementPlus).use(createPinia).use(VMdEditor).use(VMdPreview).mount('#app')
+createApp(App).use(Ant).use(router).use(UndrawUi).use(ElementPlus).use(createPinia()).use(VMdEditor).use(VMdPreview).mount('#app')

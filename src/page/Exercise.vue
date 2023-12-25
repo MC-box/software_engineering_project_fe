@@ -20,11 +20,12 @@
       </a-card>
       <br />
       <section class="description">
-        <div class="title"><span>题目描述</span><a-button type="primary" style="min-width: 80px" @click="reverse()">查看题解</a-button></div>
+        <div class="title"><span>题目描述</span><a-button type="primary" style="min-width: 80px; margin-left: 83%;" @click="reverse()">查看题解</a-button></div>
         <!-- <RichTextEditor></RichTextEditor> -->
         <div class="p_">123</div>
         <div v-if="ifWriteUp" style="background-color: white;">
-          <div class="title" >题解列表</div>
+          <div class="title">题解列表 <PlusCircleOutlined style="margin-left: 84%;"/><span style="margin-right: 20px; margin-left: 7px; font-size: 14px;" @click="showModal">
+               写题解</span></div>
           <a-list item-layout="horizontal" :data-source="data" style="height: 6cm;">
               <template #renderItem="{ item }">
                 <a-list-item>
@@ -116,6 +117,16 @@
       </section>
     </div>
   </template>
+
+
+
+
+  <a-modal v-model:open="open" title="编写题解" :confirm-loading="confirmLoading" @ok="handleOk" width="1500px" :bodyStyle="{   'height': '600px','overflow': 'hidden', 'overflowY': 'scroll', }">
+        <label>请在下方编写你的题解,完成后记得点击提交</label>
+        <div >
+            <v-md-editor v-model="markdown" :height="height"></v-md-editor>
+        </div>
+  </a-modal>
 </template>
 
 <style lang="less" scoped></style>
@@ -126,7 +137,7 @@ import Editor from "../components/RichTextEditor.vue";
 // import { CheckboxGroup } from "ant-design-vue";
 import { message } from "ant-design-vue";
 import { useRouter, RouterView } from "vue-router";
-import { CloseCircleOutlined } from "@ant-design/icons-vue";
+import { CloseCircleOutlined, PlusCircleOutlined } from "@ant-design/icons-vue";
 let ifWriteUp = ref(false);
 const router = useRouter();
 const BlankFillAnswer = ref("");
@@ -197,6 +208,21 @@ const submitBlank = () => {
   // TODO: 填空题：接下来直接读取BlankFillAnswer的数据并与后端交互即可(上传图片功能暂未解决)
 };
 
+const open = ref<boolean>(false);
+  const confirmLoading = ref<boolean>(false);
+  const markdown = ref("")
+  const showModal = () => {
+    open.value = true;
+  };
+  
+  const height = ref('575px') // modal高度·25px
+  const handleOk = () => {
+    confirmLoading.value = true;
+    setTimeout(() => {
+      open.value = false;
+      confirmLoading.value = false;
+    }, 2000);
+  };
 
 
 interface DataItem {
@@ -239,6 +265,8 @@ let reverse = () => {
   margin: auto;
   box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.19);
   /* x 偏移量 | y 偏移量 | 阴影模糊半径 | 阴影扩散半径 | 阴影颜色 */
+
+  
   .title {
     width: 100%;
     border-left: 5px solid #d0d0d0;
@@ -248,7 +276,7 @@ let reverse = () => {
     font-weight: 500;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    /* justify-content: space-between; */
   }
   div.p_ {
     min-height: 100px;
@@ -279,6 +307,7 @@ let reverse = () => {
 #editor-container {
   height: 500px;
 }
+
 /* .ant-checkbox-inner {
         width: 40px;
         height: 40px;

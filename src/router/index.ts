@@ -82,6 +82,22 @@ export const mainRoutes: RouteRecordRaw = {
                 title: "题解"
             }
         },
+        {
+            path: "/edit",
+            name: "edit",
+            component: () => import("../page/Edit.vue"),
+            meta: {
+                title: "编辑题目"
+            }
+        },
+        {
+            path: "/write",
+            name: "write",
+            component: () => import("../components/Writewp.vue"),
+            meta: {
+                title: "编辑题目"
+            }
+        }
     ]
 }
 
