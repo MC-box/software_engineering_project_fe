@@ -9,9 +9,9 @@
            -->
           <span>主页面</span>
         </a-menu-item>
-        <a-menu-item key="2" @click="router.push({ name : 'execenter' })">
+        <a-menu-item key="2" @click="router.push({ name : 'edit' })">
           <desktop-outlined />
-          <span>查看题库</span>
+          <span>编辑题目</span>
         </a-menu-item>
         <a-sub-menu key="sub1">
           <template #title>
