@@ -1,9 +1,11 @@
 <template>
-    <div>
-      <a @click="router.back">
+    <div style="height: 40px;">
+      <a @click="router.back" style="padding: 10px; margin-bottom: 50px;">
         <CloseCircleOutlined :style="{fontSize: '20px', color: '#08c'} "/>
       </a>
-    这是交流区页面</div>
+   <span style="font-size: 20px; padding:10px 10px 0px 10px; font-weight: bold;">评论详情：   <!-- 这里可以加上评论的主题内容 --></span>
+
+  </div>
   <u-comment :config="config" @submit="submit" @like="like" relative-time>
     <div>这里编写主题帖内容</div>
     <!-- <div>导航栏卡槽</div> -->

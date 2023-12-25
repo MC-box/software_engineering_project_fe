@@ -1,6 +1,6 @@
 <template>
-  <div style="margin-bottom: 20px;">
-    <ArrowLeftOutlined two-tone-color="#686868" style="font-size: 20px;" @click="router.back()"/>
+  <div style="margin-bottom: 20px;" @click="router.back()">
+    <ArrowLeftOutlined two-tone-color="#686868" style="font-size: 20px;" />
     &nbsp;<span style="margin-top:10px;">返回</span>
   </div>
     <a-table :columns="columns" :data-source="data" v-if="ifDisplay">
