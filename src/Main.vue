@@ -57,7 +57,15 @@
           <a-breadcrumb-item>Bill</a-breadcrumb-item>
         </a-breadcrumb>
         <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
-          <router-view overflow="hidden"/>
+          <router-view overflow="hidden">
+          </router-view>
+          <!-- <RouterView v-slot="{ Component, route }" class="content-view" overflow="hidden">
+          <Transition name="fade" mode="out-in" appear>
+            <KeepAlive >
+              <component :is="Component" :key="route.name" />
+            </KeepAlive>
+          </Transition>
+        </RouterView> -->
         </div>
       </a-layout-content>
       <a-layout-footer style="text-align: center">
@@ -105,6 +113,10 @@ const courses = [{name : '软件工程', key : 3},
 .icon{
   padding-right: 23px;
   float: right;
+}
+
+.content-view {
+  padding: 1rem;
 }
 </style>
 
