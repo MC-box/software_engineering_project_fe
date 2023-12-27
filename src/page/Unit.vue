@@ -13,6 +13,7 @@ import homeworkApi from '@/api/homework'
 import { Homework } from '@/paking/store';
 import { onMounted } from 'vue';
 import { useRoute } from 'vue-router'
+import { ref } from 'vue'
 const columns = [
     {
         title: '实验名称',
@@ -27,15 +28,18 @@ const route = useRoute();
 //     {   
 //         homeworkid: '1',
 //         homeworkname: '实验1 类',
+//         duedate: "2023:02:22",
+//         courseid: '3',
 //     },
 //     {   
 //         homeworkid: '2',
 //         homeworkname: '实验2 虚函数',
-        
+//         duedate: "2023:03:22",
+//         courseid: '4',
 //     }
 // ]
 
-let data : Homework.homework_return[];
+const data = ref<Homework.homework_return[]>();
 
 // let rowClick = (record, index) => {
 //   return {
@@ -60,7 +64,7 @@ onMounted( async () => {
     const result = await homeworkApi.GetHomeworks(parseInt(rExp.exec(route.path)[0]));
     if (result.length !== 0 && "homeworkname" in result[0])
     {
-        data = result
+        data.value = result
         console.log(data)
     }
     else

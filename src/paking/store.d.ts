@@ -24,6 +24,16 @@ export namespace User {
       token_type: string // 加密方式
     }
   }
+
+  export namespace Exercise{
+    interface exerciseInfo{
+      problemid: number
+      name: string
+      problemType: string
+      point: number
+      difficult: string
+    }
+  }
     
   
   export namespace Problem {

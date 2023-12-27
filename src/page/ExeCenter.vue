@@ -13,41 +13,38 @@
         </template>
       </template>
   
-      <template #bodyCell="{ column, record }">
-        <template v-if="column.key === 'name'">
-          <a @click="enter(record.key)"> <!--须根据后端传入题目的id-->
+      <!-- <template #bodyCell="{ column, record }">
+        < <template v-if="column.key === 'name'">
+          <a @click="enter(record.key)"> 
             {{ record.name }}
           </a>
         </template>
-        <template v-else-if="column.key === 'tags'">
+        <template v-else-if="column.key === 'difficult'">
           <span>
             <a-tag
-              v-for="tag in record.tags"
-              :key="tag"
-              :color="tag === 'loser' ? 'volcano' : tag.length > 5 ? 'geekblue' : 'green'">
-              {{ tag.toUpperCase() }}
+              v-for="difficult in record.difficult"
+              :key="difficult"
+              :color="difficult === 'hard' ? 'volcano' : difficult === 'middle' ? 'geekblue' : 'green'">
+              {{ difficult.toUpperCase() }}
             </a-tag>
           </span>
         </template>
-        <template v-else-if="column.key === 'action'">
-          <span>
-            <a>Delete</a>
-            <a-divider type="vertical" />
-            <a class="ant-dropdown-link">
-              More actions
-              <down-outlined />
-            </a>
-          </span>
-        </template>
-      </template>
+        <template v-else-if="column.key === 'problemType'">
+            {{ record.problemType }}
+        </template> 
+      </template>  -->
     </a-table>
     <RouterView>
     </RouterView>
   </template>
   <script lang="ts" setup>
-  import { useRouter, RouterView } from 'vue-router';
+  import { useRouter, RouterView, useRoute } from 'vue-router';
   const router = useRouter()
+  const route = useRoute()
   import { SmileOutlined, DownOutlined, ArrowLeftOutlined } from '@ant-design/icons-vue';
+  import { ref, onMounted } from 'vue'
+  import { Exercise } from '@/paking/store'
+  import  exerciseApi  from '@/api/exercise'
   let ifDisplay = true;
   const enter = (key : string) => {
     ifDisplay = true;
@@ -58,63 +55,90 @@
   // 表格头
   const columns = [
     {
-      name: '题目名称',
+      title: '题目编号',
+      dataIndex: 'problemid',
+      key: 'problemid',
+    },
+    {
+      title: '题目名称',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: '题目编号',
-      dataIndex: 'age',
-      key: 'age',
+      title: '类型',
+      key: 'problemType',
+      dataIndex: 'problemType',
     },
     {
-      title: '课程',
-      dataIndex: 'address',
-      key: 'address',
+      title: '分数',
+      key: 'point',
+      dataIndex: 'point',
     },
     {
       title: '难度',
-      key: 'tags',
-      dataIndex: 'tags',
-    },
-    {
-      title: '类型',
-      key: 'type',
-      dataIndex: 'type',
-    },
-    {
-      title: 'Action',
-      key: 'action',
+      key: 'difficult',
+      dataIndex: 'difficult',
     },
   ];
   
-  // 须从后端接收的数据
-  const data = [
-    {
-      key: '1',
-      name: 'CrackMe',
-      age: 32,
-      address: 'Reverse',
-      tags: ['nice', 'developer'],
-      type: '填空题',
-    },
-    {
-      key: '2',
-      name: 'Binary Tree',
-      age: 42,
-      address: 'Data Structure',
-      tags: ['loser'],
-      type: '选择题',
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
-      type: '代码题',
-    },
-  ];
+  // // 须从后端接收的数据
+  // const data = [
+  //   {
+  //     key: '1',
+  //     name: 'CrackMe',
+  //     age: 32,
+  //     tags: ['nice', 'developer'],
+  //     type: '填空题',
+  //   },
+  //   {
+  //     key: '2',
+  //     name: 'Binary Tree',
+  //     age: 42,
+  //     tags: ['loser'],
+  //     type: '选择题',
+  //   },
+  //   {
+  //     key: '3',
+  //     name: 'Joe Black',
+  //     age: 32,
+  //     tags: ['cool', 'teacher'],
+  //     type: '代码题',
+  //   },
+  // ];
+
+const data = ref<Exercise.exerciseInfo[]>()
+let rExp = new RegExp("\\d+");
+onMounted( async () => {
+  const result = await exerciseApi.GetExercises(parseInt(rExp.exec(route.path)[0]));
+  console.log(result)
+  if ('problemType' in result)
+  {
+    console.log("success")
+    data.value = result
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   </script>
   
   
