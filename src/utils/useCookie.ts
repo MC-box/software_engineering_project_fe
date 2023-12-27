@@ -7,12 +7,14 @@ export function setCookie(
     let exp = new Date();
     exp.setTime(exp.getTime() + Days * 60 * 60 * 1000);
     document.cookie = name + "=" + encodeURIComponent(value) + `expires=${exp.toUTCString()}`
+    // document.cookie = encodeURIComponent(value) + `.${exp.toUTCString()}`
 }   
 
 
 export function getCookie(name: string){
-    const reg = new RegExp(RegExp("(^| )" + encodeURIComponent(name) + "=([^;]*)(;|$)"));
+    const reg = new RegExp("(^| )" + encodeURIComponent(name) + "expires=");
     const match = document.cookie.match(reg)
+    // console.log(match)
     return match ? decodeURIComponent(match[2]) : ""
     
 }

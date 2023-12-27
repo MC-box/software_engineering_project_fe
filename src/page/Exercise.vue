@@ -20,47 +20,72 @@
       </a-card>
       <br />
       <section class="description">
-        <div class="title"><span>题目描述</span><a-button type="primary" style="min-width: 80px; margin-left: 83%;" @click="reverse()">查看题解</a-button></div>
-        <!-- <RichTextEditor></RichTextEditor> -->
-        <div class="p_">123</div>
-        <div v-if="ifWriteUp" style="background-color: white;">
-          <div class="title">题解列表 <PlusCircleOutlined style="margin-left: 84%;"/><span style="margin-right: 20px; margin-left: 7px; font-size: 14px;" @click="showModal">
-               写题解</span></div>
-          <a-list item-layout="horizontal" :data-source="data" style="height: 6cm;">
-              <template #renderItem="{ item }">
-                <a-list-item>
-                  <a-list-item-meta
-                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                  >
-                    <template #title>
-                      <span @click="router.push({ name: 'writeup', params: { id: item.key } })" style="cursor: pointer;">{{ item.title }}</span>
-                      <!-- <a @click="{ router.push({ name: 'writeup', params: { id: item.key } }) }">{{ item.title }}</a> -->
-                    </template>
-                    <template #avatar>
-                      <a-avatar src="https://joeschmoe.io/api/v1/random" />
-                    </template>
-                  </a-list-item-meta>
-                </a-list-item>
-              </template>
-            </a-list>
-        </div>
-        <div v-else>
-        <div class="title" >题目选项</div>
-        <div class="doing">
-          <a-checkbox-group
-            name="checkboxgroup"
-            :options="selectedOptions"
-            style="display: grid; gap: 24px"
-            v-model:value="selectedAnswer"
-          />
-          <a-button
+        <div class="title">
+          <span>题目描述</span
+          ><a-button
             type="primary"
-            style="float: right; margin-top: 15px; width: 80px"
-            @click="submitSelected"
-            >提交</a-button
+            style="min-width: 80px; margin-left: 83%"
+            @click="reverse()"
+            >查看题解</a-button
           >
         </div>
-      </div>
+        <!-- <RichTextEditor></RichTextEditor> -->
+        <div class="p_">123</div>
+        <div v-if="ifWriteUp" style="background-color: white">
+          <div class="title">
+            题解列表 <PlusCircleOutlined style="margin-left: 84%" /><span
+              style="margin-right: 20px; margin-left: 7px; font-size: 14px"
+              @click="showModal"
+            >
+              写题解</span
+            >
+          </div>
+          <a-list
+            item-layout="horizontal"
+            :data-source="data"
+            style="height: 6cm"
+          >
+            <template #renderItem="{ item }">
+              <a-list-item>
+                <a-list-item-meta :description="`题解 By ${item.author}`">
+                  <template #title>
+                    <span
+                      @click="
+                        router.push({
+                          name: 'writeup',
+                          params: { id: item.solutionid },
+                        })
+                      "
+                      style="cursor: pointer"
+                      >{{ item.name }}</span
+                    >
+                    <!-- <a @click="{ router.push({ name: 'writeup', params: { id: item.key } }) }">{{ item.title }}</a> -->
+                  </template>
+                  <template #avatar>
+                    <a-avatar src="https://joeschmoe.io/api/v1/random" />
+                  </template>
+                </a-list-item-meta>
+              </a-list-item>
+            </template>
+          </a-list>
+        </div>
+        <div v-else>
+          <div class="title">题目选项</div>
+          <div class="doing">
+            <a-checkbox-group
+              name="checkboxgroup"
+              :options="selectedOptions"
+              style="display: grid; gap: 24px"
+              v-model:value="selectedAnswer"
+            />
+            <a-button
+              type="primary"
+              style="float: right; margin-top: 15px; width: 80px"
+              @click="submitSelected"
+              >提交</a-button
+            >
+          </div>
+        </div>
         <RouterView></RouterView>
         <!-- 这一部分需要换成router-view以展示不同题型的选项 -->
       </section>
@@ -118,14 +143,18 @@
     </div>
   </template>
 
-
-
-
-  <a-modal v-model:open="open" title="编写题解" :confirm-loading="confirmLoading" @ok="handleOk" width="1500px" :bodyStyle="{   'height': '600px','overflow': 'hidden', 'overflowY': 'scroll', }">
-        <label>请在下方编写你的题解,完成后记得点击提交</label>
-        <div >
-            <v-md-editor v-model="markdown" :height="height"></v-md-editor>
-        </div>
+  <a-modal
+    v-model:open="open"
+    title="编写题解"
+    :confirm-loading="confirmLoading"
+    @ok="handleOk"
+    width="1500px"
+    :bodyStyle="{ height: '600px', overflow: 'hidden', overflowY: 'scroll' }"
+  >
+    <label>请在下方编写你的题解,完成后记得点击提交</label>
+    <div>
+      <v-md-editor v-model="markdown" :height="height"></v-md-editor>
+    </div>
   </a-modal>
 </template>
 
@@ -136,9 +165,15 @@ import { reactive, ref } from "vue";
 import Editor from "../components/RichTextEditor.vue";
 // import { CheckboxGroup } from "ant-design-vue";
 import { message } from "ant-design-vue";
-import { useRouter, RouterView } from "vue-router";
+import { useRouter, RouterView, useRoute } from "vue-router";
 import { CloseCircleOutlined, PlusCircleOutlined } from "@ant-design/icons-vue";
+import courseApi from "@/api/course";
+import writeupApi from "@/api/writeup";
+import attemptApi from "@/api/attempt";
+import { WriteUp, Attempt } from "@/paking/store";
+
 let ifWriteUp = ref(false);
+const route = useRoute();
 const router = useRouter();
 const BlankFillAnswer = ref("");
 let ifMulChoice = true; // 选择题
@@ -188,16 +223,21 @@ function difficultyColor(difficulty: number) {
   }
 }
 
-const submitSelected = () => {
+const submitSelected = async () => {
   if (selectedAnswer.value.length == 0) {
     message.error("请选择答案");
     return;
   }
+  const result = selectedAnswer.value.join("");
   message.success("提交成功");
   // TODO: 选择题：接下来直接读取selectedAnswer的数据并与交互即可
+  let pid = parseInt(rExp.exec(route.path)[0]);
+  const attemptreturn = await attemptApi.CreateAttempt(pid, result);
+  // 这里可以添加答案界面，即显示出分数
+  
 };
 
-const submitBlank = () => {
+const submitBlank = async () => {
   console.log(BlankFillAnswer.value);
   if (BlankFillAnswer.value == "<p><br></p>") {
     // 即没有填任何数据
@@ -205,46 +245,83 @@ const submitBlank = () => {
     return;
   }
   message.success("提交成功");
+  let pid = parseInt(rExp.exec(route.path)[0]);
+  const attemptreturn = await attemptApi.CreateAttempt(pid, BlankFillAnswer.value);
   // TODO: 填空题：接下来直接读取BlankFillAnswer的数据并与后端交互即可(上传图片功能暂未解决)
 };
 
 const open = ref<boolean>(false);
-  const confirmLoading = ref<boolean>(false);
-  const markdown = ref("")
-  const showModal = () => {
-    open.value = true;
+const confirmLoading = ref<boolean>(false);
+const markdown = ref("");
+const showModal = () => {
+  open.value = true;
+};
+let markdownText = ref("");
+const height = ref("575px"); // modal高度·25px
+let rExp = new RegExp("\\d+");
+const handleOk = async () => {
+  confirmLoading.value = true;
+  setTimeout(() => {
+    open.value = false;
+    confirmLoading.value = false;
+  }, 2000);
+  console.log(route.path);
+  markdownText = markdown;
+  console.log(markdownText.value);
+  let writeupinfo: WriteUp.WriteUpInfo_submit = {
+    problemid: parseInt(rExp.exec(route.path)[0]),
+    content: markdownText.value,
+    contributorid: 1,
+    name: "题解",
   };
-  
-  const height = ref('575px') // modal高度·25px
-  const handleOk = () => {
-    confirmLoading.value = true;
-    setTimeout(() => {
-      open.value = false;
-      confirmLoading.value = false;
-    }, 2000);
-  };
-
-
-interface DataItem {
-  title: string;
-  key: number;
-}
-const data: DataItem[] = [
-  {
-    title: 'Ant Design Title 1',
-    key: 1,
-  },
-  {
-    title: 'Ant Design Title 2',
-    key: 2,
+  const return_value = await writeupApi.CreateWriteUp(writeupinfo);
+  if (return_value === "") {
+    // success...
+  } else {
+    // failed...
   }
-];
+};
 
+// interface DataItem {
+//   name: string;
+//   solutionid: number;
+//   author: string;
+// }
 
-let reverse = () => {
+// 静态题解信息
+// const data: DataItem[] = [
+//   {
+//     name: "Ant Design Title 1",
+//     solutionid: 1,
+//     author: "你妈边哭边"
+//   },
+//   {
+//     name: "Ant Design Title 2",
+//     solutionid: 2,
+//     author: "你干嘛嗨嗨哟"
+//   },
+// ];
+
+// 动态题解信息
+let data: WriteUp.WriteupInfo[];
+
+let reverse = async () => {
   ifWriteUp.value = !ifWriteUp.value;
-}
-
+  if (ifWriteUp.value) {
+    const wpid = await writeupApi.GetWriteUpId(
+      parseInt(rExp.exec(route.path)[0])
+    );
+    if ("solutionid" in wpid) {
+      data = wpid;
+    } else {
+      if ("msg" in wpid) {
+        message.error(wpid.msg);
+      } else {
+        // 没有找到任何题解，即为空
+      }
+    }
+  }
+};
 </script>
 
 <style>
@@ -266,7 +343,6 @@ let reverse = () => {
   box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.19);
   /* x 偏移量 | y 偏移量 | 阴影模糊半径 | 阴影扩散半径 | 阴影颜色 */
 
-  
   .title {
     width: 100%;
     border-left: 5px solid #d0d0d0;

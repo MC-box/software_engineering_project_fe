@@ -1,17 +1,30 @@
 export namespace User {
     interface userInfo {
-      name: string // 实名
-      schoolID: string // 学号/教工号
-      password: string // 密码
-      email: string // 邮箱
-      avatar: string // 头像路径，有默认头像
-      // major?: string // 专业，老师没有专业
-      // college: string // 学院
-      role: -1 | 0 | 1 | 2 // -1默认值，0为管理员，1为学生，2为老师
-      isAdmin: boolean
-      token?: string // token
+      // name: string // 实名
+      // schoolID: string // 学号/教工号
+      // password: string // 密码
+      // email: string // 邮箱
+      // avatar: string // 头像路径，有默认头像
+      // // major?: string // 专业，老师没有专业
+      // // college: string // 学院
+      // role: -1 | 0 | 1 | 2 // -1默认值，0为管理员，1为学生，2为老师
+      // isAdmin: boolean
+      // token?: string // token
+      userid: number,
+      username: string,
+      password: string,
+      email: string,
+      role: number,
+      telephone: string,
+      major: string
+    }
+
+    interface token{
+      access_token: string // token值
+      token_type: string // 加密方式
     }
   }
+    
   
   export namespace Problem {
     type Tag = {
@@ -90,4 +103,77 @@ export namespace User {
       role: number
     }
   }
+export namespace Course{
+  interface courseInfo{
+    courseid: int
+    name: string
+    info: string
+    teacherid: string
+  }
   
+}
+
+export namespace WriteUp{
+  interface WriteupInfo{
+    solutionid: int
+    name: string
+    author: string
+  }
+
+  interface WriteupInfo_content{
+    solutionid: int
+    name: string
+    content: string
+    author: string
+  }
+
+  interface WriteUpInfo_submit{
+    problemid: int
+    content: string
+    contributorid: int
+    name: string
+  }
+} 
+
+export namespace Attempt{
+  interface attemptInfo{
+    problemid: int
+    content: string
+  }
+
+  interface attemptInfo_return{
+    problemid: int
+    studentid: int
+    point: int
+    content: string
+  }
+}
+
+export interface ValidationFail{
+  detail: [
+    {
+      loc: [
+        string,
+        int
+      ],
+      msg: string,
+      type: string
+    }
+  ]
+}
+  
+
+export namespace Homework{
+    interface homework_submit{
+      homeworkname: string,
+      duedate: Date,
+      courseid: number
+    }
+
+    interface homework_return{
+      homeworkid: number
+      homeworkname: string,
+      duedate: Date,
+      courseid: number
+    }
+}

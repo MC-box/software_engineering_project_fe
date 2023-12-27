@@ -9,8 +9,8 @@
                 <el-card class="el-card">
                     <h2>欢迎登录</h2>
                     <form class="login" action="">
-                        <input v-shake type="text" v-model="userLoginForm.username" placeholder="请输入账号(邮箱)">
-                        <input v-shake type="password" v-model="userLoginForm.password" placeholder="请输入密码">
+                        <input v-shake type="text" v-model="loginForm.account" placeholder="请输入账号(邮箱)">
+                        <input v-shake type="password" v-model="loginForm.password" placeholder="请输入密码">
                     </form>
                     <!-- <div class="remember">
                         <input type="radio" name="" id="psd" class="radio"><label for="psd"></label>记住密码
@@ -18,12 +18,12 @@
                     <span style="float: left; margin: 10px 0 0 35px"><a href="/#/forget">忘记密码</a></span>
                     <a-checkbox v-model:checked="checked" style="margin: 8px 0 0 55px;">记住密码</a-checkbox>
 
-                    <div class="message">
+                    <!-- <div class="message">
                         <span v-html="error"></span>
-                    </div>
+                    </div> -->
                     <div id="btn">
                         <a href="/#/home"><button class="retbtn">返回</button></a>
-                        <button class="loginbtn" @click="userList">登陆</button>
+                        <button class="loginbtn" @click="handleLogin" style="cursor: pointer;">登陆</button>
                     </div>
                 </el-card>
             </div>
@@ -32,38 +32,74 @@
     </div>
 </template>
 
-<script>
-import { useStore } from 'vuex'
-import { useRouter, RouterView } from 'vue-router'
-import { getCurrentInstance, reactive, ref } from '@vue/runtime-core'
+<script lang="ts" setup>
+import { useRouter } from 'vue-router'
+import { ref } from '@vue/runtime-core'
+import  userApi  from '../api/user.ts'
+import { LoginInfo } from "@/paking/request"
+import type { UnwrapRef } from 'vue';
+import { message } from "ant-design-vue";
+import userStore from "@/store/user"
+import Cookies from 'js-cookie'
 
 const router = useRouter()
+const store = userStore() // ???
 const checked = ref(false)
-export default {
-    name: "appLogin",
-    setup() {
-        let userLoginForm = reactive({
-            username: "",
-            password: ""
-        })
-        const store = useStore()
-        const router = useRouter()
-        const { proxy } = getCurrentInstance()
-        let error = ref('')
-        //获取用户登录信息
-        async function usreList() {
+// export default {
+//     name: "appLogin",
+//     setup() {
+//         let userLoginForm = reactive({
+//             username: "",
+//             password: ""
+//         })
+//         const store = useStore()
+//         const router = useRouter()
+//         const { proxy } = getCurrentInstance()
+//         let error = ref('')
+//         //获取用户登录信息
+//         async function usreList() {
 
-        }
-        //获取用户信息
-        async function getUserInfo() {
+//         }
+//         //获取用户信息
+//         async function getUserInfo() {
 
-        }
-        return {
-            userLoginForm, error,
-            usreList, getUserInfo,
-        }
-    }
+//         }
+//         return {
+//             userLoginForm, error,
+//             usreList, getUserInfo,
+//         }
+//     }
+// }
+
+// 获得账号和密码
+const loginForm: UnwrapRef<LoginInfo> = {
+    account: '',
+    password: ''
 }
+
+
+
+const handleLogin = async () => {
+    const res = await userApi.login(loginForm);
+    console.log(res)
+    if (res !== undefined && "access_token" in res){
+        // console.log(res.access_token)
+        Cookies.set('access_token', res.access_token)
+        // setCookie('access_token', res.access_token);
+        await message.loading("登陆成功，跳转中...", 0.5);
+        // res中添加userid;
+        const userInfo = await userApi.info();
+        store.setUserInfo(userInfo);
+        router.push("/home");
+    }
+    else
+    {
+        await message.error("密码或账号错误，请重新输入", 0.5);
+    }
+} 
+
+
+
 </script>
 <style lang="less" scoped>
 @keyframes animate {
