@@ -124,7 +124,7 @@ export namespace User {
   }
   
   export namespace Solution {
-    interface solution {
+    interface Solution {
       id: number
       title: string
       content: string
@@ -134,16 +134,16 @@ export namespace User {
     }
   
     interface Comment {
-      id: number // 评论id
-      schoolId: number // 发布人id
+      commmentid: number // 评论id
       content: string // 文本
-      status: boolean // 审核状态
-      reply: number
-      createdAt: string
+      createAt: string // 创建时间
+      contributorname: string
+      contributorrole: number
     }
-    interface CommentUser {
-      username: string
-      role: number
+
+    interface CommentReq {
+      content: string
+      createAt: string
     }
   }
 export namespace Course{
@@ -154,6 +154,11 @@ export namespace Course{
     teacherid: string
   }
   
+  interface course_create{
+    name: string
+    info: string
+    teacherid: int
+  }
 }
 
 export namespace WriteUp{
@@ -190,6 +195,12 @@ export namespace Attempt{
     point: int
     content: string
   }
+
+  interface attemptInfo_point{
+    problemid: int
+    studentid: int
+    point: int
+  }
 }
 
 export interface ValidationFail{
@@ -209,14 +220,14 @@ export interface ValidationFail{
 export namespace Homework{
     interface homework_submit{
       homeworkname: string,
-      duedate: Date,
+      duedate: string, // date-time
       courseid: number
     }
 
     interface homework_return{
       homeworkid: number
       homeworkname: string,
-      duedate: Date,
+      duedate: string, // date-time
       courseid: number
     }
 }

@@ -25,11 +25,19 @@ function CreateWriteUp(data: WriteUp.WriteUpInfo_submit): Promise<string>{
     })
 }
 
+function DeleteWriteUp(solutionid: number): Promise<string>{
+    return service({
+        method: "DELETE",
+        url: "api/v1/solution/" + solutionid.toString()
+    })
+}
+
 
 const writeupApi = {
     GetWriteUp,
     GetWriteUpId,
     CreateWriteUp,
+    DeleteWriteUp,
 }
 
 

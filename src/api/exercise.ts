@@ -25,10 +25,12 @@ function CreateExercise(data: Exercise.exerciseCreate): Promise<string | Validat
     })
 }
 
-
-
-
-
+function DeleteExercise(problemid: number): Promise<string>{
+    return service({
+        method: "DELETE",
+        url: "/api/v1/problem/" + problemid.toString()
+    })
+}
 
 
 
@@ -36,7 +38,7 @@ const exerciseApi = {
     GetExercises,
     GetExerciseInfo,
     CreateExercise,
-
+    DeleteExercise,
 }
 
 export default exerciseApi

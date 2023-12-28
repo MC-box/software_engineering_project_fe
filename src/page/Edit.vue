@@ -91,7 +91,7 @@ const showTags = ref([]);
 //多选开关
 const checked = ref<boolean>(false);
 const ansNum = ref(4)
-const inputValues = ref(Array<string>(4))
+const inputValues = ref(['','','',''])
 const addAns = () => {
   inputValues.value.push("")
   ansNum.value++
@@ -145,9 +145,9 @@ async function handleEdit() {
       name: title,
       content: question,
       problemType: category === "选择" ? "choice" : "blank",
-      difficult: difficulty === 1 ? "困难" : difficulty === 2 ? "中等" : "简单",
+      difficult: difficulty === 1 ? "简单" : difficulty === 2 ? "中等" : "困难",
       point: 0,
-      homeworkid: 2,// 由外部传入
+      homeworkid: 1,// 由外部传入
       choice: category === "选择" ? mychoice : []
     }
     console.log(input)
@@ -203,9 +203,10 @@ async function handleEdit() {
             <label >多选：</label>
             <ASwitch v-model:checked="checked"></ASwitch>
           </div> -->
+          <p>debug: {{ inputValues }}</p>
           <div v-for="(inputValue, index) in inputValues" style="margin-top: 25px;" :key="index">
             <span style="width: 30px;">{{ index + 1}}.</span>
-            <span><AInput style="background-color: #fafafa; display: inline-block; width:90%;" v-model="inputValues[index + 1]" /><MinusOutlined @click="delAns" style="margin-left:30px;" /></span>
+            <span><input style="background-color: #fafafa; display: inline-block; width:90%;" v-model="inputValues[index]" /><MinusOutlined @click="delAns" style="margin-left:30px;" /></span>
           </div>
           <PlusOutlined @click="addAns" style="margin-top: 25px;"/>
         </div>
