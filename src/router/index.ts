@@ -90,7 +90,7 @@ export const mainRoutes: RouteRecordRaw = {
         {
             path: "/edit",
             name: "edit",
-            component: () => import("../page/Edit.vue"),
+            component: () => import("../page/EditCourse.vue"),
             meta: {
                 title: "编辑题目"
             }

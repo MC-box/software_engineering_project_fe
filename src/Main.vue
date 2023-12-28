@@ -24,7 +24,7 @@
           <a-menu-item key="4">Bill</a-menu-item>
           <a-menu-item key="5">Alex</a-menu-item> -->
           <a-menu-item v-for="course in courses" :key=course.courseid
-            @click="router.push({ name: 'unit', params: { id: course.courseid } }); setCourseTitle(); console.log(route.path)">{{ course.name }}</a-menu-item>
+            @click="router.push({ name: 'unit', params: { id: course.courseid } }); setCourseTitle(); console.log(route.path)"><a-tooltip placement="right"><template #title>你好</template>{{ course.name }}</a-tooltip></a-menu-item>
         </a-sub-menu>
         <a-menu-item key="109" @click="router.push({ name: 'discenter' }); setDiscussionTitle()">
           <file-outlined />

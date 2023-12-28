@@ -1,8 +1,14 @@
 <template>
-  <div style="margin-bottom: 20px;" @click="router.back();">
+  <div style="margin-bottom: 20px;" >
     <ArrowLeftOutlined two-tone-color="#686868" style="font-size: 20px;" />
-    &nbsp;<span style="margin-top:10px;">返回</span>
-  </div>
+    &nbsp;<span style="margin-top:10px;" @click="router.back();">返回</span>
+    <a-button v-if="store.userInfo.role > 0"
+              type="primary"
+              style="margin-right: 20px; margin-top: 15px; width: 125px; float: right"
+              @click="showModal"
+              >添加题目</a-button
+            >
+    </div>
   <a-table :columns="columns" :rowKey="record => record.problemid" :data-source="data" v-if="ifDisplay">
     <template #headerCell="{ column }">
       <template v-if="column.key === 'name'">
@@ -37,6 +43,15 @@
   </a-table>
   <RouterView>
   </RouterView>
+  <a-modal
+    v-model:open="open"
+    title="添加homework"
+    :confirm-loading="confirmLoading"
+    width="1300px"
+    :bodyStyle="{ height: '1000px', overflow: 'hidden', overflowY: 'scroll' }"
+    @ok="handleOk"> 
+    <Edit></Edit>
+    </a-modal>
 </template>
 <script lang="ts" setup>
 import { useRouter, RouterView, useRoute } from 'vue-router';
@@ -47,6 +62,7 @@ import { SmileOutlined, ArrowLeftOutlined } from '@ant-design/icons-vue';
 import { ref, onBeforeMount } from 'vue'
 import { Exercise } from '@/paking/store'
 import exerciseApi from '@/api/exercise'
+import Edit from "@/page/Edit.vue"
 let ifDisplay = true;
 const enter = (key: string) => {
   ifDisplay = true;
@@ -126,6 +142,19 @@ const DeleteProblem = async (record: Exercise.exercisesInfo) => {
   data.value = await exerciseApi.GetExercises(parseInt(rExp.exec(route.path)[0]));
 }
 
+const handleOk = async () => {
+  confirmLoading.value = true;
+  setTimeout(() => {
+    open.value = false;
+    confirmLoading.value = false;
+  }, 2000);
+};
+
+const confirmLoading = ref<boolean>(false);
+const open = ref<boolean>(false);
+const showModal = () => {
+  open.value = true;
+};
 </script>
   
   

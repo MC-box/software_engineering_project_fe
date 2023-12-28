@@ -175,7 +175,7 @@ async function handleEdit() {
     <main style="width: 80%" class="edit-problem">
       <div style="box-sizing: border-box; width: 70%">
         <div class="font-strong" style="margin-top: 20px; margin-bottom: 20px">
-          题目标题
+          题目类型
         </div>
         <ASelect
           style="width: 120px"
@@ -203,7 +203,7 @@ async function handleEdit() {
             <label >多选：</label>
             <ASwitch v-model:checked="checked"></ASwitch>
           </div> -->
-          <p>debug: {{ inputValues }}</p>
+          <!-- <p>debug: {{ inputValues }}</p> -->
           <div v-for="(inputValue, index) in inputValues" style="margin-top: 25px;" :key="index">
             <span style="width: 30px;">{{ index + 1}}.</span>
             <span><input style="background-color: #fafafa; display: inline-block; width:90%;" v-model="inputValues[index]" /><MinusOutlined @click="delAns" style="margin-left:30px;" /></span>
