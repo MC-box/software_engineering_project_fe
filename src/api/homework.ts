@@ -19,7 +19,7 @@ function CreateHomework(data: Homework.homework_submit): Promise<string>{
 function DeleteHomework(homeworkid: number): Promise<string>{
     return service({
         method: "DELETE",
-        url: "/api/v1/homework/" + homeworkid.toString()
+        url: "/api/v1/homework/delete/" + homeworkid.toString()
     })
 }
 
