@@ -1,23 +1,34 @@
 import router from './index.ts'
-import { getCookie, removeCookie } from '../utils/useCookie.ts'
 import { message } from "ant-design-vue"
 import userStore from "../utils/useStore.ts"
 import service from "../paking/service.ts"
+import Cookies from 'js-cookie'
 
-const whitelist: string[] = ["/login", "/404", "/register"]
+// const whitelist: string[] = ["/login", "/404", "/register"]
+const whitelist: string[] = []
 let doneInfo = false
 router.beforeEach((to, from, next) => {
+    console.log("成功回调")
     //...
     if (whitelist.includes(to.path)) {
         next()
       } else {
+        // 首先先从localStorage中查看是否有token
         // 判断是否有token
-        const token = getCookie("token")
-        // if (!token) {
-        //   message.error("token失效，请重新登录")
-        //   removeCookie("token") // 清除cookie
-        //   next("/login")
-        // } else 
+        let token = Cookies.get("access_token")
+        if (!token) {
+          token = sessionStorage.getItem("access_item")
+          if (token)
+          {
+              Cookies.set("access_token", token);
+          }
+          else
+          {
+          // message.error("token失效，请重新登录")
+          // removeCookie("token") // 清除cookie
+          // next("/login")
+          }
+        } else 
         {
           if (doneInfo) next()
           else {

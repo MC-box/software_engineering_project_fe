@@ -26,12 +26,29 @@ export namespace User {
   }
 
   export namespace Exercise{
-    interface exerciseInfo{
+    interface exercisesInfo{
       problemid: number
       name: string
       problemType: string
       point: number
       difficult: string
+    }
+    interface Choice{
+      choiceid: number,
+      content: string,
+      problemid: number,
+      label: string,
+      iscorrect: number
+    }
+    interface exerciseInfo{
+      problemid: number,
+      name: string,
+      problemType: string,
+      content: string,
+      point: number,
+      difficult: string,
+      homeworkid: number,
+      choice: Choice[]
     }
   }
     

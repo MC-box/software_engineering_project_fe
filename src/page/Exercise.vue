@@ -14,7 +14,7 @@
         <span :class="difficultyColor(problem?.difficulty)">{{
           difficultyArr[problem?.difficulty - 1]
         }}</span>
-        <span>题型：{{ problem.category }}</span>
+        <span>题型：{{ problem?.category }}</span>
         <span>课程：{{ problem?.courseName }}</span>
         <span>通过人数：{{ problem?.Cnt }}</span>
       </a-card>
@@ -26,11 +26,12 @@
             type="primary"
             style="min-width: 80px; margin-left: 83%"
             @click="reverse()"
+            :disabled="isSubmit"
             >查看题解</a-button
           >
         </div>
         <!-- <RichTextEditor></RichTextEditor> -->
-        <div class="p_">123</div>
+        <div class="p_">{{ problemdescription }}</div>
         <div v-if="ifWriteUp" style="background-color: white">
           <div class="title">
             题解列表 <PlusCircleOutlined style="margin-left: 84%" /><span
@@ -70,20 +71,61 @@
           </a-list>
         </div>
         <div v-else>
-          <div class="title">题目选项</div>
-          <div class="doing">
-            <a-checkbox-group
-              name="checkboxgroup"
-              :options="selectedOptions"
-              style="display: grid; gap: 24px"
-              v-model:value="selectedAnswer"
-            />
-            <a-button
-              type="primary"
-              style="float: right; margin-top: 15px; width: 80px"
-              @click="submitSelected"
-              >提交</a-button
+          <div v-if="ifWriteUp" style="background-color: white">
+            <div class="title">
+              题解列表 <PlusCircleOutlined style="margin-left: 84%" /><span
+                style="margin-right: 20px; margin-left: 7px; font-size: 14px"
+                @click="showModal"
+              >
+                写题解</span
+              >
+            </div>
+            <a-list
+              item-layout="horizontal"
+              :data-source="data"
+              style="height: 6cm"
             >
+              <template #renderItem="{ item }">
+                <a-list-item>
+                  <a-list-item-meta :description="`题解 By ${item.author}`">
+                    <template #title>
+                      <span
+                        @click="
+                          router.push({
+                            name: 'writeup',
+                            params: { id: item.solutionid },
+                          })
+                        "
+                        style="cursor: pointer"
+                        >{{ item.name }}</span
+                      >
+                      <!-- <a @click="{ router.push({ name: 'writeup', params: { id: item.key } }) }">{{ item.title }}</a> -->
+                    </template>
+                    <template #avatar>
+                      <a-avatar src="https://joeschmoe.io/api/v1/random" />
+                    </template>
+                  </a-list-item-meta>
+                </a-list-item>
+              </template>
+            </a-list>
+          </div>
+          <div v-else>
+            <div class="title">题目选项</div>
+            <div class="doing">
+              <a-checkbox-group
+                name="checkboxgroup"
+                :options="selectedOptions"
+                style="display: grid; gap: 24px"
+                v-model:value?="selectedAnswer"
+              />
+              <a-button
+                type="primary"
+                style="float: right; margin-top: 15px; width: 80px"
+                @click="submitSelected"
+                :disabled="isSubmit"
+                >提交</a-button
+              >
+            </div>
           </div>
         </div>
         <RouterView></RouterView>
@@ -114,7 +156,7 @@
       <section class="description">
         <div class="title">题目描述</div>
         <!-- <RichTextEditor></RichTextEditor> -->
-        <div class="p_">123</div>
+        <div class="p_">{{ problemdescription }}</div>
         <div class="title">答题区</div>
         <div style="background-color: white">
           <Editor
@@ -151,6 +193,8 @@
     width="1500px"
     :bodyStyle="{ height: '600px', overflow: 'hidden', overflowY: 'scroll' }"
   >
+    <label>请输入标题：</label>
+    <a-input v-model:value="title" placeholder="请输入标题" />
     <label>请在下方编写你的题解,完成后记得点击提交</label>
     <div>
       <v-md-editor v-model="markdown" :height="height"></v-md-editor>
@@ -161,7 +205,7 @@
 <style lang="less" scoped></style>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { reactive, ref, onBeforeMount } from "vue";
 import Editor from "../components/RichTextEditor.vue";
 // import { CheckboxGroup } from "ant-design-vue";
 import { message } from "ant-design-vue";
@@ -170,7 +214,8 @@ import { CloseCircleOutlined, PlusCircleOutlined } from "@ant-design/icons-vue";
 import courseApi from "@/api/course";
 import writeupApi from "@/api/writeup";
 import attemptApi from "@/api/attempt";
-import { WriteUp, Attempt } from "@/paking/store";
+import exerciseApi from "@/api/exercise";
+import { WriteUp, Attempt, Exercise } from "@/paking/store";
 
 let ifWriteUp = ref(false);
 const route = useRoute();
@@ -179,35 +224,62 @@ const BlankFillAnswer = ref("");
 let ifMulChoice = true; // 选择题
 let ifBlankFill = false; // 填空题/简答题
 let difficultyArr = reactive(["简单", "中等", "困难"]);
-const problem = reactive({
-  id: 1,
-  title: "",
-  category: "选择题", // 这里改成exType
-  difficulty: 2,
-  courseName: "软件工程", //
-  Cnt: 10,
-});
 
-// data
-const selectedOptions = ref([
-  {
-    label: "A. Fuck you",
-    value: "A",
-  },
-  {
-    label: "B. Cao ni ma",
-    value: "B",
-  },
-  {
-    label: "C. sha bi",
-    value: "C",
-  },
-  {
-    label: "D. nao tan",
-    value: "D",
-  },
-]);
+// const problem = ref({
+//   id: 1,
+//   title: "",
+//   category: "选择题", // 这里改成exType
+//   difficulty: 2,
+//   courseName: "软件工程", //
+//   Cnt: 10,
+// });
+interface probleminfo {
+  id: number;
+  title: string;
+  category: string;
+  difficulty: number;
+  courseName: string;
+  Cnt: number;
+}
 
+// const problem = ref({
+//   id: 1,
+//   title: "",
+//   category: "选择题", // 这里改成exType
+//   difficulty: 2,
+//   courseName: "软件工程", //
+//   Cnt: 10,
+// });
+
+let problem = ref<probleminfo>();
+let title = ref<string>();
+// // data
+// const selectedOptions = ref([
+//   {
+//     label: "A. Fuck you",
+//     value: "A",
+//   },
+//   {
+//     label: "B. Cao ni ma",
+//     value: "B",
+//   },
+//   {
+//     label: "C. sha bi",
+//     value: "C",
+//   },
+//   {
+//     label: "D. nao tan",
+//     value: "D",
+//   },
+// ]);
+
+interface OptionsItem {
+  label: string;
+  value: string;
+}
+
+let selectedOptions = ref<OptionsItem[]>();
+let problemdescription = ref("");
 const selectedAnswer = ref([]);
 
 // function
@@ -222,19 +294,24 @@ function difficultyColor(difficulty: number) {
       return "hard";
   }
 }
-
+let isSubmit =  ref<boolean>();
 const submitSelected = async () => {
+
   if (selectedAnswer.value.length == 0) {
     message.error("请选择答案");
     return;
   }
   const result = selectedAnswer.value.join("");
   message.success("提交成功");
+  isSubmit.value = false;
   // TODO: 选择题：接下来直接读取selectedAnswer的数据并与交互即可
   let pid = parseInt(rExp.exec(route.path)[0]);
-  const attemptreturn = await attemptApi.CreateAttempt(pid, result);
+  const a: Attempt.attemptInfo = {
+    problemid: pid,
+    content: result,
+  };
+  await attemptApi.CreateAttempt(a);
   // 这里可以添加答案界面，即显示出分数
-  
 };
 
 const submitBlank = async () => {
@@ -246,7 +323,11 @@ const submitBlank = async () => {
   }
   message.success("提交成功");
   let pid = parseInt(rExp.exec(route.path)[0]);
-  const attemptreturn = await attemptApi.CreateAttempt(pid, BlankFillAnswer.value);
+  const a: Attempt.attemptInfo = {
+    problemid: pid,
+    content: BlankFillAnswer.value,
+  };
+  const attemptreturn = await attemptApi.CreateAttempt(a);
   // TODO: 填空题：接下来直接读取BlankFillAnswer的数据并与后端交互即可(上传图片功能暂未解决)
 };
 
@@ -303,7 +384,7 @@ const handleOk = async () => {
 // ];
 
 // 动态题解信息
-let data: WriteUp.WriteupInfo[];
+const data = ref<WriteUp.WriteupInfo[]>();
 
 let reverse = async () => {
   ifWriteUp.value = !ifWriteUp.value;
@@ -312,16 +393,66 @@ let reverse = async () => {
       parseInt(rExp.exec(route.path)[0])
     );
     if ("solutionid" in wpid) {
-      data = wpid;
+      data.value = wpid;
     } else {
-      if ("msg" in wpid) {
-        message.error(wpid.msg);
+      if ("detail" in wpid) {
+        // message.error(wpid.msg);
       } else {
         // 没有找到任何题解，即为空
+        message.error();
       }
     }
   }
 };
+// interface probleminfo{
+//   id: number,
+//   title: string,
+//   category: string,
+//   difficulty: number,
+//   courseName: string,
+//   Cnt: number,
+// }
+onBeforeMount(async () => {
+  const result = await exerciseApi.GetExerciseInfo(
+    parseInt(rExp.exec(route.path)[0])
+  );
+  console.log(result);
+  if ("problemid" in result) {
+    console.log("success1");
+    problemdescription.value = result.content;
+    // problem.value = result.map((item) => {
+    //   id: item.
+    // })
+    const {
+      problemid,
+      name,
+      problemType,
+      difficult,
+      homeworkid,
+    }: Exercise.exerciseInfo = result;
+    problem.value = {
+      id: problemid,
+      title: name,
+      category: problemType === "choice" ? "选择题" : "填空题/简答题",
+      difficulty: difficult === "hard" ? 3 : difficult === "easy" ? 1 : 2,
+      courseName: "name",
+      Cnt: 1,
+    };
+    if (result.problemType === "choice") {
+      ifMulChoice = true;
+      ifBlankFill = false;
+      let result2 = ref<Exercise.Choice[]>();
+      result2.value = result.choice;
+      selectedOptions.value = result2.value.map((item) => ({
+        value: item.label,
+        label: item.label + " " + item.content,
+      }));
+    } else {
+      ifMulChoice = false;
+      ifBlankFill = true;
+    }
+  }
+});
 </script>
 
 <style>

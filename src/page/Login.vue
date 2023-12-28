@@ -90,6 +90,7 @@ const handleLogin = async () => {
         // res中添加userid;
         const userInfo = await userApi.info();
         store.setUserInfo(userInfo);
+        sessionStorage.setItem("access_token", res.access_token)
         router.push("/home");
     }
     else

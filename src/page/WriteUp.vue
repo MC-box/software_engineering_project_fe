@@ -48,14 +48,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import { CloseCircleOutlined } from '@ant-design/icons-vue';
 import { List, ListItem, Space, Tag } from 'ant-design-vue';
 // import { Writeup } from "@/paking/store";
 import writeupApi  from "@/api/writeup"
 
 let text = ref('## 你是傻逼吗\n不会吧不会吧，不会这种题都要看题解吧')
-onMounted( async () => {
+onBEforeMount( async () => {
     let solutionid;
     // 直接从外面传入solutionid
     const wp = await writeupApi.GetWriteUp(solutionid);

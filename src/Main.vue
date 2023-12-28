@@ -45,9 +45,8 @@
     <a-layout>
       <a-layout-header style="background: #fff; padding: 0">
         <!-- <span style="padding-right: 20px;"><a-divider type="vertical" style="height: 20px"/></span> -->
-        <span class="icon" style="font-size: 18px;"><a href="/#/login">登录</a></span>
-        <span class="icon" style="font-size: 18px;">登出</span>
-        <span class="icon">
+        <span class="icon" style="font-size: 18px;" v-if="isLogin"><a href="/#/login">登录</a></span>
+        <span class="icon" v-else @click="logout()" style="cursor: pointer;">
           <LogoutOutlined :style="{ fontSize: '20px' }" />
         </span>
         <span class="icon"><a-divider type="vertical" style="height: 20px; background-color: rgb(97, 92, 92)" /></span>
@@ -81,17 +80,19 @@ import {
   TeamOutlined,
   FileOutlined,
 } from '@ant-design/icons-vue';
-import { ref, onMounted, UnwrapRef } from 'vue';
+import { ref, onBeforeMount, UnwrapRef } from 'vue';
 import { useRouter, RouterView, useRoute } from 'vue-router';
 import { BellOutlined, SettingOutlined, LogoutOutlined } from '@ant-design/icons-vue';
 import { Course } from "@/paking/store"
 import userStore from "@/store/user"
 import courseApi from "@/api/course"
+import Cookies from 'js-cookie';
 const router = useRouter()
 const route = useRoute()
 const store = userStore()
 const collapsed = ref<boolean>(false);
 const selectedKeys = ref<string[]>(['101']);
+let isLogin : boolean
 
 // let menu_show = new Map([
 //   ['/home', 1],
@@ -101,13 +102,18 @@ const selectedKeys = ref<string[]>(['101']);
 //   ['/unit/5', 5],
 //   ['/discenter', 5]
 // ])
-
 // const courses = [{ name: '软件工程', courserid: 3 },
 // { name: '智能网络计算', courserid: 4 },
 // { name: '自动机与形式语言', courserid: 5 }
 //] // 须从后端接收的数据，课程信息
 
 let courses: UnwrapRef<Course.courseInfo>[]
+
+function logout(){
+    sessionStorage.removeItem("access_token");
+    Cookies.remove("access_token");
+    router.push("/login")
+}
 
 //在不同模块的跳转中设置标题
 // 因为在index.tx中的meta设置貌似没有生效，在这里强制设置
@@ -129,8 +135,10 @@ const setDiscussionTitle = (): void => {
 };
 
 
-onMounted( async () => {
-  console.log("1234")
+onBeforeMount( async () => {
+  console.log(sessionStorage.getItem("access_token"))
+  isLogin = sessionStorage.getItem("access_token") ? false : true
+  console.log(isLogin)
   // 获取课程信息
   if (store.userInfo.role === 0) // 学生
   { 

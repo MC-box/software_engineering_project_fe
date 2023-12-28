@@ -12,6 +12,16 @@ const id = useRoute().query?.id;
 const store = problemStore();
 const { difficultyArr, categoryArr, courses } = store;
 const tags = computed(() => store.tags.map((tag) => tag["tagName"]));
+
+interface problem{
+  title: string,
+  question: string,
+  category: string,
+  difficulty: string,
+  tags: string[],
+  ans: string,
+}
+
 const problem = reactive({
   title: "",
   question: "",
@@ -115,7 +125,7 @@ async function handleEdit() {
     <main style="width: 80%" class="edit-problem">
       <div style="box-sizing: border-box; width: 70%">
         <div class="font-strong" style="margin-top: 20px; margin-bottom: 20px">
-          题目答案
+          题目标题
         </div>
         <AInput
           size="large"

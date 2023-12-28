@@ -3,7 +3,7 @@
     <ArrowLeftOutlined two-tone-color="#686868" style="font-size: 20px;" />
     &nbsp;<span style="margin-top:10px;">返回</span>
   </div>
-    <a-table :columns="columns" :data-source="data" v-if="ifDisplay">
+    <a-table :columns="columns" :rowKey="record=>record.problemid" :data-source="data" v-if="ifDisplay">
       <template #headerCell="{ column }">
         <template v-if="column.key === 'name'">
           <span>
@@ -13,26 +13,25 @@
         </template>
       </template>
   
-      <!-- <template #bodyCell="{ column, record }">
-        < <template v-if="column.key === 'name'">
-          <a @click="enter(record.key)"> 
+      <template #bodyCell="{ column, record }">
+        <template v-if="column.key === 'name'">
+          <a @click="enter(record.problemid)"> 
             {{ record.name }}
           </a>
         </template>
         <template v-else-if="column.key === 'difficult'">
           <span>
             <a-tag
-              v-for="difficult in record.difficult"
-              :key="difficult"
-              :color="difficult === 'hard' ? 'volcano' : difficult === 'middle' ? 'geekblue' : 'green'">
-              {{ difficult.toUpperCase() }}
+              :key="record.difficult"
+              :color="record.difficult === 'hard' ? 'volcano' : record.difficult === 'middle' ? 'geekblue' : 'green'">
+              {{ record.difficult.toUpperCase() }}
             </a-tag>
           </span>
         </template>
         <template v-else-if="column.key === 'problemType'">
             {{ record.problemType }}
         </template> 
-      </template>  -->
+      </template> 
     </a-table>
     <RouterView>
     </RouterView>
@@ -41,8 +40,8 @@
   import { useRouter, RouterView, useRoute } from 'vue-router';
   const router = useRouter()
   const route = useRoute()
-  import { SmileOutlined, DownOutlined, ArrowLeftOutlined } from '@ant-design/icons-vue';
-  import { ref, onMounted } from 'vue'
+  import { SmileOutlined, ArrowLeftOutlined } from '@ant-design/icons-vue';
+  import { ref, onBeforeMount } from 'vue'
   import { Exercise } from '@/paking/store'
   import  exerciseApi  from '@/api/exercise'
   let ifDisplay = true;
@@ -106,37 +105,15 @@
   //   },
   // ];
 
-const data = ref<Exercise.exerciseInfo[]>()
+const data = ref<Exercise.exercisesInfo[]>()
 let rExp = new RegExp("\\d+");
-onMounted( async () => {
+onBeforeMount( async () => {
   const result = await exerciseApi.GetExercises(parseInt(rExp.exec(route.path)[0]));
-  console.log(result)
-  if ('problemType' in result)
+  if (result.length !== 0 && 'problemType' in result[0])
   {
-    console.log("success")
     data.value = result
   }
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   </script>

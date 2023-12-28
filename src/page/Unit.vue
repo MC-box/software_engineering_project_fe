@@ -11,7 +11,7 @@
 import router from  '../router/index.ts'
 import homeworkApi from '@/api/homework'
 import { Homework } from '@/paking/store';
-import { onMounted } from 'vue';
+import { onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router'
 import { ref } from 'vue'
 const columns = [
@@ -60,7 +60,7 @@ const data = ref<Homework.homework_return[]>();
 // }
 
 
-onMounted( async () => {
+onBeforeMount( async () => {
     const result = await homeworkApi.GetHomeworks(parseInt(rExp.exec(route.path)[0]));
     if (result.length !== 0 && "homeworkname" in result[0])
     {
