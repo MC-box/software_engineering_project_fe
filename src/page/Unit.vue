@@ -1,13 +1,9 @@
 <template>
     <div v-if="store.userInfo.role > 0">
-        <a-button
-              type="primary"
-              style="margin-right: 20px; margin-top: 15px; width: 125px"
-              @click="showModal"
-              >添加homework</a-button
-            >
+        <a-button type="primary" style="margin-right: 20px; margin-top: 15px; width: 125px"
+            @click="showModal">添加homework</a-button>
     </div>
-    <a-table :columns="columns" :data-source="data"  >
+    <a-table :columns="columns" :data-source="data">
         <template #bodyCell="{ column, record }">
             <template v-if="column.dataIndex === 'homeworkname'">
                 <div
@@ -22,27 +18,21 @@
             </template>
         </template>
     </a-table>
-    <a-modal
-    v-model:open="open"
-    title="添加homework"
-    :confirm-loading="confirmLoading"
-    width="500px"
-    :bodyStyle="{ height: '200px', overflow: 'hidden', overflowY: 'scroll' }"
-    @ok="handleOk"
-  >
-    <label>请输入标题：</label>
-    <a-input v-model:value="homeworkname" placeholder="请输入标题" style="margin-bottom: 30px;"></a-input>
-    <label>请选择截止日期：</label>
-    <a-date-picker v-model:value="date" style="margin-right: 30px"/>
-    <div>
-    </div>
-  </a-modal>
+    <a-modal v-model:open="open" title="添加homework" :confirm-loading="confirmLoading" width="500px"
+        :bodyStyle="{ height: '200px', overflow: 'hidden', overflowY: 'scroll' }" @ok="handleOk">
+        <label>请输入标题：</label>
+        <a-input v-model:value="homeworkname" placeholder="请输入标题" style="margin-bottom: 30px;"></a-input>
+        <label>请选择截止日期：</label>
+        <a-date-picker v-model:value="date" style="margin-right: 30px" />
+        <div>
+        </div>
+    </a-modal>
 </template>
 <script setup lang="ts">
 import router from '../router/index.ts'
 import homeworkApi from '@/api/homework'
 import { Homework } from '@/paking/store';
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, watch } from 'vue';
 import { useRoute } from 'vue-router'
 import { ref } from 'vue'
 import userStore from "@/store/user"
@@ -59,10 +49,10 @@ const route = useRoute();
 const confirmLoading = ref<boolean>(false);
 const open = ref<boolean>(false);
 const showModal = () => {
-  open.value = true;
+    open.value = true;
 };
 let date = ref<Dayjs>()
-let homeworkname = ref<string>();const store = userStore()
+let homeworkname = ref<string>(); const store = userStore()
 
 // const data = [
 //     {   
@@ -102,6 +92,7 @@ const data = ref<Homework.homework_return[]>();
 
 onBeforeMount(async () => {
     const result = await homeworkApi.GetHomeworks(parseInt(rExp.exec(route.path)[0]));
+    console.log(result)
     if (result.length !== 0 && "homeworkname" in result[0]) {
         data.value = result
         console.log(data)
@@ -117,7 +108,7 @@ onBeforeMount(async () => {
 
 
 const rowClick = (record) => {
-    router.push({ name : 'execenter', params : { id : record.homeworkid } });
+    router.push({ name: 'execenter', params: { id: record.homeworkid } });
     setExerciseCenterTitle();
 }
 
@@ -128,34 +119,29 @@ const rowClick = (record) => {
 
 
 const handleOk = async () => {
-  confirmLoading.value = true;
-  setTimeout(() => {
-    open.value = false;
-    confirmLoading.value = false;
-  }, 2000);
-    const result : Homework.homework_submit = {
+    confirmLoading.value = true;
+    setTimeout(() => {
+        open.value = false;
+        confirmLoading.value = false;
+    }, 2000);
+    const result: Homework.homework_submit = {
         homeworkname: homeworkname.value,
         duedate: date.value.toISOString(),
-        courseid: 1
-    }; 
+        // Todo: courseid should be the current course id
+        courseid: parseInt(rExp.exec(route.path)[0])
+    };
     await homeworkApi.CreateHomework(result)
     date.value = null;
     homeworkname.value = "";
     const result2 = await homeworkApi.GetHomeworks(parseInt(rExp.exec(route.path)[0]));
-    if (result2.length !== 0 && "homeworkname" in result2[0])
-    {
+
+    if ("detail" in result2) {
+        console.log("fail")
+    } else {
         data.value = result2
         console.log(data)
     }
-    else
-    {
-        if ("detail" in result2)
-        {
-            console.log("fail")
-        }
-        console.log("fail")
 
-    }
 };
 
 const DeleteCourse = async (record) => {
@@ -168,6 +154,19 @@ const setExerciseCenterTitle = (): void => {
     document.title = "题目中心";
 };
 
+
+
+watch(() => route.path, async () => {
+    console.log(route.path)
+    data.value = []
+    const result = await homeworkApi.GetHomeworks(parseInt(rExp.exec(route.path)[0]));
+    if ("detail" in result) {
+        console.log("fail")
+    } else {
+        data.value = result
+        console.log(data)
+    }
+})
 </script>
 
 <style>
