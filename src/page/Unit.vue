@@ -118,12 +118,8 @@ onBeforeMount(async () => {
 
 
 const rowClick = (record) => {
-    return {
-        onClick: () => {
-            router.push({ name : 'execenter', params : { id : record.homeworkid } });
-            setExerciseCenterTitle();
-        }
-    }
+    router.push({ name : 'execenter', params : { id : record.homeworkid } });
+    setExerciseCenterTitle();
 }
 
 // const createHomework = () => {
