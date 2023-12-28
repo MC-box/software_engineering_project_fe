@@ -14,7 +14,7 @@
                         <input v-shake type="text" v-model="userLoginForm.email" placeholder="请输入邮箱">
                         <input v-shake type="text" v-model="userLoginForm.phone" placeholder="请输入电话">
                         <input v-shake type="text" v-model="userLoginForm.major" placeholder="请输入专业">
-                        <input v-shake type="number" v-model="userLoginForm.usrtype" placeholder="请输入用户类型">
+                        <input v-shake type="number" v-model="userLoginForm.role" placeholder="请输入用户类型">
                         <!-- 发送验证码，调用API -->
                     </form>
                     <!-- <div class="remember">
@@ -25,7 +25,7 @@
                     </div>
                     <div id="btn">
                         <a href="/#/login"><button class="retbtn">返回</button></a>
-                        <button class="submitbtn" @click="userList">提交</button>
+                        <button class="submitbtn" @click="userList()">提交</button>
                     </div>
                 </el-card>
             </div>
@@ -35,35 +35,64 @@
 </template>
     
 <script>
+// import { useStore } from 'vuex'
+// import { useRouter } from 'vue-router'
+// import { getCurrentInstance, reactive, ref } from '@vue/runtime-core'
+
+const checked = ref(false)
+// export default {
+//     name: "appForgetpwd",
+//     setup() {
+//         let userLoginForm = reactive({
+//             username: "",
+//             password: ""
+//         })
+//         const store = useStore()
+//         const router = useRouter()
+//         const { proxy } = getCurrentInstance()
+//         let error = ref('')
+//         //获取用户登录信息
+//         async function usreList() {
+
+//         }
+//         //获取用户信息
+//         async function getUserInfo() {
+
+//         }
+//         return {
+//             userLoginForm, error,
+//             usreList, getUserInfo,
+//         }
+//     }
+// }
+</script>
+<script setup lang="ts">
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { getCurrentInstance, reactive, ref } from '@vue/runtime-core'
+let userLoginForm = reactive({
+    username: "",
+    password: "",
+    email: "",
+    phone: "",
+    major: "",
+    role: -1,
+})
+const store = useStore()
+const router = useRouter()
+const { proxy } = getCurrentInstance()
+let error = ref('')
+//获取用户登录信息
+async function usreList() {
 
-const checked = ref(false)
-export default {
-    name: "appForgetpwd",
-    setup() {
-        let userLoginForm = reactive({
-            username: "",
-            password: ""
-        })
-        const store = useStore()
-        const router = useRouter()
-        const { proxy } = getCurrentInstance()
-        let error = ref('')
-        //获取用户登录信息
-        async function usreList() {
+}
+//获取用户信息
+async function getUserInfo() {
 
-        }
-        //获取用户信息
-        async function getUserInfo() {
-
-        }
-        return {
-            userLoginForm, error,
-            usreList, getUserInfo,
-        }
-    }
+}
+return {
+    userLoginForm, error,
+    usreList, getUserInfo,
 }
 </script>
 
@@ -227,5 +256,6 @@ export default {
         color: black;
     }
 
-}</style>
+}
+</style>
     

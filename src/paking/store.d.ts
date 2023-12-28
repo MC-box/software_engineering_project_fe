@@ -160,6 +160,14 @@ export namespace Course{
     info: string
     teacherid: int
   }
+
+  interface selectCourseInfo {
+    courseid: int
+    name: string
+    info: string
+    teacherid: int
+    teachername: string
+  }
 }
 
 export namespace WriteUp{
