@@ -37,18 +37,32 @@
 
 <script setup lang="ts">
 // 选择题可能有点问题，是连起来的字符串
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { Attempt } from "@/paking/store";
 import attemptApi from "@/api/attempt";
+import exerciseApi from "@/api/exercise";
 import { useRoute } from "vue-router";
 let problemcontent = ref("");
 let answercontent = ref("");
 let point = ref<number>();
 let rExp = new RegExp("\\d+");
 const route = useRoute();
+let pid = parseInt(rExp.exec(route.path)[0]);
+let stuid = parseInt(rExp.exec(route.path)[1]);
+
+onBeforeMount( async () => {
+    const result1 = await attemptApi.GetAttempt(pid, stuid);
+    console.log(result1)
+    const { content } = await exerciseApi.GetExerciseInfo(pid);
+    console.log(content)
+    problemcontent.value = content;
+    answercontent.value = result1.content;
+})
+
 const submit = async () => {
-  let pid = parseInt(rExp.exec(route.path)[0]);
-  let stuid = parseInt(rExp.exec(route.path)[1]);
+
+  console.log(pid);
+  console.log(stuid);
   const pointInfo: Attempt.attemptInfo_point = {
     problemid: pid,
     studentid: stuid,

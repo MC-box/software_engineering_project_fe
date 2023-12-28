@@ -3,7 +3,7 @@
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'id'">
         <a @click="enter(record)">
-          {{ record.id }}
+          {{ record.studentid }}
         </a>
       </template>
       <template v-else-if="column.key === 'condition'">

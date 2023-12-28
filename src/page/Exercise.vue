@@ -369,7 +369,7 @@ const handleOk = async () => {
   let writeupinfo: WriteUp.WriteUpInfo_submit = {
     problemid: parseInt(rExp.exec(route.path)[0]),
     content: markdownText.value,
-    contributorid: 1,
+    contributorid: store.userInfo.userid,
     name: "题解",
   };
 

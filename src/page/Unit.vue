@@ -102,7 +102,6 @@ onBeforeMount(async () => {
             console.log("fail")
         }
         console.log("fail")
-
     }
 })
 
@@ -112,10 +111,6 @@ const rowClick = (record) => {
     setExerciseCenterTitle();
 }
 
-// const createHomework = () => {
-//     const result : Homework.homework_submit = ; 
-//     homeworkApi.CreateHomework(result)
-// }
 
 
 const handleOk = async () => {
@@ -153,7 +148,6 @@ const DeleteCourse = async (record) => {
 const setExerciseCenterTitle = (): void => {
     document.title = "题目中心";
 };
-
 
 
 watch(() => route.path, async () => {
