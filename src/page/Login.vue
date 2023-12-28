@@ -2,8 +2,8 @@
     <div id="login">
         <div id="contain">
             <div id="left_card">
-                <h1>欢迎来到我的Vue3大世界</h1>
-                <span>Welcome to my Vue3 world</span>
+                <h1>一键开启题海漫游</h1>
+                <span>Welcome to CSSE world</span>
             </div>
             <div id="right_card">
                 <el-card class="el-card">
@@ -15,7 +15,7 @@
                     <!-- <div class="remember">
                         <input type="radio" name="" id="psd" class="radio"><label for="psd"></label>记住密码
                     </div> -->
-                    <span style="float: left; margin: 10px 0 0 35px"><a href="/#/forget">忘记密码</a></span>
+                    <span style="float: left; margin: 10px 0 0 35px"><a href="/#/forget">修改密码</a></span>
                     <a-checkbox v-model:checked="checked" style="margin: 8px 0 0 55px;">记住密码</a-checkbox>
 
                     <!-- <div class="message">
@@ -117,7 +117,7 @@ const handleLogin = async () => {
     position: relative;
     width: 100vw;
     height: 100vh;
-    background-image: url(./../assets/login_background.gif);
+    background-image: url(./../assets/wallhaven-9deddx.png);
     background-size: 100% 100%;
     background-color: #a7a8bd;
 

@@ -9,7 +9,7 @@
            -->
           <span>主页面</span>
         </a-menu-item>
-        <a-menu-item key="102" @click="router.push({ name : 'edit' })">
+        <a-menu-item key="102" @click="router.push({ name : 'edit' }); setEditTitle()">
           <desktop-outlined />
           <span>编辑题目</span>
         </a-menu-item>
@@ -25,16 +25,6 @@
           <a-menu-item key="5">Alex</a-menu-item> -->
           <a-menu-item v-for="course in courses" :key=course.courseid
             @click="router.push({ name: 'unit', params: { id: course.courseid } }); setCourseTitle(); console.log(route.path)">{{ course.name }}</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub2">
-          <template #title>
-            <span>
-              <team-outlined />
-              <span>Team</span>
-            </span>
-          </template>
-          <a-menu-item key="106">Team 1</a-menu-item>
-          <a-menu-item key="108">Team 2</a-menu-item>
         </a-sub-menu>
         <a-menu-item key="109" @click="router.push({ name: 'discenter' }); setDiscussionTitle()">
           <file-outlined />
@@ -60,7 +50,7 @@
       <a-layout-content style="margin: 0 16px">
         <a-breadcrumb style="margin: 16px 0">
           <a-breadcrumb-item>User</a-breadcrumb-item>
-          <a-breadcrumb-item>Bill</a-breadcrumb-item>
+          <a-breadcrumb-item>NoName</a-breadcrumb-item>
         </a-breadcrumb>
         <div :style="{ padding: '24px', background: '#fff', minHeight: '360px' }">
           <router-view overflow="hidden" />
@@ -126,9 +116,9 @@ const setCourseTitle = (): void => {
   document.title = "课程";
 };
 
-// const setExerciseCenterTitle = (): void => {
-//   document.title = "题目中心";
-// };
+const setEditTitle = (): void => {
+  document.title = "编辑题目";
+};
 
 const setDiscussionTitle = (): void => {
   document.title = "讨论区";

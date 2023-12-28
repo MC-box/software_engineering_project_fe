@@ -2,15 +2,16 @@
     <div id="forget">
         <div id="contain">
             <div id="left_card">
-                <h1>密码都能忘？</h1>
-                <span>ashibakesheki</span>
+                <h1>如果再给你一次机会，<br>你还会记得你的密码吗？</h1>
+                <span>Don't forget it!</span>
             </div>
             <div id="right_card">
                 <el-card class="el-card">
-                    <h2>找回密码</h2>
+                    <h2>修改密码</h2>
                     <form class="forget" action="">
-                        <input v-shake type="text" v-model="userLoginForm.username" placeholder="请输入账号(邮箱)">
-                        <input v-shake type="text" v-model="userLoginForm.password" placeholder="请输入验证码">
+                        <input v-shake type="text" v-model="userLoginForm.username" placeholder="请输入原密码">
+                        <input v-shake type="password" v-model="userLoginForm.password" placeholder="请输入新密码">
+                        <input v-shake type="password" v-model="userLoginForm.password" placeholder="请重复新密码">
                         <!-- 发送验证码，调用API -->
                     </form>
                     <!-- <div class="remember">
@@ -78,7 +79,7 @@ export default {
     position: relative;
     width: 100vw;
     height: 100vh;
-    background-image: url(./../assets/login_background.gif);
+    background-image: url(./../assets/wallhaven-9deddx.png);
     background-size: 100% 100%;
     background-color: #a7a8bd;
 
