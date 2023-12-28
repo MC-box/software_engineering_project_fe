@@ -2,15 +2,17 @@
 <template>
     <div class="card">
 		<div class="left">
-			<img class="profile_img" src="../assets/uuz.jpg" alt="">
+			<img class="profile_img" src="../assets/uuz.jpg" alt="head_image">
 			<div class="flag_wrapper" style="background-color: #fac858;">
-				<img class="flag" src="https://csse.szu.edu.cn/image/common/logo_collage.svg" alt="South Korean Flag" />
+				<img class="flag" src="https://csse.szu.edu.cn/image/common/logo_collage.svg" alt="CSSE_logo" />
 			</div>
 		</div>
 		<div class="right">
 			<h2 class="name">NoName</h2>
 			<p class="title">Developer</p>
-			<p class="information"><span style="margin-right:30px">手机: XXX XXX XXXXX</span><span style="margin-right:30px">邮箱: XXXXX</span><span>学号: XXX XXX XXX</span></p>
+			<p class="information"><span style="margin-right:30px">手机: 1145141919</span>
+				<br><span style="margin-right:30px">邮箱: litiansuoyigeyige@163.com</span>
+				<br><span>学号: 2021150aaa</span></p>
 			<div class="interests">
 				<p class="interests_title">Interests: </p>
 				<span class="interests_item">A.I.</span>
