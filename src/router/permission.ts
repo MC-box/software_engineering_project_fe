@@ -4,13 +4,15 @@ import userStore from "../utils/useStore.ts"
 import service from "../paking/service.ts"
 import Cookies from 'js-cookie'
 
-// const whitelist: string[] = ["/login", "/404", "/register"]
-const whitelist: string[] = []
+const whitelist: string[] = ["/login", "/404", "/register"]
+// const whitelist: string[] = []
 let doneInfo = false
 router.beforeEach((to, from, next) => {
-    console.log("成功回调")
+    console.log("成功回调: ")
+    console.log(to.path)
     //...
     if (whitelist.includes(to.path)) {
+        console.log("In whitelist")
         next()
       } else {
         // 首先先从localStorage中查看是否有token
@@ -28,19 +30,19 @@ router.beforeEach((to, from, next) => {
           // removeCookie("token") // 清除cookie
           // next("/login")
           }
-        } else 
-        {
-          if (doneInfo) next()
-          else {
-            const store = userStore()
-            const info = service({
-                method: "GET",
-                url: "/user/info",
-            })
-            store.setUserInfo(info)
-            doneInfo = true // 表示已经存放了数据
-            next()
-          }
+        }
+
+        console.log("doneinfo is" + doneInfo)
+        if (doneInfo) next()
+        else {
+          const store = userStore()
+          const info = service({
+              method: "GET",
+              url: "/user/info",
+          })
+          store.setUserInfo(info)
+          doneInfo = true // 表示已经存放了数据
+          next()
         }
       }
 })

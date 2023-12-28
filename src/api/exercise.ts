@@ -17,7 +17,7 @@ function GetExerciseInfo(problemid: number): Promise<Exercise.exerciseInfo>{
 }
 
 
-function CreateExercise(data: Exercise.exerciseInfo): Promise<string | ValidationFail>{
+function CreateExercise(data: Exercise.exerciseCreate): Promise<string | ValidationFail>{
     return service({
         method: "PUT",
         url: "/api/v1/problem/create",
@@ -25,16 +25,20 @@ function CreateExercise(data: Exercise.exerciseInfo): Promise<string | Validatio
     })
 }
 
-
-
-
-
+function DeleteExercise(problemid: number): Promise<string>{
+    return service({
+        method: "DELETE",
+        url: "/api/v1/problem/delete/" + problemid.toString()
+    })
+}
 
 
 
 const exerciseApi = {
     GetExercises,
-    GetExerciseInfo
+    GetExerciseInfo,
+    CreateExercise,
+    DeleteExercise,
 }
 
 export default exerciseApi

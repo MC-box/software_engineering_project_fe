@@ -3,6 +3,7 @@ import userStore from "../utils/useStore.ts"
 import service from "../paking/service.ts"
 import Cookies from 'js-cookie'
 import { message } from "ant-design-vue"
+import userApi from "@/api/user.ts"
 // const Home = {template: '<div>主页面</div>'}
 // const Exercise = {template: '<div>题目中心</div>'}
 
@@ -178,7 +179,7 @@ const router = createRouter({
 const whitelist: string[] = ["/login", "/404", "/register"]
 // const whitelist: string[] = []
 let doneInfo = false
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
     console.log("成功回调")
     //...
     if (whitelist.includes(to.path)) {
@@ -202,19 +203,16 @@ router.beforeEach((to, from, next) => {
             Cookies.remove("token") // 清除cookie
             next("/login")
           }
-        } else 
-        {
-          if (doneInfo) next()
-          else {
+        }
+        if (doneInfo) {
+            next()
+        } else {
             const store = userStore()
-            const info = service({
-                method: "GET",
-                url: "/user/info",
-            })
+            const info = await userApi.info()
+            console.log(info)
             store.setUserInfo(info)
             doneInfo = true // 表示已经存放了数据
             next()
-          }
         }
       }
 })
