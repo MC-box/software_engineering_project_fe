@@ -209,7 +209,7 @@ router.beforeEach((to, from, next) => {
             const store = userStore()
             const info = service({
                 method: "GET",
-                url: "/user/info",
+                url: "/api/v1/user",
             })
             store.setUserInfo(info)
             doneInfo = true // 表示已经存放了数据

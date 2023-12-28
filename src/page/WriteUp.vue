@@ -33,8 +33,7 @@
           <span style="color: #bfbfbf;display: flex;align-items: center;">
             评论于
             <div class="dot"></div>
-            <!-- {{ formatDate(item.createdAt) }} -->
-            {{ item.createAt  }}
+            {{ formatDate(item.createAt) }}
           </span>
         </div>
         <div>
@@ -54,16 +53,20 @@ import { List, ListItem, Space, Tag } from 'ant-design-vue';
 // import { Writeup } from "@/paking/store";
 import writeupApi  from "@/api/writeup"
 
-let text = ref('## 你是傻逼吗\n不会吧不会吧，不会这种题都要看题解吧')
+const text = ref('## 你是傻逼吗\n不会吧不会吧，不会这种题都要看题解吧')
 onBeforeMount( async () => {
     let solutionid;
     // 直接从外面传入solutionid
     const wp = await writeupApi.GetWriteUp(solutionid);
-    text = ref(wp.content)
+    text.value = wp.content;
+
+
 })
 
-
-
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('zh-CN').format(date);
+}
 // 从后端读取
 
 import router from '../router/index'
@@ -78,7 +81,7 @@ interface solution {
   createdAt: string
 }
 
-const comment = ref("comment")
+const comment = ref("")
 interface Comment {
   commmentid: number // 评论id
   content: string // 文本
