@@ -320,7 +320,6 @@ const submitSelected = async () => {
 };
 
 const submitBlank = async () => {
-  console.log(BlankFillAnswer.value);
   if (BlankFillAnswer.value == "<p><br></p>") {
     // 即没有填任何数据
     message.error("请选择答案");
@@ -332,7 +331,8 @@ const submitBlank = async () => {
     problemid: pid,
     content: BlankFillAnswer.value,
   };
-  const attemptreturn = await attemptApi.CreateAttempt(a);
+  console.log(BlankFillAnswer.value);
+  await attemptApi.CreateAttempt(a);
   // TODO: 填空题：接下来直接读取BlankFillAnswer的数据并与后端交互即可(上传图片功能暂未解决)
 };
 

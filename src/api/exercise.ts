@@ -17,7 +17,7 @@ function GetExerciseInfo(problemid: number): Promise<Exercise.exerciseInfo>{
 }
 
 
-function CreateExercise(data: Exercise.exerciseInfo): Promise<string | ValidationFail>{
+function CreateExercise(data: Exercise.exerciseCreate): Promise<string | ValidationFail>{
     return service({
         method: "PUT",
         url: "/api/v1/problem/create",
@@ -34,7 +34,9 @@ function CreateExercise(data: Exercise.exerciseInfo): Promise<string | Validatio
 
 const exerciseApi = {
     GetExercises,
-    GetExerciseInfo
+    GetExerciseInfo,
+    CreateExercise,
+
 }
 
 export default exerciseApi

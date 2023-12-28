@@ -50,6 +50,22 @@ export namespace User {
       homeworkid: number,
       choice: Choice[]
     }
+
+    interface createChoice{
+        content: string,
+        label: string,
+        iscorrect: boolean
+    }
+
+    interface exerciseCreate{
+      name: string,
+      problemType: string,
+      content: string,
+      point: number,
+      difficult: string,
+      homeworkid: number,
+      choice: createChoice[]
+    }
   }
     
   
