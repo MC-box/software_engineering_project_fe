@@ -134,9 +134,10 @@ export namespace User {
     }
   
     interface Comment {
-      commmentid: number // 评论id
+      commentid: number // 评论id
       content: string // 文本
       createAt: string // 创建时间
+      contributorid: number // 评论人id
       contributorname: string
       contributorrole: number
     }

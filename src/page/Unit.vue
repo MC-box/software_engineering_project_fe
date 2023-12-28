@@ -7,10 +7,18 @@
               >添加homework</a-button
             >
     </div>
-    <a-table :columns="columns" :data-source="data" :customRow="rowClick" >
+    <a-table :columns="columns" :data-source="data"  >
         <template #bodyCell="{ column, record }">
             <template v-if="column.dataIndex === 'homeworkname'">
-                <div style="font-size: 15px;" >{{ record.homeworkname }}</div>
+                <div
+                    style="font-size: 15px; text-align: center; display: flex; align-items: center; justify-content: center; height: 100%;">
+                    <a @click="rowClick(record)">
+                        {{ record.homeworkname }}
+                    </a>
+                </div>
+                <div v-if="store.userInfo.role > 0" style="text-align: right;">
+                    <a-button type="primary" @click="DeleteCourse(record)">删除</a-button>
+                </div>
             </template>
         </template>
     </a-table>
@@ -31,12 +39,13 @@
   </a-modal>
 </template>
 <script setup lang="ts">
-import router from  '../router/index.ts'
+import router from '../router/index.ts'
 import homeworkApi from '@/api/homework'
 import { Homework } from '@/paking/store';
 import { onBeforeMount } from 'vue';
 import { useRoute } from 'vue-router'
 import { ref } from 'vue'
+import userStore from "@/store/user"
 import type { Dayjs } from 'dayjs';
 const columns = [
     {
@@ -54,7 +63,8 @@ const showModal = () => {
   open.value = true;
 };
 let date = ref<Dayjs>()
-let homeworkname = ref<string>();
+let homeworkname = ref<string>();const store = userStore()
+
 // const data = [
 //     {   
 //         homeworkid: '1',
@@ -84,30 +94,27 @@ const data = ref<Homework.homework_return[]>();
 //       dblclick: () => {
 //        	// console.log('双击了我')
 //       },
-      
+
 //       // ...
 //     }
 //   }
 // }
 
 
-onBeforeMount( async () => {
+onBeforeMount(async () => {
     const result = await homeworkApi.GetHomeworks(parseInt(rExp.exec(route.path)[0]));
-    if (result.length !== 0 && "homeworkname" in result[0])
-    {
+    if (result.length !== 0 && "homeworkname" in result[0]) {
         data.value = result
         console.log(data)
     }
-    else
-    {
-        if ("detail" in result)
-        {
+    else {
+        if ("detail" in result) {
             console.log("fail")
         }
         console.log("fail")
 
     }
-}) 
+})
 
 
 const rowClick = (record) => {
@@ -119,11 +126,11 @@ const rowClick = (record) => {
     }
 }
 
-
 // const createHomework = () => {
 //     const result : Homework.homework_submit = ; 
 //     homeworkApi.CreateHomework(result)
 // }
+
 
 const handleOk = async () => {
   confirmLoading.value = true;
@@ -137,7 +144,7 @@ const handleOk = async () => {
         courseid: 1
     }; 
     await homeworkApi.CreateHomework(result)
-    date.value = "";
+    date.value = null;
     homeworkname.value = "";
     const result2 = await homeworkApi.GetHomeworks(parseInt(rExp.exec(route.path)[0]));
     if (result2.length !== 0 && "homeworkname" in result2[0])
@@ -156,15 +163,20 @@ const handleOk = async () => {
     }
 };
 
+const DeleteCourse = async (record) => {
+    console.log(record.homeworkid)
+    await homeworkApi.DeleteHomework(record.homeworkid);
+    data.value = await homeworkApi.GetHomeworks(parseInt(rExp.exec(route.path)[0]));
+}
 
 const setExerciseCenterTitle = (): void => {
-  document.title = "题目中心";
+    document.title = "题目中心";
 };
 
 </script>
 
 <style>
 .ant-table {
-      min-height: 100% !important;
+    min-height: 100% !important;
 }
 </style>
