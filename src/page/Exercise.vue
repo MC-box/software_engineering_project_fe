@@ -369,7 +369,7 @@ const handleOk = async () => {
   let writeupinfo: WriteUp.WriteUpInfo_submit = {
     problemid: parseInt(rExp.exec(route.path)[0]),
     content: markdownText.value,
-    contributorid: 1,
+    contributorid: store.userInfo.userid,
     name: "题解",
   };
 
@@ -379,6 +379,11 @@ const handleOk = async () => {
   } else {
     // failed...
   }
+  const wpid = await writeupApi.GetWriteUpId(
+    parseInt(rExp.exec(route.path)[0])
+  );
+
+  data.value = wpid;
 };
 
 // interface DataItem {
@@ -406,6 +411,10 @@ const data = ref<WriteUp.WriteupInfo[]>();
 
 let reverse = async () => {
   let pid = parseInt(rExp.exec(route.path)[0]);
+
+  if  (store.userInfo.role > 0) {
+
+  }
   const last_attempt = await attemptApi.GetAttempt(pid, store.userInfo.userid);
   const hasSubmited = last_attempt !== undefined && "problemid" in last_attempt;
     

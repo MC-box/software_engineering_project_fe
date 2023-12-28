@@ -101,6 +101,8 @@ const delAns = () => {
   ansNum.value--;
 }
 
+const route = useRoute();
+let rExp = new RegExp("\\d+");
 
 // interface problem {
 //   title: string;
@@ -147,7 +149,8 @@ async function handleEdit() {
       problemType: category === "选择" ? "choice" : "blank",
       difficult: difficulty === 1 ? "简单" : difficulty === 2 ? "中等" : "困难",
       point: 0,
-      homeworkid: 1,// 由外部传入
+      // todo: change
+      homeworkid: parseInt(rExp.exec(route.path)[0]),
       choice: category === "选择" ? mychoice : []
     }
     console.log(input)
