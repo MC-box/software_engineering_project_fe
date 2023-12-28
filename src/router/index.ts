@@ -150,6 +150,19 @@ export const ExerciseRoutes : RouteRecordRaw[] =
     }
 ]
 
+export const Routes404: RouteRecordRaw[] = 
+[   {
+        path: "/404",
+        component: () => import("../page/404.vue"),
+        meta: {
+            title: "404界面"
+        }
+    },
+    {
+        path: "/:pathMatch(.*)*",
+        redirect: "/404",
+    },
+]
 // const baseRoutes: RouteRecordRaw[] = [
 //     {
 //       path: "/login",
@@ -192,7 +205,7 @@ export const ExerciseRoutes : RouteRecordRaw[] =
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: [ mainRoutes, Loginroute, Forgetroute],
+  routes: [ mainRoutes, Loginroute, Forgetroute, ...Routes404],
 })
 
 

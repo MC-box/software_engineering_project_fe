@@ -34,7 +34,7 @@
 
 <script lang="ts" setup>
 import { useRouter } from 'vue-router'
-import { ref } from '@vue/runtime-core'
+import { ref, onBeforeMount } from '@vue/runtime-core'
 import  userApi  from '../api/user.ts'
 import { LoginInfo } from "@/paking/request"
 import type { UnwrapRef } from 'vue';
@@ -77,9 +77,24 @@ const loginForm: UnwrapRef<LoginInfo> = {
     password: ''
 }
 
-
+onBeforeMount( () => {
+    if (sessionStorage.getItem("remember") !== null)
+    {
+        checked.value = true;
+        loginForm.account = store.userInfo.email;
+        loginForm.password = store.userInfo.password;
+    }
+})
 
 const handleLogin = async () => {
+    if (checked.value)
+    {
+        sessionStorage.setItem("remember", "true");
+    }
+    else
+    {
+        sessionStorage.removeItem("remember");
+    }
     const res = await userApi.login(loginForm);
     console.log(res)
     if (res !== undefined && "access_token" in res){
