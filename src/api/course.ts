@@ -50,6 +50,13 @@ function cancelSelect(courseid: number, userid: number): Promise<string>{
     })
 }
 
+function getUnselectedCourse(): Promise<Course.selectCourseInfo[]>{
+    return service({
+        method: "GET",
+        url: "/api/v1/course/unselected"
+    })
+}
+
 const courseApi = {
     CourseList_student,
     CourseList_teacher,
@@ -57,6 +64,7 @@ const courseApi = {
     DeleteCourse,
     SelectCourse,
     cancelSelect,
+    getUnselectedCourse,
     // resetCaptcha,
     // resetValid,
     // resetPassword,

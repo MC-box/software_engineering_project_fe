@@ -160,6 +160,14 @@ export namespace Course{
     info: string
     teacherid: int
   }
+
+  interface selectCourseInfo {
+    courseid: int
+    name: string
+    info: string
+    teacherid: int
+    teachername: string
+  }
 }
 
 export namespace WriteUp{
@@ -232,4 +240,16 @@ export namespace Homework{
       duedate: string, // date-time
       courseid: number
     }
+}
+
+export namespace Register{
+  interface registerInfo{
+    userid: 0,
+    username: string,
+    password: string,
+    email: string,
+    role: number,
+    telephone: string,
+    major: string
+  }
 }

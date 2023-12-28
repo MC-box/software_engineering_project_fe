@@ -63,6 +63,12 @@
           <file-outlined />
           <span>批改页面</span>
         </a-menu-item>
+        <div v-if="store.userInfo.role == 0">
+          <a-menu-item key="110" @click="router.push({ name: 'selectCourse' })">
+            <team-outlined />
+            <span>选课</span>
+          </a-menu-item>
+        </div>
       </a-menu>
     </a-layout-sider>
     <a-layout>

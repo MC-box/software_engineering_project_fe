@@ -1,6 +1,6 @@
 import { LoginInfo } from "@/paking/request"
 import service from "@/paking/service"
-import { User } from "@/paking/store"
+import { User, Register } from "@/paking/store"
 
 function login(data: LoginInfo):Promise<User.token>{
     return service({
@@ -10,10 +10,10 @@ function login(data: LoginInfo):Promise<User.token>{
     })
 }
 
-function register(data: any) {
+function register(data: Register.registerInfo) {
     return service({
       method: "POST",
-      url: "/register",
+      url: "/api/v1/register",
       data,
     })
   }

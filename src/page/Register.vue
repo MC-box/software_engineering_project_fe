@@ -2,17 +2,19 @@
     <div id="forget">
         <div id="contain">
             <div id="left_card">
-                <h1>如果再给你一次机会，<br>你还会记得你的密码吗？</h1>
-                <span>Don't forget it!</span>
+                <h1>欢迎加入我们！</h1>
+                <span>welcome!</span>
             </div>
             <div id="right_card">
                 <el-card class="el-card">
-                    <h2>修改密码</h2>
+                    <h2>用户注册</h2>
                     <form class="forget" action="">
-                        <input v-shake type="text" v-model="userLoginForm.username" placeholder="请输入原密码">
-                        <input v-shake type="password" v-model="userLoginForm.password" placeholder="请输入新密码">
-                        <input v-shake type="password" v-model="userLoginForm.password" placeholder="请重复新密码">
-                        <!-- 发送验证码，调用API -->
+                        <input v-shake type="text" v-model="userLoginForm.username" placeholder="请输入用户名">
+                        <input v-shake type="password" v-model="userLoginForm.password" placeholder="请输入密码">
+                        <input v-shake type="text" v-model="userLoginForm.email" placeholder="请输入邮箱">
+                        <input v-shake type="text" v-model="userLoginForm.telephone" placeholder="请输入电话">
+                        <input v-shake type="text" v-model="userLoginForm.major" placeholder="请输入专业">
+                        <input v-shake type="number" v-model="userLoginForm.role" placeholder="请输入用户类型">
                     </form>
                     <!-- <div class="remember">
                         <input type="radio" name="" id="psd" class="radio"><label for="psd"></label>记住密码
@@ -22,7 +24,7 @@
                     </div>
                     <div id="btn">
                         <a href="/#/login"><button class="retbtn">返回</button></a>
-                        <button class="submitbtn" @click="userList">提交</button>
+                        <button class="submitbtn" @click="submit">提交</button>
                     </div>
                 </el-card>
             </div>
@@ -31,37 +33,88 @@
     </div>
 </template>
     
-<script>
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import { getCurrentInstance, reactive, ref } from '@vue/runtime-core'
+<!-- <script>
+// import { useStore } from 'vuex'
+// import { useRouter } from 'vue-router'
+// import { getCurrentInstance, reactive, ref } from '@vue/runtime-core'
 
 const checked = ref(false)
-export default {
-    name: "appForgetpwd",
-    setup() {
-        let userLoginForm = reactive({
-            username: "",
-            password: ""
-        })
-        const store = useStore()
-        const router = useRouter()
-        const { proxy } = getCurrentInstance()
-        let error = ref('')
-        //获取用户登录信息
-        async function usreList() {
+// export default {
+//     name: "appForgetpwd",
+//     setup() {
+//         let userLoginForm = reactive({
+//             username: "",
+//             password: ""
+//         })
+//         const store = useStore()
+//         const router = useRouter()
+//         const { proxy } = getCurrentInstance()
+//         let error = ref('')
+//         //获取用户登录信息
+//         async function usreList() {
 
-        }
-        //获取用户信息
-        async function getUserInfo() {
+//         }
+//         //获取用户信息
+//         async function getUserInfo() {
 
-        }
-        return {
-            userLoginForm, error,
-            usreList, getUserInfo,
-        }
+//         }
+//         return {
+//             userLoginForm, error,
+//             usreList, getUserInfo,
+//         }
+//     }
+// }
+</script> -->
+<script setup lang="ts">
+// import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+import { ref } from '@vue/runtime-core'
+import { Register } from "@/paking/store"
+import userApi from "@/api/user"
+import { message } from 'ant-design-vue';
+// let userLoginForm = reactive({
+//     username: "",
+//     password: "",
+//     email: "",
+//     phone: "",
+//     major: "",
+//     role: -1,
+// })
+
+const userLoginForm = ref<Register.registerInfo>() 
+// const store = useStore()
+const router = useRouter()
+// const { proxy } = getCurrentInstance()
+let error = ref('')
+// //获取用户登录信息
+// async function usreList() {
+
+// }
+// //获取用户信息
+// async function getUserInfo() {
+
+// }
+
+const submit = async () =>{
+    const registerInfo : Register.registerInfo = userLoginForm.value
+    const result = await userApi.register(registerInfo);
+    // 注册成功？获取token？
+    if ("access_token" in result)
+    {
+        message.loading("注册成功，跳转到登录页面...", 0.5);
+        router.push("/login");
     }
+    else
+    {
+        message.error("注册失败，请重新输入...", 0.5);
+        location.reload();
+    }
+
 }
+// {
+//     userLoginForm, error,
+//     usreList, getUserInfo,
+// }
 </script>
 
 <style lang="less" scoped>
@@ -84,7 +137,7 @@ export default {
     background-color: #a7a8bd;
 
     #contain {
-        height: 400px;
+        height: 550px;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -107,7 +160,8 @@ export default {
     align-items: center;
 
     #left_card {
-        width: 500px;
+        width: 300px;
+        padding-left: 70px;
 
         h1 {
             color: white;
@@ -223,5 +277,6 @@ export default {
         color: black;
     }
 
-}</style>
+}
+</style>
     
