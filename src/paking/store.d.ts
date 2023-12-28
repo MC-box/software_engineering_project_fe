@@ -138,6 +138,11 @@ export namespace Course{
     teacherid: string
   }
   
+  interface course_create{
+    name: string
+    info: string
+    teacherid: int
+  }
 }
 
 export namespace WriteUp{
@@ -173,6 +178,12 @@ export namespace Attempt{
     studentid: int
     point: int
     content: string
+  }
+
+  interface attemptInfo_point{
+    problemid: int
+    studentid: int
+    point: int
   }
 }
 

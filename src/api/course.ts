@@ -16,11 +16,47 @@ function CourseList_teacher():Promise<Course.courseInfo[]> {
     })
 }
 
+function CreateCourse(data: Course.course_create): Promise<string>{
+    return service({
+        method: "POST",
+        url: "/api/v1/course/create",
+        data
+    })
+}
 
+function DeleteCourse(courseid: number): Promise<string>{
+    return service({
+        method: "DELETE",
+        url: "/api/v1/course/" + courseid.toString()
+    })
+}
+
+function SelectCourse(courseid: number): Promise<string>{
+    return service({
+        method: "PUT",
+        url: "/api/v1/courseselect/" + courseid.toString()
+    })
+}
+
+function cancelSelect(courseid: number, userid: number): Promise<string>{
+    return service({
+        method: "DELETE",
+        url: "/api/v1/courseselect",
+        data: {
+            courseid: courseid,
+            userid: userid,
+        
+        }
+    })
+}
 
 const courseApi = {
     CourseList_student,
     CourseList_teacher,
+    CreateCourse,
+    DeleteCourse,
+    SelectCourse,
+    cancelSelect,
     // resetCaptcha,
     // resetValid,
     // resetPassword,
