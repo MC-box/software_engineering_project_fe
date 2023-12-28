@@ -115,9 +115,9 @@ export const Loginroute: RouteRecordRaw =
 
 export const Forgetroute: RouteRecordRaw =
   {
-    path: "/forget",
-    component: () => import("../page/Forget.vue"),
-    meta: { title: "忘记密码界面"}
+    path: "/register",
+    component: () => import("../page/Register.vue"),
+    meta: { title: "注册界面"}
   }
 
 export const ExerciseRoutes : RouteRecordRaw[] = 

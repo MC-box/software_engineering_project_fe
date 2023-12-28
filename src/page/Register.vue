@@ -2,16 +2,19 @@
     <div id="forget">
         <div id="contain">
             <div id="left_card">
-                <h1>如果再给你一次机会，<br>你还会记得你的密码吗？</h1>
-                <span>Don't forget it!</span>
+                <h1>欢迎加入我们！</h1>
+                <span>welcome!</span>
             </div>
             <div id="right_card">
                 <el-card class="el-card">
-                    <h2>修改密码</h2>
+                    <h2>用户注册</h2>
                     <form class="forget" action="">
-                        <input v-shake type="text" v-model="userLoginForm.username" placeholder="请输入原密码">
-                        <input v-shake type="password" v-model="userLoginForm.password" placeholder="请输入新密码">
-                        <input v-shake type="password" v-model="userLoginForm.password" placeholder="请重复新密码">
+                        <input v-shake type="text" v-model="userLoginForm.username" placeholder="请输入用户名">
+                        <input v-shake type="password" v-model="userLoginForm.password" placeholder="请输入密码">
+                        <input v-shake type="text" v-model="userLoginForm.email" placeholder="请输入邮箱">
+                        <input v-shake type="text" v-model="userLoginForm.phone" placeholder="请输入电话">
+                        <input v-shake type="text" v-model="userLoginForm.major" placeholder="请输入专业">
+                        <input v-shake type="number" v-model="userLoginForm.usrtype" placeholder="请输入用户类型">
                         <!-- 发送验证码，调用API -->
                     </form>
                     <!-- <div class="remember">
@@ -84,7 +87,7 @@ export default {
     background-color: #a7a8bd;
 
     #contain {
-        height: 400px;
+        height: 550px;
         position: absolute;
         top: 50%;
         left: 50%;
@@ -107,7 +110,8 @@ export default {
     align-items: center;
 
     #left_card {
-        width: 500px;
+        width: 300px;
+        padding-left: 70px;
 
         h1 {
             color: white;
