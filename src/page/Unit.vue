@@ -1,5 +1,5 @@
 <template>
-    <div v-if="isTeacher">
+    <div v-if="store.userInfo.role > 0">
         <a-button
               type="primary"
               style="margin-right: 20px; margin-top: 15px; width: 125px"
@@ -56,7 +56,6 @@ const columns = [
 ]
 let rExp = new RegExp("\\d+");
 const route = useRoute();
-let isTeacher = true;
 const confirmLoading = ref<boolean>(false);
 const open = ref<boolean>(false);
 const showModal = () => {
@@ -120,7 +119,6 @@ onBeforeMount(async () => {
 const rowClick = (record) => {
     router.push({ name : 'execenter', params : { id : record.homeworkid } });
     setExerciseCenterTitle();
-        
 }
 
 // const createHomework = () => {
