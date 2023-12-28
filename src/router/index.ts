@@ -102,6 +102,22 @@ export const mainRoutes: RouteRecordRaw = {
             meta: {
                 title: "编辑题目"
             }
+        },
+        {
+            path: "/correct/:id",
+            name: "correct",
+            component: () => import("../page/Correct.vue"),
+            meta: {
+                title: "批改作业"
+            }
+        },
+        {
+            path: "/correct/:id/student/:stuid",
+            name: "correcting",
+            component: () => import("../page/Correcting.vue"),
+            meta: {
+                title: "批改页面"
+            }
         }
     ]
 }
@@ -191,19 +207,19 @@ router.beforeEach(async (to, from, next) => {
         console.log(2)
         let token = Cookies.get("access_token")
         console.log(token)
-        if (!token) {
-          token = sessionStorage.getItem("access_item")
-          if (token)
-          {
-              Cookies.set("access_token", token);
-          }
-          else
-          {
-            message.error("token失效，请重新登录")
-            Cookies.remove("token") // 清除cookie
-            next("/login")
-          }
-        }
+        // if (!token) {
+        //   token = sessionStorage.getItem("access_item")
+        //   if (token)
+        //   {
+        //       Cookies.set("access_token", token);
+        //   }
+        //   else
+        //   {
+        //     message.error("token失效，请重新登录")
+        //     Cookies.remove("token") // 清除cookie
+        //     next("/login")
+        //   }
+        // }
         if (doneInfo) {
             next()
         } else {

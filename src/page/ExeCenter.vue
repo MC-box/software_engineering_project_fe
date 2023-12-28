@@ -37,6 +37,7 @@
         {{ record.problemType }}
       </template>
       <template v-else-if="column.dataIndex === 'deletebutton' && store.userInfo.role > 0">
+        <a-button @click="{ router.push( { name : "correct", params : { id : record.problemid } })}" type="primary" primary style="margin-right: 20px;">批改</a-button>
         <a-button @click="DeleteProblem(record)" type="primary" danger>删除</a-button>
       </template>
     </template>

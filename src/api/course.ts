@@ -27,7 +27,7 @@ function CreateCourse(data: Course.course_create): Promise<string>{
 function DeleteCourse(courseid: number): Promise<string>{
     return service({
         method: "DELETE",
-        url: "/api/v1/course/" + courseid.toString()
+        url: "/api/v1/course/delete/" + courseid.toString()
     })
 }
 

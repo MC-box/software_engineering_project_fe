@@ -5,7 +5,7 @@ function GetAttemptByProblemid(problemid: number): Promise<Attempt.attemptInfo_r
 
     return service({
         method: "GET",
-        url: "/api/v1/attempt/" + problemid.toString()
+        url: "/api/v1/attempt/problem/" + problemid.toString()
     })
 }
 

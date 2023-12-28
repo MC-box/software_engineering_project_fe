@@ -202,6 +202,7 @@ export namespace Attempt{
     studentid: int
     point: int
   }
+
 }
 
 export interface ValidationFail{

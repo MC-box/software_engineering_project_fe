@@ -71,6 +71,6 @@ const handleChange = (value: string) => {
 
 const deleteCourse = async () => {
     console.log(value1)
-    // await courseApi.DeleteCourse(value1.courseid)
+    await courseApi.DeleteCourse(parseInt(value1.value))
 }
 </script>

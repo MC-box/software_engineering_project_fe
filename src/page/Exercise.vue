@@ -221,11 +221,13 @@ import courseApi from "@/api/course";
 import writeupApi from "@/api/writeup";
 import attemptApi from "@/api/attempt";
 import exerciseApi from "@/api/exercise";
+import userStore from "@/store/user"
 import { WriteUp, Attempt, Exercise } from "@/paking/store";
 
 let ifWriteUp = ref(false);
 const route = useRoute();
 const router = useRouter();
+const store = userStore();
 const BlankFillAnswer = ref("");
 let ifMulChoice = true; // 选择题
 let ifBlankFill = false; // 填空题/简答题
@@ -315,7 +317,12 @@ const submitSelected = async () => {
     problemid: pid,
     content: result,
   };
-  await attemptApi.CreateAttempt(a);
+  const last_attempt = await attemptApi.GetAttempt(pid, store.userInfo.userid);
+  if (last_attempt !== undefined && "problemid" in last_attempt) {
+    await attemptApi.StudentUpdateAttempt(a);
+  } else {
+    await attemptApi.CreateAttempt(a);
+  }
   // 这里可以添加答案界面，即显示出分数
 };
 
@@ -332,7 +339,12 @@ const submitBlank = async () => {
     content: BlankFillAnswer.value,
   };
   console.log(BlankFillAnswer.value);
-  await attemptApi.CreateAttempt(a);
+  const last_attempt = await attemptApi.GetAttempt(pid, store.userInfo.userid);
+  if (last_attempt !== undefined && "problemid" in last_attempt) {
+    await attemptApi.StudentUpdateAttempt(a);
+  } else {
+    await attemptApi.CreateAttempt(a);
+  }
   // TODO: 填空题：接下来直接读取BlankFillAnswer的数据并与后端交互即可(上传图片功能暂未解决)
 };
 
@@ -360,6 +372,7 @@ const handleOk = async () => {
     contributorid: 1,
     name: "题解",
   };
+
   const return_value = await writeupApi.CreateWriteUp(writeupinfo);
   if (return_value === "") {
     // success...
@@ -392,22 +405,30 @@ const handleOk = async () => {
 const data = ref<WriteUp.WriteupInfo[]>();
 
 let reverse = async () => {
-  ifWriteUp.value = !ifWriteUp.value;
-  if (ifWriteUp.value) {
-    const wpid = await writeupApi.GetWriteUpId(
-      parseInt(rExp.exec(route.path)[0])
-    );
-  console.log(wpid);
-    if (wpid.length !== 0 && "solutionid" in wpid[0]) {
-      data.value = wpid;
-    } else {
-      if ("detail" in wpid) {
-        // message.error(wpid.msg);
+  let pid = parseInt(rExp.exec(route.path)[0]);
+  const last_attempt = await attemptApi.GetAttempt(pid, store.userInfo.userid);
+  const hasSubmited = last_attempt !== undefined && "problemid" in last_attempt;
+    
+  if (hasSubmited) {
+    ifWriteUp.value = !ifWriteUp.value;
+    if (ifWriteUp.value) {
+      const wpid = await writeupApi.GetWriteUpId(
+        parseInt(rExp.exec(route.path)[0])
+      );
+      console.log(wpid);
+      if (wpid.length !== 0 && "solutionid" in wpid[0]) {
+        data.value = wpid;
       } else {
-        // 没有找到任何题解，即为空
-        // message.error();
+        if ("detail" in wpid) {
+          // message.error(wpid.msg);
+        } else {
+          // 没有找到任何题解，即为空
+          // message.error();
+        }
       }
     }
+  } else {
+    message.error("提交后才能查看题解");
   }
 };
 // interface probleminfo{
