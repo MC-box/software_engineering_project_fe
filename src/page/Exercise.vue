@@ -191,19 +191,19 @@ const problem = reactive({
 // data
 const selectedOptions = ref([
   {
-    label: "A. Fuck you",
+    label: "A. C",
     value: "A",
   },
   {
-    label: "B. Cao ni ma",
+    label: "B. C++",
     value: "B",
   },
   {
-    label: "C. sha bi",
+    label: "C. Java",
     value: "C",
   },
   {
-    label: "D. nao tan",
+    label: "D. Python",
     value: "D",
   },
 ]);

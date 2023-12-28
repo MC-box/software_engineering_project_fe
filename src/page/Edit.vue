@@ -44,8 +44,8 @@ const onSearch = (searchText: string) => {
   options.value = !searchText
     ? []
     : courses
-        .map((course) => (course.includes(searchText) ? { value: course } : ""))
-        .filter(Boolean);
+      .map((course) => (course.includes(searchText) ? { value: course } : ""))
+      .filter(Boolean);
 };
 const onSelect = (value: string) => {
   problem.courseName = value;
@@ -101,40 +101,27 @@ async function handleEdit() {
 <template>
   <div class="edit">
     <section>
-      <ASelect
-        style="width: 120px"
-        size="large"
-        v-model:value="problem.category"
-        class="tagSelect"
-      >
-        <ASelectOption v-for="item in categoryArr.slice(1)" :value="item">
-        </ASelectOption>
-      </ASelect>
+      <div class="font-strong" style="margin-top: 20px; margin-bottom: 20px">
+        题目标题
+      </div>
+      <AInput size="large" placeholder="请输入题目标题" v-model:value="problem.title"  style="width: 57%;"/>
+
     </section>
     <ADivider />
     <main style="width: 80%" class="edit-problem">
       <div style="box-sizing: border-box; width: 70%">
         <div class="font-strong" style="margin-top: 20px; margin-bottom: 20px">
-          题目答案
+          题目类型
         </div>
-        <AInput
-          size="large"
-          placeholder="请输入题目标题"
-          v-model:value="problem.title"
-        />
+        <ASelect style="width: 120px" size="large" v-model:value="problem.category" class="tagSelect">
+          <ASelectOption v-for="item in categoryArr.slice(1)" :value="item">
+          </ASelectOption>
+        </ASelect>
         <div class="font-strong" style="margin-top: 20px; margin-bottom: 20px">
           题目描述
         </div>
-        <RichTextEditor
-          placeholder="请输入题目描述，如需填空请使用下划线替代"
-          v-model="problem.question"
-          style="margin-top: 30px"
-        />
-        <div
-          v-if="isSelectProblem"
-          class="font-strong"
-          style="margin-top: 20px"
-        >
+        <RichTextEditor placeholder="请输入题目描述，如需填空请使用下划线替代" v-model="problem.question" style="margin-top: 30px" />
+        <div v-if="isSelectProblem" class="font-strong" style="margin-top: 20px">
           <!-- <div v-if="problem.category==='选择'">
             <label >多选：</label>
             <ASwitch v-model:checked="checked"></ASwitch>
@@ -148,7 +135,7 @@ async function handleEdit() {
           <!-- <div v-for="(_, index) in ansNum" class="flex-center" style="margin:20px 0">
             <span style="width: 30px;">{{ index + 1 }}.</span>
             <AInput style="background-color: #fafafa;" />
-             <ACheckbox v-if="isSelectProblem" style="transform: scale(1.2);margin-left:30px;" /> 
+             <ACheckbox v-if="isSelectProble·m" style="transform: scale(1.2);margin-left:30px;" /> 
             <MinusOutlined @click="delAns" style="margin-left:30px;" />
           </div> -->
           <!-- <PlusOutlined @click="addAns" /> -->
@@ -159,39 +146,20 @@ async function handleEdit() {
         <ADivider /> -->
       </div>
       <div class="property">
-        <p class="property-title">属性（必填）</p>
+        <p class="property-title"><span style="color: red;">*</span>题目属性（必填）</p>
         <AForm name="Property">
           <AFormItem name="难度" label="难度">
-            <ASelect
-              placeholder="请选择难度"
-              v-model:value="problem.difficulty"
-            >
-              <ASelectOption
-                v-for="(item, index) in difficultyArr.slice(1)"
-                :value="index + 1"
-                >{{ item }}
+            <ASelect placeholder="请选择难度" v-model:value="problem.difficulty">
+              <ASelectOption v-for="(item, index) in difficultyArr.slice(1)" :value="index + 1">{{ item }}
               </ASelectOption>
             </ASelect>
           </AFormItem>
           <AFormItem name="课程" label="课程">
-            <AAutoComplete
-              v-model:value="problem.courseName"
-              :options="options"
-              allowClear
-              defaultOpen
-              placeholder="请输入课程"
-              @select="onSelect"
-              @search="onSearch"
-              @change="onChange"
-            />
+            <AAutoComplete v-model:value="problem.courseName" :options="options" allowClear defaultOpen
+              placeholder="请输入课程" @select="onSelect" @search="onSearch" @change="onChange" />
           </AFormItem>
           <AFormItem name="标签" label="标签">
-            <ASelect
-              mode="tags"
-              placeholder="请输入标签"
-              v-model:value="showTags"
-              @change=""
-            >
+            <ASelect mode="tags" placeholder="请输入标签" v-model:value="showTags" @change="">
               <ASelectOption v-for="tag in tags" :value="tag">{{
                 tag
               }}</ASelectOption>
@@ -202,13 +170,8 @@ async function handleEdit() {
     </main>
     <div>
       <!-- <AButton type="default" class="shadow" style="margin-right:1rem;border-radius: 8px;">保存草稿</AButton> -->
-      <AButton
-        type="primary"
-        class="shadow"
-        style="border-radius: 8px"
-        @click="handleEdit"
-        >发布题目</AButton
-      >
+      <AButton type="primary" class="shadow" style="border-radius: 8px; margin-top: 20px;" @click="handleEdit">发布题目
+      </AButton>
     </div>
   </div>
   <!-- 需要区分选择题和填空题，选择题需要添加选项的选择，而填空题不需要，增加单变量即可 -->
@@ -225,10 +188,11 @@ async function handleEdit() {
 }
 
 .property {
-  margin-top: 70px;
+  padding-left: 50px;
+  margin-top: 160px;
   border-radius: 10px;
   margin-left: 30px;
-  width: 200px;
+  width: 15vw;
 
   &-title {
     font-size: 18px;

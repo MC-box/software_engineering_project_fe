@@ -2,13 +2,13 @@
 <template>
     <div class="card">
 		<div class="left">
-			<img class="profile_img" src="https://images.summitmedia-digital.com/cosmo/images/2020/10/23/nam-joo-hyuk-start-up-min-1-1603449918.jpg" alt="">
-			<div class="flag_wrapper">
-				<img class="flag" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/240/apple/271/flag-south-korea_1f1f0-1f1f7.png" alt="South Korean Flag" />
+			<img class="profile_img" src="../assets/uuz.jpg" alt="">
+			<div class="flag_wrapper" style="background-color: #fac858;">
+				<img class="flag" src="https://csse.szu.edu.cn/image/common/logo_collage.svg" alt="South Korean Flag" />
 			</div>
 		</div>
 		<div class="right">
-			<h2 class="name">Nam Do-San</h2>
+			<h2 class="name">NoName</h2>
 			<p class="title">Developer</p>
 			<p class="information"><span style="margin-right:30px">手机: XXX XXX XXXXX</span><span style="margin-right:30px">邮箱: XXXXX</span><span>学号: XXX XXX XXX</span></p>
 			<div class="interests">
@@ -17,7 +17,7 @@
 				<span class="interests_item">Technology</span>
 				<span class="interests_item">Coding</span>
 				<span class="interests_item">Python</span>
-				<span class="interests_item">shit</span>
+				<span class="interests_item" style="margin-top: 0.5vw;">Reverse</span>
 			</div>
 		</div>
 		<div ref="chart" style="width: 20%; height: 160px; margin-left: 150px;"></div>
@@ -28,15 +28,15 @@
       <a-col :span="8">
         <a-card title="我的题库" :bordered="false">
 			<div class="icon_box">
-				<div class="iconItem">
+				<div class="iconItem" @click="sorrymsg()">
 					<FileAddTwoTone two-tone-color="#05b2f6" class="card_icon"></FileAddTwoTone>
 					<div class="info">上传题解</div>
 				</div>
-				<div class="iconItem">
+				<div class="iconItem" @click="sorrymsg()">
 					<CheckCircleTwoTone two-tone-color="#0af545" class="card_icon"></CheckCircleTwoTone>
 					<div class="info">完成题目</div>
 				</div>
-				<div class="iconItem">
+				<div class="iconItem" @click="sorrymsg()">
 					<ExperimentTwoTone two-tone-color="#d10cf0" class="card_icon"></ExperimentTwoTone>
 					<div class="info">尝试题目</div>
 				</div>
@@ -47,15 +47,15 @@
       <a-col :span="8">
         <a-card title="我的点赞" :bordered="false">
 			<div class="icon_box">
-				<div class="iconItem">
+				<div class="iconItem" @click="sorrymsg()">
 					<FileWordTwoTone two-tone-color="#0c48ed" class="card_icon"></FileWordTwoTone>
 					<div class="info">题解</div>
 				</div>
-				<div class="iconItem">
+				<div class="iconItem" @click="sorrymsg()">
 					<MessageTwoTone two-tone-color="#686868" class="card_icon"></MessageTwoTone>
 					<div class="info">评论</div>
 				</div>
-				<div class="iconItem">
+				<div class="iconItem" @click="sorrymsg()">
 					<ContainerTwoTone two-tone-color="#edb10c" class="card_icon"></ContainerTwoTone>
 					<div class="info">题目</div>
 				</div>
@@ -64,7 +64,7 @@
       </a-col>
       <a-col :span="8">
         <a-card title="我的荣誉" :bordered="false">
-          <p>card content</p>
+          <p style="padding-bottom: 85px;">当前还没有荣誉哦，再接再厉吧！</p>
         </a-card>
       </a-col>
     </a-row>
@@ -208,9 +208,15 @@
 <script setup lang="ts">
 import initChart from '../utils/useCharts'
 import { FileAddTwoTone, CheckCircleTwoTone, ExperimentTwoTone, FileWordTwoTone, MessageTwoTone, ContainerTwoTone } from '@ant-design/icons-vue'
+import { message } from "ant-design-vue";
+
 // import { ref } from "vue"
 const chart = initChart();
 // const size = ref(10);
 // import {useChart} from 'echarts';
 // const { chartEle, changeChart, cardActiveKey, evaluteChartData } = useCharts()
+
+function sorrymsg(){
+	message.info("肥肠抱歉，本模块还在开发中，敬请期待.")
+}
 </script>
