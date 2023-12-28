@@ -7,6 +7,7 @@ import App from './App.vue'
 import router from './router/index.ts'
 import UndrawUi from 'undraw-ui'
 import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 import 'undraw-ui/dist/style.css'
 import VMdPreview from '@kangc/v-md-editor/lib/preview';
 import '@kangc/v-md-editor/lib/style/preview.css';
