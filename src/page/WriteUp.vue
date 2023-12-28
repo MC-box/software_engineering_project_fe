@@ -60,15 +60,18 @@ import { ref, onBeforeMount } from 'vue'
 import { CloseCircleOutlined } from '@ant-design/icons-vue';
 import { List, ListItem, Space, Tag } from 'ant-design-vue';
 import userStore from "@/store/user"
+import { useRouter, RouterView, useRoute } from "vue-router";
 // import { Writeup } from "@/paking/store";
 import { Solution } from "../paking/store";
 import writeupApi from "@/api/writeup"
 
+let rExp = new RegExp("\\d+");
+const route = useRoute()
 const store = userStore()
-const text = ref('## 你是傻逼吗\n不会吧不会吧，不会这种题都要看题解吧')
+const text = ref('')
 onBeforeMount(async () => {
   // Todo: solutionid must be get from router
-  let solutionid = 2;
+  const solutionid = parseInt(rExp.exec(route.path)[0]);
   const wp = await writeupApi.GetWriteUp(solutionid);
   text.value = wp.content;
   comments.value = await commentApi.GetComments(solutionid);
@@ -86,7 +89,7 @@ import commentApi from '@/api/comment';
 
 const submitComment = async () => {
   // Todo: solutionid must be get from router
-  const solutionid = 2;
+  const solutionid = parseInt(rExp.exec(route.path)[0]);
   await commentApi.CreateComment(solutionid, {
     content: comment.value,
     createAt: new Date().toISOString(),

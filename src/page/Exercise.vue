@@ -5,12 +5,7 @@
       <a @click="router.back">
         <CloseCircleOutlined :style="{ fontSize: '20px', color: '#08c' }" />
       </a>
-      <a-card
-        class="main"
-        title="题目"
-        :bordered="false"
-        style="width: 70%; margin: auto"
-      >
+      <a-card class="main" title="题目" :bordered="false" style="width: 70%; margin: auto">
         <span :class="difficultyColor(problem?.difficulty)">{{
           difficultyArr[problem?.difficulty - 1]
         }}</span>
@@ -21,44 +16,29 @@
       <br />
       <section class="description">
         <div class="title">
-          <span>题目描述</span
-          ><a-button
-            type="primary"
-            style="min-width: 80px; margin-left: 83%"
-            @click="reverse()"
-            >查看题解</a-button
-          >
+          <span>题目描述</span><a-button type="primary" style="min-width: 80px; margin-left: 83%"
+            @click="reverse()">查看题解</a-button>
         </div>
         <!-- <RichTextEditor></RichTextEditor> -->
         <div class="p_">{{ problemdescription }}</div>
         <div v-if="ifWriteUp" style="background-color: white">
           <div class="title">
-            题解列表 <PlusCircleOutlined style="margin-left: 84%" /><span
-              style="margin-right: 20px; margin-left: 7px; font-size: 14px"
-              @click="showModal"
-            >
-              写题解</span
-            >
+            题解列表
+            <PlusCircleOutlined style="margin-left: 84%" /><span
+              style="margin-right: 20px; margin-left: 7px; font-size: 14px" @click="showModal">
+              写题解</span>
           </div>
-          <a-list
-            item-layout="horizontal"
-            :data-source="data"
-            style="height: 6cm"
-          >
+          <a-list item-layout="horizontal" :data-source="data" style="height: 6cm">
             <template #renderItem="{ item }">
               <a-list-item>
                 <a-list-item-meta :description="`题解 By ${item.author}`">
                   <template #title>
-                    <span
-                      @click="
-                        router.push({
-                          name: 'writeup',
-                          params: { id: item.solutionid },
-                        })
-                      "
-                      style="cursor: pointer"
-                      >{{ item.name }}</span
-                    >
+                    <span @click="
+                      router.push({
+                        name: 'writeup',
+                        params: { id: item.solutionid },
+                      })
+                      " style="cursor: pointer">{{ item.name }}</span>
                     <!-- <a @click="{ router.push({ name: 'writeup', params: { id: item.key } }) }">{{ item.title }}</a> -->
                   </template>
                   <template #avatar>
@@ -72,19 +52,10 @@
         <div v-else>
           <div class="title">题目选项</div>
           <div class="doing">
-            <a-checkbox-group
-              name="checkboxgroup"
-              :options="selectedOptions"
-              style="display: grid; gap: 24px"
-              v-model:value="selectedAnswer"
-            />
-            <a-button
-              type="primary"
-              style="float: right; margin-top: 15px; width: 80px"
-              @click="submitSelected"
-              :disabled="isSubmit"
-              >提交</a-button
-            >
+            <a-checkbox-group name="checkboxgroup" :options="selectedOptions" style="display: grid; gap: 24px"
+              v-model:value="selectedAnswer" />
+            <a-button type="primary" style="float: right; margin-top: 15px; width: 80px" @click="submitSelected"
+              :disabled="isSubmit">提交</a-button>
           </div>
         </div>
         <!-- 这一部分需要换成router-view以展示不同题型的选项 -->
@@ -97,12 +68,7 @@
       <a @click="router.back">
         <CloseCircleOutlined :style="{ fontSize: '20px', color: '#08c' }" />
       </a>
-      <a-card
-        class="main"
-        title="题目"
-        :bordered="false"
-        style="width: 70%; margin: auto"
-      >
+      <a-card class="main" title="题目" :bordered="false" style="width: 70%; margin: auto">
         <span :class="difficultyColor(problem?.difficulty)">{{
           difficultyArr[problem?.difficulty - 1]
         }}</span>
@@ -113,44 +79,29 @@
       <br />
       <section class="description">
         <div class="title">
-          <span>题目描述</span
-          ><a-button
-            type="primary"
-            style="min-width: 80px; margin-left: 83%"
-            @click="reverse()"
-            >查看题解</a-button
-          >
+          <span>题目描述</span><a-button type="primary" style="min-width: 80px; margin-left: 83%"
+            @click="reverse()">查看题解</a-button>
         </div>
         <!-- <RichTextEditor></RichTextEditor> -->
         <div class="p_">{{ problemdescription }}</div>
         <div v-if="ifWriteUp" style="background-color: white">
           <div class="title">
-            题解列表 <PlusCircleOutlined style="margin-left: 84%" /><span
-              style="margin-right: 20px; margin-left: 7px; font-size: 14px"
-              @click="showModal"
-            >
-              写题解</span
-            >
+            题解列表
+            <PlusCircleOutlined style="margin-left: 84%" /><span
+              style="margin-right: 20px; margin-left: 7px; font-size: 14px" @click="showModal">
+              写题解</span>
           </div>
-          <a-list
-            item-layout="horizontal"
-            :data-source="data"
-            style="height: 6cm"
-          >
+          <a-list item-layout="horizontal" :data-source="data" style="height: 6cm">
             <template #renderItem="{ item }">
               <a-list-item>
                 <a-list-item-meta :description="`题解 By ${item.author}`">
                   <template #title>
-                    <span
-                      @click="
-                        router.push({
-                          name: 'writeup',
-                          params: { id: item.solutionid },
-                        })
-                      "
-                      style="cursor: pointer"
-                      >{{ item.name }}</span
-                    >
+                    <span @click="
+                      router.push({
+                        name: 'writeup',
+                        params: { id: item.solutionid },
+                      })
+                      " style="cursor: pointer">{{ item.name }}</span>
                     <!-- <a @click="{ router.push({ name: 'writeup', params: { id: item.key } }) }">{{ item.title }}</a> -->
                   </template>
                   <template #avatar>
@@ -164,26 +115,16 @@
         <div v-else>
           <div class="title">答题区</div>
           <div style="background-color: white">
-            <Editor
-              v-model="BlankFillAnswer"
-              placeholder="请输入你的答案"
-              style="margin-top: 20px"
-            ></Editor>
+            <Editor v-model="BlankFillAnswer" placeholder="请输入你的答案" style="margin-top: 20px"></Editor>
           </div>
-          <div
-            style="
+          <div style="
               background-color: white;
               min-height: 40px;
               padding-bottom: 15px;
               text-align: right;
-            "
-          >
-            <a-button
-              type="primary"
-              style="margin-right: 20px; margin-top: 15px; width: 80px"
-              @click="submitBlank"
-              >提交</a-button
-            >
+            ">
+            <a-button type="primary" style="margin-right: 20px; margin-top: 15px; width: 80px"
+              @click="submitBlank">提交</a-button>
           </div>
         </div>
         <!-- 这一部分需要换成router-view以展示不同题型的选项 -->
@@ -191,14 +132,8 @@
     </div>
   </template>
 
-  <a-modal
-    v-model:open="open"
-    title="编写题解"
-    :confirm-loading="confirmLoading"
-    @ok="handleOk"
-    width="1500px"
-    :bodyStyle="{ height: '600px', overflow: 'hidden', overflowY: 'scroll' }"
-  >
+  <a-modal v-model:open="open" title="编写题解" :confirm-loading="confirmLoading" @ok="handleOk" width="1500px"
+    :bodyStyle="{ height: '600px', overflow: 'hidden', overflowY: 'scroll' }">
     <label>请输入标题：</label>
     <a-input v-model:value="title" placeholder="请输入标题" />
     <label>请在下方编写你的题解,完成后记得点击提交</label>
@@ -379,6 +314,11 @@ const handleOk = async () => {
   } else {
     // failed...
   }
+  const wpid = await writeupApi.GetWriteUpId(
+    parseInt(rExp.exec(route.path)[0])
+  );
+
+  data.value = wpid;
 };
 
 // interface DataItem {
@@ -406,29 +346,51 @@ const data = ref<WriteUp.WriteupInfo[]>();
 
 let reverse = async () => {
   let pid = parseInt(rExp.exec(route.path)[0]);
-  const last_attempt = await attemptApi.GetAttempt(pid, store.userInfo.userid);
-  const hasSubmited = last_attempt !== undefined && "problemid" in last_attempt;
-    
-  if (hasSubmited) {
-    ifWriteUp.value = !ifWriteUp.value;
-    if (ifWriteUp.value) {
-      const wpid = await writeupApi.GetWriteUpId(
-        parseInt(rExp.exec(route.path)[0])
-      );
-      console.log(wpid);
-      if (wpid.length !== 0 && "solutionid" in wpid[0]) {
-        data.value = wpid;
-      } else {
-        if ("detail" in wpid) {
-          // message.error(wpid.msg);
+
+  if (store.userInfo.role === 0) {
+    const last_attempt = await attemptApi.GetAttempt(pid, store.userInfo.userid);
+    const hasSubmited = last_attempt !== undefined && "problemid" in last_attempt;
+
+    if (hasSubmited) {
+      ifWriteUp.value = !ifWriteUp.value;
+      if (ifWriteUp.value) {
+        const wpid = await writeupApi.GetWriteUpId(
+          parseInt(rExp.exec(route.path)[0])
+        );
+        console.log(wpid);
+        if (wpid.length !== 0 && "solutionid" in wpid[0]) {
+          data.value = wpid;
         } else {
-          // 没有找到任何题解，即为空
-          // message.error();
+          if ("detail" in wpid) {
+            // message.error(wpid.msg);
+          } else {
+            // 没有找到任何题解，即为空
+            // message.error();
+          }
         }
       }
+    } else {
+      message.error("提交后才能查看题解");
     }
   } else {
-    message.error("提交后才能查看题解");
+    // 我是老师
+    ifWriteUp.value = !ifWriteUp.value;
+    if (ifWriteUp.value) {
+        const wpid = await writeupApi.GetWriteUpId(
+          parseInt(rExp.exec(route.path)[0])
+        );
+        console.log(wpid);
+        if (wpid.length !== 0 && "solutionid" in wpid[0]) {
+          data.value = wpid;
+        } else {
+          if ("detail" in wpid) {
+            // message.error(wpid.msg);
+          } else {
+            // 没有找到任何题解，即为空
+            // message.error();
+          }
+        }
+      }
   }
 };
 // interface probleminfo{
@@ -486,15 +448,19 @@ onBeforeMount(async () => {
 .easy {
   color: green;
 }
+
 .medium {
   color: orange;
 }
+
 .hard {
   color: red;
 }
+
 .main span {
   margin: 10px;
 }
+
 .description {
   width: 70%;
   margin: auto;
@@ -512,6 +478,7 @@ onBeforeMount(async () => {
     align-items: center;
     /* justify-content: space-between; */
   }
+
   div.p_ {
     min-height: 100px;
     background-color: white;
@@ -521,6 +488,7 @@ onBeforeMount(async () => {
     /* vertical-align: center; */
     display: flex;
   }
+
   .doing {
     min-height: 300px;
     background-color: white;
@@ -533,11 +501,14 @@ onBeforeMount(async () => {
 
 #editor—wrapper {
   border: 1px solid #ccc;
-  z-index: 100; /* 按需定义 */
+  z-index: 100;
+  /* 按需定义 */
 }
+
 #toolbar-container {
   border-bottom: 1px solid #ccc;
 }
+
 #editor-container {
   height: 500px;
 }

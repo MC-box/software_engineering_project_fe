@@ -145,6 +145,7 @@ const DeleteProblem = async (record: Exercise.exercisesInfo) => {
 
 const handleOk = async () => {
   confirmLoading.value = true;
+  data.value = await exerciseApi.GetExercises(parseInt(rExp.exec(route.path)[0]));
   setTimeout(() => {
     open.value = false;
     confirmLoading.value = false;
@@ -153,7 +154,7 @@ const handleOk = async () => {
 
 const confirmLoading = ref<boolean>(false);
 const open = ref<boolean>(false);
-const showModal = () => {
+const showModal = async () => {
   open.value = true;
 };
 </script>
