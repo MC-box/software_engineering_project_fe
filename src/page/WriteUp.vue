@@ -6,13 +6,13 @@
   </a>
   <v-md-preview :text="text"></v-md-preview>
   <!-- <u-comment :config="config" @submit="submit" @like="like" relative-time> -->
-    <!-- <div>这里编写主题帖内容</div> -->
-    <!-- <div>导航栏卡槽</div> -->
-    <!-- <template #header>头部卡槽</template> -->
-    <!-- <template #info>用户信息卡槽</template> -->
-    <!-- <template #card>用户信息卡片卡槽</template> -->
-    <!-- <template #opearte>操作栏卡槽</template> -->
-    <!-- <template #func>功能区域卡槽</template> -->
+  <!-- <div>这里编写主题帖内容</div> -->
+  <!-- <div>导航栏卡槽</div> -->
+  <!-- <template #header>头部卡槽</template> -->
+  <!-- <template #info>用户信息卡槽</template> -->
+  <!-- <template #card>用户信息卡片卡槽</template> -->
+  <!-- <template #opearte>操作栏卡槽</template> -->
+  <!-- <template #func>功能区域卡槽</template> -->
   <!-- </u-comment> -->
   <List>
     <ATextarea v-model:value="comment" placeholder="请输入评论内容" :auto-size="{ minRows: 4, maxRows: 7 }" />
@@ -21,7 +21,7 @@
         class="submit-green">评论
       </AButton>
     </div>
-    <template v-for="item in comments">
+    <template v-for="item, index in comments">
       <ListItem style="flex-direction: column;align-items: flex-start;color: #595959;">
         <div style="display:flex;justify-content: space-between;width:100%;">
           <Space style="font-weight: 500;">
@@ -36,15 +36,18 @@
             {{ formatDate(item.createAt) }}
           </span>
         </div>
-        <div>
-          <div class="comment-content">
-            {{ item.content }}
-            <!-- Todo: add delete button is comment is created by current user -->
-            <!-- <div v-if="item.contributorname == ">
-              <AButton @click="" size="small" type="primary" style="margin-top: 20px;margin-bottom: 20px;"
-                class="submit-green">delete
-              </AButton>
-            </div> -->
+        <div style="display:flex;justify-content: space-between;width:100%;">
+          <div style="display: flex; align-items: center;">
+            <div style="text-align: left;">
+              {{ item.content }}
+            </div>
+          </div>
+          <!-- Todo: add delete button is comment is created by current user -->
+          <div v-if="item.contributorid == store.userInfo.userid || store.userInfo.role > 0"
+            style="display: flex;align-items: center;justify-content: flex-end;">
+            <AButton @click="DeleteComment(index)" size="small" type="primary" style="margin-top: 20px;margin-bottom: 20px;"
+              class="submit-green">delete
+            </AButton>
           </div>
         </div>
       </ListItem>
@@ -56,17 +59,20 @@
 import { ref, onBeforeMount } from 'vue'
 import { CloseCircleOutlined } from '@ant-design/icons-vue';
 import { List, ListItem, Space, Tag } from 'ant-design-vue';
+import userStore from "@/store/user"
 // import { Writeup } from "@/paking/store";
 import { Solution } from "../paking/store";
-import writeupApi  from "@/api/writeup"
+import writeupApi from "@/api/writeup"
 
+const store = userStore()
 const text = ref('## 你是傻逼吗\n不会吧不会吧，不会这种题都要看题解吧')
-onBeforeMount( async () => {
-    // Todo: solutionid must be get from router
-    let solutionid = 2;
-    const wp = await writeupApi.GetWriteUp(solutionid);
-    text.value = wp.content;
-    comments.value = await commentApi.GetComments(solutionid);
+onBeforeMount(async () => {
+  // Todo: solutionid must be get from router
+  let solutionid = 2;
+  const wp = await writeupApi.GetWriteUp(solutionid);
+  text.value = wp.content;
+  comments.value = await commentApi.GetComments(solutionid);
+  console.log(comments.value)
 })
 
 const formatDate = (dateString: string) => {
@@ -78,7 +84,7 @@ const formatDate = (dateString: string) => {
 import router from '../router/index'
 import commentApi from '@/api/comment';
 
-const submitComment =async () => {
+const submitComment = async () => {
   // Todo: solutionid must be get from router
   const solutionid = 2;
   await commentApi.CreateComment(solutionid, {
@@ -86,6 +92,13 @@ const submitComment =async () => {
     createAt: new Date().toISOString(),
   });
 
+  comments.value = await commentApi.GetComments(solutionid);
+}
+
+const DeleteComment = async (index: number) => {
+  let solutionid = 2;
+  console.log(comments.value[index].commentid)
+  await commentApi.DeleteComment(comments.value[index].commentid);
   comments.value = await commentApi.GetComments(solutionid);
 }
 
