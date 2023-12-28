@@ -102,6 +102,11 @@ export const mainRoutes: RouteRecordRaw = {
             meta: {
                 title: "编辑题目"
             }
+        },
+        {
+            path: "/selectCourse",
+            name: "selectCourse",
+            component: () => import("../page/SelectCourse.vue"),
         }
     ]
 }
