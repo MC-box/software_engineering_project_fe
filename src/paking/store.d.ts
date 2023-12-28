@@ -108,7 +108,7 @@ export namespace User {
   }
   
   export namespace Solution {
-    interface solution {
+    interface Solution {
       id: number
       title: string
       content: string
@@ -118,16 +118,16 @@ export namespace User {
     }
   
     interface Comment {
-      id: number // 评论id
-      schoolId: number // 发布人id
+      commmentid: number // 评论id
       content: string // 文本
-      status: boolean // 审核状态
-      reply: number
-      createdAt: string
+      createAt: string // 创建时间
+      contributorname: string
+      contributorrole: number
     }
-    interface CommentUser {
-      username: string
-      role: number
+
+    interface CommentReq {
+      content: string
+      createAt: string
     }
   }
 export namespace Course{
