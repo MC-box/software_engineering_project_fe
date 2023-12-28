@@ -26,7 +26,6 @@
             type="primary"
             style="min-width: 80px; margin-left: 83%"
             @click="reverse()"
-            :disabled="isSubmit"
             >查看题解</a-button
           >
         </div>
@@ -71,64 +70,23 @@
           </a-list>
         </div>
         <div v-else>
-          <div v-if="ifWriteUp" style="background-color: white">
-            <div class="title">
-              题解列表 <PlusCircleOutlined style="margin-left: 84%" /><span
-                style="margin-right: 20px; margin-left: 7px; font-size: 14px"
-                @click="showModal"
-              >
-                写题解</span
-              >
-            </div>
-            <a-list
-              item-layout="horizontal"
-              :data-source="data"
-              style="height: 6cm"
+          <div class="title">题目选项</div>
+          <div class="doing">
+            <a-checkbox-group
+              name="checkboxgroup"
+              :options="selectedOptions"
+              style="display: grid; gap: 24px"
+              v-model:value="selectedAnswer"
+            />
+            <a-button
+              type="primary"
+              style="float: right; margin-top: 15px; width: 80px"
+              @click="submitSelected"
+              :disabled="isSubmit"
+              >提交</a-button
             >
-              <template #renderItem="{ item }">
-                <a-list-item>
-                  <a-list-item-meta :description="`题解 By ${item.author}`">
-                    <template #title>
-                      <span
-                        @click="
-                          router.push({
-                            name: 'writeup',
-                            params: { id: item.solutionid },
-                          })
-                        "
-                        style="cursor: pointer"
-                        >{{ item.name }}</span
-                      >
-                      <!-- <a @click="{ router.push({ name: 'writeup', params: { id: item.key } }) }">{{ item.title }}</a> -->
-                    </template>
-                    <template #avatar>
-                      <a-avatar src="https://joeschmoe.io/api/v1/random" />
-                    </template>
-                  </a-list-item-meta>
-                </a-list-item>
-              </template>
-            </a-list>
-          </div>
-          <div v-else>
-            <div class="title">题目选项</div>
-            <div class="doing">
-              <a-checkbox-group
-                name="checkboxgroup"
-                :options="selectedOptions"
-                style="display: grid; gap: 24px"
-                v-model:value?="selectedAnswer"
-              />
-              <a-button
-                type="primary"
-                style="float: right; margin-top: 15px; width: 80px"
-                @click="submitSelected"
-                :disabled="isSubmit"
-                >提交</a-button
-              >
-            </div>
           </div>
         </div>
-        <RouterView></RouterView>
         <!-- 这一部分需要换成router-view以展示不同题型的选项 -->
       </section>
     </div>
@@ -154,31 +112,79 @@
       </a-card>
       <br />
       <section class="description">
-        <div class="title">题目描述</div>
+        <div class="title">
+          <span>题目描述</span
+          ><a-button
+            type="primary"
+            style="min-width: 80px; margin-left: 83%"
+            @click="reverse()"
+            >查看题解</a-button
+          >
+        </div>
         <!-- <RichTextEditor></RichTextEditor> -->
         <div class="p_">{{ problemdescription }}</div>
-        <div class="title">答题区</div>
-        <div style="background-color: white">
-          <Editor
-            v-model="BlankFillAnswer"
-            placeholder="请输入你的答案"
-            style="margin-top: 20px"
-          ></Editor>
-        </div>
-        <div
-          style="
-            background-color: white;
-            min-height: 40px;
-            padding-bottom: 15px;
-            text-align: right;
-          "
-        >
-          <a-button
-            type="primary"
-            style="margin-right: 20px; margin-top: 15px; width: 80px"
-            @click="submitBlank"
-            >提交</a-button
+        <div v-if="ifWriteUp" style="background-color: white">
+          <div class="title">
+            题解列表 <PlusCircleOutlined style="margin-left: 84%" /><span
+              style="margin-right: 20px; margin-left: 7px; font-size: 14px"
+              @click="showModal"
+            >
+              写题解</span
+            >
+          </div>
+          <a-list
+            item-layout="horizontal"
+            :data-source="data"
+            style="height: 6cm"
           >
+            <template #renderItem="{ item }">
+              <a-list-item>
+                <a-list-item-meta :description="`题解 By ${item.author}`">
+                  <template #title>
+                    <span
+                      @click="
+                        router.push({
+                          name: 'writeup',
+                          params: { id: item.solutionid },
+                        })
+                      "
+                      style="cursor: pointer"
+                      >{{ item.name }}</span
+                    >
+                    <!-- <a @click="{ router.push({ name: 'writeup', params: { id: item.key } }) }">{{ item.title }}</a> -->
+                  </template>
+                  <template #avatar>
+                    <a-avatar src="https://joeschmoe.io/api/v1/random" />
+                  </template>
+                </a-list-item-meta>
+              </a-list-item>
+            </template>
+          </a-list>
+        </div>
+        <div v-else>
+          <div class="title">答题区</div>
+          <div style="background-color: white">
+            <Editor
+              v-model="BlankFillAnswer"
+              placeholder="请输入你的答案"
+              style="margin-top: 20px"
+            ></Editor>
+          </div>
+          <div
+            style="
+              background-color: white;
+              min-height: 40px;
+              padding-bottom: 15px;
+              text-align: right;
+            "
+          >
+            <a-button
+              type="primary"
+              style="margin-right: 20px; margin-top: 15px; width: 80px"
+              @click="submitBlank"
+              >提交</a-button
+            >
+          </div>
         </div>
         <!-- 这一部分需要换成router-view以展示不同题型的选项 -->
       </section>
@@ -205,7 +211,7 @@
 <style lang="less" scoped></style>
 
 <script setup lang="ts">
-import { reactive, ref, onBeforeMount } from "vue";
+import { reactive, ref, onBeforeMount, onMounted } from "vue";
 import Editor from "../components/RichTextEditor.vue";
 // import { CheckboxGroup } from "ant-design-vue";
 import { message } from "ant-design-vue";
@@ -294,9 +300,8 @@ function difficultyColor(difficulty: number) {
       return "hard";
   }
 }
-let isSubmit =  ref<boolean>();
+let isSubmit = ref<boolean>();
 const submitSelected = async () => {
-
   if (selectedAnswer.value.length == 0) {
     message.error("请选择答案");
     return;
@@ -392,14 +397,15 @@ let reverse = async () => {
     const wpid = await writeupApi.GetWriteUpId(
       parseInt(rExp.exec(route.path)[0])
     );
-    if ("solutionid" in wpid) {
+  console.log(wpid);
+    if (wpid.length !== 0 && "solutionid" in wpid[0]) {
       data.value = wpid;
     } else {
       if ("detail" in wpid) {
         // message.error(wpid.msg);
       } else {
         // 没有找到任何题解，即为空
-        message.error();
+        // message.error();
       }
     }
   }
