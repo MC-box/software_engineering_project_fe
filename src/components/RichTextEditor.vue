@@ -3,7 +3,7 @@
 import '@wangeditor/editor/dist/css/style.css';
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
 import { IToolbarConfig } from '@wangeditor/editor';
-import { shallowRef, computed, onMounted, onBeforeUnmount } from 'vue';
+import { shallowRef, computed, onMounted, onBeforeUnmount, ref, watch } from 'vue';
 const props = withDefaults(defineProps<{
   modelValue: string
   placeholder: string
@@ -75,11 +75,17 @@ const toolbarConfig: Partial<IToolbarConfig> = {
     },
   ]
 }
-const editorConfig = { placeholder: props.placeholder, scroll: props.scroll, readOnly: props.readonly };
+const editorConfig = ref({ placeholder: props.placeholder, scroll: props.scroll, readOnly: props.readonly });
+
+watch(() => props.readonly, (value) => {
+  editorConfig.value.readOnly = value;
+  console.log("readonly: " + editorConfig.value.readOnly)
+})
 
 // 组件挂载
 onMounted(() => {
   console.log("富文本编辑器 Mounted");
+  console.log("readonly: " + editorConfig.value.readOnly)
 });
 // 组件销毁时也销毁编辑器
 onBeforeUnmount(() => {
@@ -99,7 +105,7 @@ const handleCreated = (editor: any) => {
     <div :style="props.readonly ? '' : 'border: 1px solid #ccc;'">
       <Toolbar v-if="!props.readonly" :editor="editorRef" :defaultConfig="toolbarConfig" mode="default"
         style="border-bottom: 1px solid #ccc" />
-      <Editor :defaultConfig="editorConfig" mode="default" v-model="value"
+      <Editor mode="default" v-model="value"
         :style="props.scroll ? 'height: 400px;overflow-y: hidden' : ''" @onCreated="handleCreated" />
     </div>
   </div>

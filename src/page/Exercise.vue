@@ -31,6 +31,13 @@
           <a-list item-layout="horizontal" :data-source="data" style="height: 6cm">
             <template #renderItem="{ item }">
               <a-list-item>
+                <template #actions>
+                  <!-- Todo: add delete button fail -->
+                  <!-- <div v-if="store.userInfo.role === item.contributorid || store.userInfo.role > 0">
+                    <a @click="deleteSolution(item.solutionid)">edit</a>
+                  </div> -->
+                  <a key="1234"></a>
+                </template>
                 <a-list-item-meta :description="`题解 By ${item.author}`">
                   <template #title>
                     <span @click="
@@ -115,7 +122,8 @@
         <div v-else>
           <div class="title">答题区</div>
           <div style="background-color: white">
-            <Editor v-model="BlankFillAnswer" placeholder="请输入你的答案" style="margin-top: 20px"></Editor>
+            <Editor :readonly="isSubmit" v-model="BlankFillAnswer" placeholder="请输入你的答案" style="margin-top: 20px">
+            </Editor>
           </div>
           <div style="
               background-color: white;
@@ -124,7 +132,7 @@
               text-align: right;
             ">
             <a-button type="primary" style="margin-right: 20px; margin-top: 15px; width: 80px"
-              @click="submitBlank">提交</a-button>
+              :disabled="isSubmit" @click="submitBlank">提交</a-button>
           </div>
         </div>
         <!-- 这一部分需要换成router-view以展示不同题型的选项 -->
@@ -152,7 +160,6 @@ import Editor from "../components/RichTextEditor.vue";
 import { message } from "ant-design-vue";
 import { useRouter, RouterView, useRoute } from "vue-router";
 import { CloseCircleOutlined, PlusCircleOutlined } from "@ant-design/icons-vue";
-import courseApi from "@/api/course";
 import writeupApi from "@/api/writeup";
 import attemptApi from "@/api/attempt";
 import exerciseApi from "@/api/exercise";
@@ -237,17 +244,18 @@ function difficultyColor(difficulty: number) {
       return "hard";
   }
 }
-let isSubmit = ref<boolean>();
+const isSubmit = ref<boolean>(false);
 const submitSelected = async () => {
+  console.log("isSubmit: " + isSubmit.value)
   if (selectedAnswer.value.length == 0) {
     message.error("请选择答案");
     return;
   }
   const result = selectedAnswer.value.join("");
   message.success("提交成功");
-  isSubmit.value = false;
+  isSubmit.value = true;
   // TODO: 选择题：接下来直接读取selectedAnswer的数据并与交互即可
-  let pid = parseInt(rExp.exec(route.path)[0]);
+  const pid = parseInt(rExp.exec(route.path)[0]);
   const a: Attempt.attemptInfo = {
     problemid: pid,
     content: result,
@@ -262,12 +270,14 @@ const submitSelected = async () => {
 };
 
 const submitBlank = async () => {
+  console.log("isSubmit: " + isSubmit.value)
   if (BlankFillAnswer.value == "<p><br></p>") {
     // 即没有填任何数据
     message.error("请选择答案");
     return;
   }
   message.success("提交成功");
+  isSubmit.value = true;
   let pid = parseInt(rExp.exec(route.path)[0]);
   const a: Attempt.attemptInfo = {
     problemid: pid,
@@ -344,7 +354,11 @@ const handleOk = async () => {
 // 动态题解信息
 const data = ref<WriteUp.WriteupInfo[]>();
 
-let reverse = async () => {
+const deleteSolution = async (solutionid: number) => {
+
+}
+
+const reverse = async () => {
   let pid = parseInt(rExp.exec(route.path)[0]);
 
   if (store.userInfo.role === 0) {
@@ -376,21 +390,21 @@ let reverse = async () => {
     // 我是老师
     ifWriteUp.value = !ifWriteUp.value;
     if (ifWriteUp.value) {
-        const wpid = await writeupApi.GetWriteUpId(
-          parseInt(rExp.exec(route.path)[0])
-        );
-        console.log(wpid);
-        if (wpid.length !== 0 && "solutionid" in wpid[0]) {
-          data.value = wpid;
+      const wpid = await writeupApi.GetWriteUpId(
+        parseInt(rExp.exec(route.path)[0])
+      );
+      console.log(wpid);
+      if (wpid.length !== 0 && "solutionid" in wpid[0]) {
+        data.value = wpid;
+      } else {
+        if ("detail" in wpid) {
+          // message.error(wpid.msg);
         } else {
-          if ("detail" in wpid) {
-            // message.error(wpid.msg);
-          } else {
-            // 没有找到任何题解，即为空
-            // message.error();
-          }
+          // 没有找到任何题解，即为空
+          // message.error();
         }
       }
+    }
   }
 };
 // interface probleminfo{
@@ -406,40 +420,59 @@ onBeforeMount(async () => {
     parseInt(rExp.exec(route.path)[0])
   );
   console.log(result);
-  if ("problemid" in result) {
-    console.log("success1");
-    problemdescription.value = result.content;
-    // problem.value = result.map((item) => {
-    //   id: item.
-    // })
-    const {
-      problemid,
-      name,
-      problemType,
-      difficult,
-      homeworkid,
-    }: Exercise.exerciseInfo = result;
-    problem.value = {
-      id: problemid,
-      title: name,
-      category: problemType === "choice" ? "选择题" : "填空题/简答题",
-      difficulty: difficult === "hard" ? 3 : difficult === "easy" ? 1 : 2,
-      courseName: "name",
-      Cnt: 1,
-    };
+  if ("problemid" in result === false) {
+    return;
+  }
+  console.log("success1");
+  problemdescription.value = result.content;
+  // problem.value = result.map((item) => {
+  //   id: item.
+  // })
+  const {
+    problemid,
+    name,
+    problemType,
+    difficult,
+    homeworkid,
+  }: Exercise.exerciseInfo = result;
+  problem.value = {
+    id: problemid,
+    title: name,
+    category: problemType === "choice" ? "选择题" : "填空题/简答题",
+    difficulty: difficult === "hard" ? 3 : difficult === "easy" ? 1 : 2,
+    courseName: "name",
+    Cnt: 1,
+  };
+  if (result.problemType === "choice") {
+    ifMulChoice = true;
+    ifBlankFill = false;
+    let result2 = ref<Exercise.Choice[]>();
+    result2.value = result.choice;
+    selectedOptions.value = result2.value.map((item) => ({
+      value: item.label,
+      label: item.label + " " + item.content,
+    }));
+  } else {
+    ifMulChoice = false;
+    ifBlankFill = true;
+  }
+
+  if (store.userInfo.role > 0) {
+    isSubmit.value = true;
+    return;
+  }
+  const attempt = await attemptApi.GetAttempt(
+    parseInt(rExp.exec(route.path)[0]),
+    store.userInfo.userid
+  );
+
+  if ("content" in attempt) {
     if (result.problemType === "choice") {
-      ifMulChoice = true;
-      ifBlankFill = false;
-      let result2 = ref<Exercise.Choice[]>();
-      result2.value = result.choice;
-      selectedOptions.value = result2.value.map((item) => ({
-        value: item.label,
-        label: item.label + " " + item.content,
-      }));
+      selectedAnswer.value = attempt.content.split(" ");
     } else {
-      ifMulChoice = false;
-      ifBlankFill = true;
+      BlankFillAnswer.value = attempt.content;
     }
+    isSubmit.value = true;
   }
 });
 </script>
