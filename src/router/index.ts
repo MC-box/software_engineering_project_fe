@@ -225,19 +225,10 @@ router.beforeEach(async (to, from, next) => {
         console.log(2)
         let token = Cookies.get("access_token")
         console.log(token)
-        // if (!token) {
-        //   token = sessionStorage.getItem("access_item")
-        //   if (token)
-        //   {
-        //       Cookies.set("access_token", token);
-        //   }
-        //   else
-        //   {
-        //     message.error("token失效，请重新登录")
-        //     Cookies.remove("token") // 清除cookie
-        //     next("/login")
-        //   }
-        // }
+        if (!token) {
+            message.error("请先登陆")
+            next("/login")
+        }
         if (doneInfo) {
             next()
         } else {
