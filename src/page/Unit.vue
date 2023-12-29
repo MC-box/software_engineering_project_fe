@@ -125,6 +125,11 @@ const handleOk = async () => {
         // Todo: courseid should be the current course id
         courseid: parseInt(rExp.exec(route.path)[0])
     };
+    
+    if (result.duedate < new Date().toISOString()) {
+        alert("截止日期不能早于当前日期")
+        return
+    }
     await homeworkApi.CreateHomework(result)
     date.value = null;
     homeworkname.value = "";

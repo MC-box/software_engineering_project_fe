@@ -99,7 +99,7 @@ const submitComment = async () => {
 }
 
 const DeleteComment = async (index: number) => {
-  let solutionid = 2;
+  const solutionid = parseInt(rExp.exec(route.path)[0]);
   console.log(comments.value[index].commentid)
   await commentApi.DeleteComment(comments.value[index].commentid);
   comments.value = await commentApi.GetComments(solutionid);
