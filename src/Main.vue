@@ -53,7 +53,7 @@
           <file-outlined />
           <span>交流区</span>
         </a-menu-item> -->
-        <a-menu-item
+        <!-- <a-menu-item
           key="109"
           @click="
             router.push({ name: 'discenter' });
@@ -62,7 +62,7 @@
         >
           <file-outlined />
           <span>批改页面</span>
-        </a-menu-item>
+        </a-menu-item> -->
         <div v-if="store.userInfo.role == 0">
           <a-menu-item key="110" @click="router.push({ name: 'selectCourse' })">
             <team-outlined />
