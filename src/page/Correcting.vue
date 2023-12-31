@@ -3,7 +3,7 @@
   <label>当前分数：{{ attemptInfo.point === -1 ? '暂无分数' : attemptInfo.point }}</label>
   <a-divider />
   <h3>题目描述：</h3>
-  <p
+  <!-- <p
     style="
       background-color: rgba(189, 188, 188, 0.959) cec;
       padding: 20px;
@@ -13,10 +13,11 @@
     "
   >
     {{ exerciseInfo.content }}
-  </p>
+  </p> -->
+  <v-md-preview :text="exerciseInfo.content"></v-md-preview>
   <a-divider />
   <h3>学生答案：</h3>
-  <div
+  <!-- <div
     style="
       background-color: rgba(189, 188, 188, 0.959) cec;
       padding: 20px;
@@ -26,7 +27,8 @@
     "
   >
     {{ attemptInfo.content }}
-  </div>
+  </div> -->
+  <v-md-preview :text="attemptInfo.content"></v-md-preview>
   <a-divider />
   <label>教师评分：</label>
   <a-input

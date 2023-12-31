@@ -192,11 +192,13 @@ async function handleEdit() {
         <div class="font-strong" style="margin-top: 20px; margin-bottom: 20px">
           题目描述
         </div>
-        <RichTextEditor
+        <!-- todo: change to md -->
+        <!-- <RichTextEditor
           placeholder="请输入题目描述，如需填空请使用下划线替代"
           v-model="problem.question"
           style="margin-top: 30px"
-        />
+        /> -->
+        <v-md-editor v-model="problem.question" aria-placeholder="请输入题目描述，如需填空请使用下划线替代" height="400px"></v-md-editor>
         <div
           v-if="isSelectProblem"
           class="font-strong"

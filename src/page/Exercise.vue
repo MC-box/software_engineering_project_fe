@@ -16,11 +16,14 @@
       <br />
       <section class="description">
         <div class="title">
-          <span>题目描述</span><a-button type="primary" style="min-width: 80px; margin-left: 83%"
+          <span>题目描述</span>
+          <a-button type="primary" style="min-width: 80px; margin-left: 83%"
             @click="reverse()">查看题解</a-button>
         </div>
         <!-- <RichTextEditor></RichTextEditor> -->
-        <div class="p_">{{ problemdescription }}</div>
+        <!-- <div class="p_">{{ problemdescription }}</div> -->
+        <v-md-preview :text="problemdescription" class="p_"></v-md-preview>
+
         <div v-if="ifWriteUp" style="background-color: white">
           <div class="title">
             题解列表
@@ -85,11 +88,13 @@
       <br />
       <section class="description">
         <div class="title">
-          <span>题目描述</span><a-button type="primary" style="min-width: 80px; margin-left: 83%"
+          <span>题目描述</span>
+          <a-button type="primary" style="min-width: 80px; margin-left: 83%"
             @click="reverse()">查看题解</a-button>
         </div>
         <!-- <RichTextEditor></RichTextEditor> -->
-        <div class="p_">{{ problemdescription }}</div>
+        <!-- <div class="p_">{{ problemdescription }}</div> -->
+        <v-md-preview :text="problemdescription" class="p_"></v-md-preview>
         <div v-if="ifWriteUp" style="background-color: white">
           <div class="title">
             题解列表
@@ -127,8 +132,14 @@
         <div v-else>
           <div class="title">答题区</div>
           <div style="background-color: white">
-            <Editor :readonly="isSubmit" v-model="BlankFillAnswer" placeholder="请输入你的答案" style="margin-top: 20px">
-            </Editor>
+            <!-- <Editor :readonly="isSubmit" v-model="BlankFillAnswer" placeholder="请输入你的答案" style="margin-top: 20px">
+            </Editor> -->
+            <div v-if="!isSubmit">
+              <v-md-editor v-model="BlankFillAnswer"  style="margin-top: 20px" placeholder="请输入你的答案"></v-md-editor>
+            </div>
+            <div v-else>
+              <v-md-preview :text="BlankFillAnswer"></v-md-preview>
+            </div>
           </div>
           <div style="
               background-color: white;
@@ -258,7 +269,6 @@ const submitSelected = async () => {
   }
   const result = selectedAnswer.value.join("");
   message.success("提交成功");
-  isSubmit.value = true;
   // TODO: 选择题：接下来直接读取selectedAnswer的数据并与交互即可
   const pid = parseInt(rExp.exec(route.path)[0]);
   const a: Attempt.attemptInfo = {
@@ -271,18 +281,19 @@ const submitSelected = async () => {
   } else {
     await attemptApi.CreateAttempt(a);
   }
+  isSubmit.value = true;
   // 这里可以添加答案界面，即显示出分数
+
 };
 
 const submitBlank = async () => {
   console.log("isSubmit: " + isSubmit.value)
-  if (BlankFillAnswer.value == "<p><br></p>") {
+  if (BlankFillAnswer.value == "") {
     // 即没有填任何数据
     message.error("请选择答案");
     return;
   }
   message.success("提交成功");
-  isSubmit.value = true;
   let pid = parseInt(rExp.exec(route.path)[0]);
   const a: Attempt.attemptInfo = {
     problemid: pid,
@@ -295,6 +306,8 @@ const submitBlank = async () => {
   } else {
     await attemptApi.CreateAttempt(a);
   }
+  isSubmit.value = true;
+
   // TODO: 填空题：接下来直接读取BlankFillAnswer的数据并与后端交互即可(上传图片功能暂未解决)
 };
 
@@ -320,7 +333,7 @@ const handleOk = async () => {
     problemid: parseInt(rExp.exec(route.path)[0]),
     content: markdownText.value,
     contributorid: store.userInfo.userid,
-    name: "题解",
+    name: title.value,
   };
 
   const return_value = await writeupApi.CreateWriteUp(writeupinfo);
@@ -483,6 +496,7 @@ onBeforeMount(async () => {
     }
     isSubmit.value = true;
   }
+  console.log(BlankFillAnswer.value)
 });
 </script>
 

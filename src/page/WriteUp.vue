@@ -4,6 +4,8 @@
   <a @click="router.back">
     <CloseCircleOutlined :style="{ fontSize: '20px', color: '#08c' }" />
   </a>
+  <h1 style="margin-top: 10px;">题解</h1>
+  <a-divider />
   <v-md-preview :text="text"></v-md-preview>
   <!-- <u-comment :config="config" @submit="submit" @like="like" relative-time> -->
   <!-- <div>这里编写主题帖内容</div> -->
@@ -69,12 +71,15 @@ let rExp = new RegExp("\\d+");
 const route = useRoute()
 const store = userStore()
 const text = ref('')
+const title = ref<string>('');
+
 onBeforeMount(async () => {
   // Todo: solutionid must be get from router
   const solutionid = parseInt(rExp.exec(route.path)[0]);
   const wp = await writeupApi.GetWriteUp(solutionid);
   text.value = wp.content;
   comments.value = await commentApi.GetComments(solutionid);
+  title.value = wp.name;
   console.log(comments.value)
 })
 
