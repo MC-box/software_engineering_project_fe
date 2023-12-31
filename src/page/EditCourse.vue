@@ -65,6 +65,7 @@ const createCourse = async () => {
     teacherid: store.userInfo.userid,
   };
   await courseApi.CreateCourse(course_);
+  location.reload();
 };
 
 onMounted(async () => {
