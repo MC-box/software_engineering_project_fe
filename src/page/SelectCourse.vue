@@ -17,6 +17,7 @@ import { ref, onBeforeMount } from 'vue'
 import { ElTable } from 'element-plus';
 import { Course } from '@/paking/store';
 import courseApi from '@/api/course';
+import { message } from "ant-design-vue";
 
 const courses = ref<Course.selectCourseInfo[]>()
 const get_course = async () => {
@@ -30,6 +31,8 @@ onBeforeMount(async () => {
 const selectCourse = async (course: Course.selectCourseInfo) => {
     await courseApi.SelectCourse(course.courseid)
     await get_course()
+    message.success("选课成功");
+    location.reload();
 }
 
 
