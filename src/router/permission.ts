@@ -18,21 +18,11 @@ router.beforeEach((to, from, next) => {
       else {
         // 首先先从localStorage中查看是否有token
         // 判断是否有token
-        let token = Cookies.get("access_token")
-        // if (!token) {
-        //   token = sessionStorage.getItem("access_item")
-        //   if (token)
-        //   {
-        //       Cookies.set("access_token", token);
-        //   }
-        //   else
-        //   {
-        //     // message.error("token失效，请重新登录")
-        //     // removeCookie("token") // 清除cookie
-        //     // next("/login")
-        //     // return;
-        //   }
-        // }
+        const token = Cookies.get("access_token")
+        if (!token) {
+          Cookies.remove('access_token')
+          next('/login')
+        }
         console.log("doneinfo is" + doneInfo)
         if (doneInfo) next()
         else {

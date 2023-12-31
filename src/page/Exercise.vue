@@ -33,10 +33,9 @@
               <a-list-item>
                 <template #actions>
                   <!-- Todo: add delete button fail -->
-                  <!-- <div v-if="store.userInfo.role === item.contributorid || store.userInfo.role > 0">
-                    <a @click="deleteSolution(item.solutionid)">edit</a>
-                  </div> -->
-                  <a key="1234"></a>
+                  <div v-if="store.userInfo.role === item.contributorid || store.userInfo.role > 0">
+                    <a @click="deleteSolution(item.solutionid)">delete</a>
+                  </div>
                 </template>
                 <a-list-item-meta :description="`题解 By ${item.author}`">
                   <template #title>
@@ -101,6 +100,12 @@
           <a-list item-layout="horizontal" :data-source="data" style="height: 6cm">
             <template #renderItem="{ item }">
               <a-list-item>
+                <template #actions>
+                  <!-- Todo: add delete button fail -->
+                  <div v-if="store.userInfo.role === item.contributorid || store.userInfo.role > 0">
+                    <a @click="deleteSolution(item.solutionid)">delete</a>
+                  </div>
+                </template>
                 <a-list-item-meta :description="`题解 By ${item.author}`">
                   <template #title>
                     <span @click="
@@ -131,8 +136,8 @@
               padding-bottom: 15px;
               text-align: right;
             ">
-            <a-button type="primary" style="margin-right: 20px; margin-top: 15px; width: 80px"
-              :disabled="isSubmit" @click="submitBlank">提交</a-button>
+            <a-button type="primary" style="margin-right: 20px; margin-top: 15px; width: 80px" :disabled="isSubmit"
+              @click="submitBlank">提交</a-button>
           </div>
         </div>
         <!-- 这一部分需要换成router-view以展示不同题型的选项 -->
@@ -355,8 +360,12 @@ const handleOk = async () => {
 const data = ref<WriteUp.WriteupInfo[]>();
 
 const deleteSolution = async (solutionid: number) => {
-
-}
+  await writeupApi.DeleteWriteUp(solutionid);
+  const wpid = await writeupApi.GetWriteUpId(
+    parseInt(rExp.exec(route.path)[0])
+  );
+  data.value = wpid;
+};
 
 const reverse = async () => {
   let pid = parseInt(rExp.exec(route.path)[0]);

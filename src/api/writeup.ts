@@ -28,7 +28,7 @@ function CreateWriteUp(data: WriteUp.WriteUpInfo_submit): Promise<string>{
 function DeleteWriteUp(solutionid: number): Promise<string>{
     return service({
         method: "DELETE",
-        url: "api/v1/solution/" + solutionid.toString()
+        url: "api/v1/solution/delete/" + solutionid.toString()
     })
 }
 
