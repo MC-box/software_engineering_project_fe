@@ -5,10 +5,6 @@ npm install
 npm run dev
 ```
 
-# 更新记录
-
-2023/12/18 更新选择题做题界面：Exercise.vue、ExeCenter.vue
-
-2023/12/22 TODO：编写题解界面、编写禁止提交、编写撰写题解界面
-
-2023/12/27 BUG: Unit.vue a-table中无法显示动态数据
+# Todo
+- refactor register page, add role selectOptons
+- fix the richEditor content is html problem
