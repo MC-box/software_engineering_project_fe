@@ -208,7 +208,7 @@ export namespace Attempt{
   interface attemptInfo_point{
     problemid: int
     studentid: int
-    point: int
+    point: number
   }
 
 }

@@ -207,9 +207,12 @@ async function handleEdit() {
             <ASwitch v-model:checked="checked"></ASwitch>
           </div> -->
           <!-- <p>debug: {{ inputValues }}</p> -->
-          <div v-for="(inputValue, index) in inputValues" style="margin-top: 25px;" :key="index">
+          <div v-for="(inputValue, index) in inputValues" style="margin-top: 25px; display: flex; align-items: center;" :key="index">
             <span style="width: 30px;">{{ index + 1}}.</span>
-            <span><input style="background-color: #fafafa; display: inline-block; width:90%;" v-model="inputValues[index]" /><MinusOutlined @click="delAns" style="margin-left:30px;" /></span>
+            <span style="display: flex; align-items: center;">
+              <input style="background-color: #fafafa; display: inline-block; width:90%;" v-model="inputValues[index]" />
+              <MinusOutlined @click="delAns" style="margin-left: 30px;" />
+            </span>
           </div>
           <PlusOutlined @click="addAns" style="margin-top: 25px;"/>
         </div>
@@ -233,30 +236,6 @@ async function handleEdit() {
                 :value="index + 1"
                 >{{ item }}
               </ASelectOption>
-            </ASelect>
-          </AFormItem>
-          <AFormItem name="课程" label="课程">
-            <AAutoComplete
-              v-model:value="problem.courseName"
-              :options="options"
-              allowClear
-              defaultOpen
-              placeholder="请输入课程"
-              @select="onSelect"
-              @search="onSearch"
-              @change="onChange"
-            />
-          </AFormItem>
-          <AFormItem name="标签" label="标签">
-            <ASelect
-              mode="tags"
-              placeholder="请输入标签"
-              v-model:value="showTags"
-              @change=""
-            >
-              <ASelectOption v-for="tag in tags" :value="tag">{{
-                tag
-              }}</ASelectOption>
             </ASelect>
           </AFormItem>
         </AForm>
