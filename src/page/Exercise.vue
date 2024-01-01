@@ -17,8 +17,7 @@
       <section class="description">
         <div class="title">
           <span>题目描述</span>
-          <a-button type="primary" style="min-width: 80px; margin-left: 83%"
-            @click="reverse()">查看题解</a-button>
+          <a-button type="primary" style="min-width: 80px; margin-left: 83%" @click="reverse()">查看题解</a-button>
         </div>
         <!-- <RichTextEditor></RichTextEditor> -->
         <!-- <div class="p_">{{ problemdescription }}</div> -->
@@ -89,12 +88,13 @@
       <section class="description">
         <div class="title">
           <span>题目描述</span>
-          <a-button type="primary" style="min-width: 80px; margin-left: 83%"
-            @click="reverse()">查看题解</a-button>
+          <a-button type="primary" style="min-width: 80px; margin-left: 83%" @click="reverse()">查看题解</a-button>
         </div>
         <!-- <RichTextEditor></RichTextEditor> -->
         <!-- <div class="p_">{{ problemdescription }}</div> -->
-        <v-md-preview :text="problemdescription" class="p_"></v-md-preview>
+        <div class="p_">
+          <v-md-preview :text="problemdescription"></v-md-preview>
+        </div>
         <div v-if="ifWriteUp" style="background-color: white">
           <div class="title">
             题解列表
@@ -135,7 +135,7 @@
             <!-- <Editor :readonly="isSubmit" v-model="BlankFillAnswer" placeholder="请输入你的答案" style="margin-top: 20px">
             </Editor> -->
             <div v-if="!isSubmit">
-              <v-md-editor v-model="BlankFillAnswer"  style="margin-top: 20px" placeholder="请输入你的答案"></v-md-editor>
+              <v-md-editor v-model="BlankFillAnswer" style="margin-top: 20px" placeholder="请输入你的答案"></v-md-editor>
             </div>
             <div v-else>
               <v-md-preview :text="BlankFillAnswer"></v-md-preview>
@@ -535,15 +535,6 @@ onBeforeMount(async () => {
     /* justify-content: space-between; */
   }
 
-  div.p_ {
-    min-height: 100px;
-    background-color: white;
-    align-items: center;
-    padding-left: 20px;
-    padding-right: 20px;
-    /* vertical-align: center; */
-    display: flex;
-  }
 
   .doing {
     min-height: 300px;
@@ -567,6 +558,16 @@ onBeforeMount(async () => {
 
 #editor-container {
   height: 500px;
+}
+
+.p_ {
+  min-height: 100px;
+  background-color: white;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  /* vertical-align: center; */
+  display: flex;
 }
 
 /* .ant-checkbox-inner {

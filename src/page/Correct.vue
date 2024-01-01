@@ -7,16 +7,21 @@
         </a>
       </template>
       <template v-else-if="column.key === 'condition'">
-          {{ record.point === -1 ? "未批改" : "已批改" }}
+        {{ record.point === -1 ? "未批改" : "已批改" }}
       </template>
       <template v-else-if="column.key === 'point'">
+        <div v-if="record.point === -1">
+          暂无分数
+        </div>
+        <div v-else>
           {{ record.point }}
+        </div>
       </template>
     </template>
   </a-table>
 </template>
 <script setup lang="ts">
-import { onBeforeMount, ref} from "vue";
+import { onBeforeMount, ref } from "vue";
 import attemptApi from "@/api/attempt";
 import { Attempt } from "@/paking/store";
 import { useRoute, useRouter } from "vue-router";
@@ -50,6 +55,6 @@ onBeforeMount(async () => {
   console.log(data);
 });
 const enter = (record: any) => {
-    router.push( { name: "correcting", params: { id: record.problemid, stuid: record.studentid } } );
+  router.push({ name: "correcting", params: { id: record.problemid, stuid: record.studentid } });
 }   
 </script>
