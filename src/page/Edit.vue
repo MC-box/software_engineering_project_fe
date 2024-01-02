@@ -22,6 +22,7 @@ interface myproblem {
   category: string;
   difficulty: number;
   courseName: string;
+  point: number;
 }
 
 // const problem = reactive({
@@ -33,12 +34,13 @@ interface myproblem {
 //   tags: [],
 //   ans: "",
 // });
-let problem = ref<myproblem>({
+const problem = ref<myproblem>({
   title: "",
   question: "",
   category: "选择",
   courseName: "",
-  difficulty: 1
+  difficulty: 1,
+  point: 0,
 })
 
 onBeforeMount(async () => {
@@ -134,7 +136,7 @@ async function handleEdit() {
       label: string,
       iscorrect: boolean
     }
-    const { title, question, category, difficulty} : myproblem = problem.value;
+    const { title, question, category, difficulty, point} : myproblem = problem.value;
     console.log(inputValues)
     const mychoice : Choice[] = inputValues.value.map((inputValue, index) => {
         return { 
@@ -148,7 +150,7 @@ async function handleEdit() {
       content: question,
       problemType: category === "选择" ? "choice" : "blank",
       difficult: difficulty === 1 ? "简单" : difficulty === 2 ? "中等" : "困难",
-      point: 0,
+      point: point,
       // todo: change
       homeworkid: parseInt(rExp.exec(route.path)[0]),
       choice: category === "选择" ? mychoice : []
@@ -240,6 +242,16 @@ async function handleEdit() {
               </ASelectOption>
             </ASelect>
           </AFormItem>
+        <AFormItem name="Property">
+          <p class="property-title">
+            <span style="color: red">*</span>分数（必填）
+          </p>
+          <AInputNumber
+            placeholder="请输入分数"
+            v-model:value="problem.point"
+            style="width: 120px">
+          </AInputNumber>
+        </AFormItem>
         </AForm>
       </div>
     </main>
