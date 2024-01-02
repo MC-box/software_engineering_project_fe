@@ -2,7 +2,7 @@
 import problemStore from "../store/problem";
 import { message } from "ant-design-vue";
 import problemApi from "../api/problem.ts";
-import { reactive, onBeforeMount, ref, computed, onMounted } from "vue";
+import { reactive, onBeforeMount, ref, computed, onMounted, defineExpose } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import RichTextEditor from "../components/RichTextEditor.vue";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons-vue"
@@ -161,6 +161,10 @@ async function handleEdit() {
     message.error("数据缺失，无法新建题目");
   }
 }
+
+defineExpose({
+  handleEdit
+})
 </script>
 
 <template>
@@ -255,16 +259,6 @@ async function handleEdit() {
         </AForm>
       </div>
     </main>
-    <div>
-      <!-- <AButton type="default" class="shadow" style="margin-right:1rem;border-radius: 8px;">保存草稿</AButton> -->
-      <AButton
-        type="primary"
-        class="shadow"
-        style="border-radius: 8px; margin-top: 20px"
-        @click="handleEdit"
-        >发布题目
-      </AButton>
-    </div>
   </div>
   <!-- 需要区分选择题和填空题，选择题需要添加选项的选择，而填空题不需要，增加单变量即可 -->
 </template>

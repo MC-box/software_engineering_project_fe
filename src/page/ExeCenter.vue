@@ -51,7 +51,7 @@
     width="1300px"
     :bodyStyle="{ height: '1000px', overflow: 'hidden', overflowY: 'scroll' }"
     @ok="handleOk"> 
-    <Edit></Edit>
+    <Edit ref="editRef"></Edit>
     </a-modal>
 </template>
 <script lang="ts" setup>
@@ -64,6 +64,8 @@ import { ref, onBeforeMount } from 'vue'
 import { Exercise } from '@/paking/store'
 import exerciseApi from '@/api/exercise'
 import Edit from "@/page/Edit.vue"
+
+
 let ifDisplay = true;
 const enter = (key: string) => {
   ifDisplay = true;
@@ -143,7 +145,9 @@ const DeleteProblem = async (record: Exercise.exercisesInfo) => {
   data.value = await exerciseApi.GetExercises(parseInt(rExp.exec(route.path)[0]));
 }
 
+const editRef = ref(null);
 const handleOk = async () => {
+  editRef.value.handleEdit();
   confirmLoading.value = true;
   data.value = await exerciseApi.GetExercises(parseInt(rExp.exec(route.path)[0]));
   setTimeout(() => {
