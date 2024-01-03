@@ -28,14 +28,18 @@
   >
     {{ attemptInfo.content }}
   </div> -->
-  <v-md-preview :text="attemptInfo.content"></v-md-preview>
+  <div v-if="exerciseInfo.problemType === 'choice'">
+    <div class="doing">
+      <a-checkbox-group name="checkboxgroup" :options="selectedOptions" style="display: grid; gap: 24px" v-model:value="selectedAnswer"
+        disabled="true" />
+    </div>
+  </div>
+  <div v-else>
+    <v-md-preview :text="attemptInfo.content"></v-md-preview>
+  </div>
   <a-divider />
   <label>教师评分：</label>
-  <a-input
-    style="width: 10%; margin-right: 20px"
-    placeholder="请输入评分"
-    v-model:value="point"
-  ></a-input>
+  <a-input style="width: 10%; margin-right: 20px" placeholder="请输入评分" v-model:value="point"></a-input>
   <a-button type="primary" @click="submit">提交评分</a-button>
 </template>
 
@@ -73,23 +77,28 @@ const exerciseInfo = reactive<Exercise.exerciseInfo>({
   homeworkid: 0,
 });
 
-onBeforeMount( async () => {
-    const res = await attemptApi.GetAttempt(pid, stuid);
-    attemptInfo.problemid = res.problemid;
-    attemptInfo.studentid = res.studentid;
-    attemptInfo.content = res.content;
-    attemptInfo.point = res.point;
+onBeforeMount(async () => {
+  const res = await attemptApi.GetAttempt(pid, stuid);
+  attemptInfo.problemid = res.problemid;
+  attemptInfo.studentid = res.studentid;
+  attemptInfo.content = res.content;
+  attemptInfo.point = res.point;
 
-    const res1 = await exerciseApi.GetExerciseInfo(pid);
-    exerciseInfo.problemid = res1.problemid;
-    exerciseInfo.name = res1.name;
-    exerciseInfo.problemType = res1.problemType;
-    exerciseInfo.difficult = res1.difficult;
-    exerciseInfo.point = res1.point;
-    exerciseInfo.content = res1.content;
-    exerciseInfo.choice = res1.choice;
-    exerciseInfo.homeworkid = res1.homeworkid;
+  const res1 = await exerciseApi.GetExerciseInfo(pid);
+  exerciseInfo.problemid = res1.problemid;
+  exerciseInfo.name = res1.name;
+  exerciseInfo.problemType = res1.problemType;
+  exerciseInfo.difficult = res1.difficult;
+  exerciseInfo.point = res1.point;
+  exerciseInfo.content = res1.content;
+  exerciseInfo.choice = res1.choice;
+  exerciseInfo.homeworkid = res1.homeworkid;
 
+  selectedOptions.value = res1.choice.map((item) => ({
+    value: item.label,
+    label: item.label + " " + item.content,
+  }));
+  selectedAnswer.value = attemptInfo.content.split(" ");
 })
 
 const submit = async () => {
@@ -116,4 +125,13 @@ const submit = async () => {
   point.value = undefined;
   message.success("评分成功");
 };
+
+interface OptionsItem {
+  label: string;
+  value: string;
+}
+
+const selectedOptions = ref<OptionsItem[]>();
+const selectedAnswer = ref([]);
+
 </script>
