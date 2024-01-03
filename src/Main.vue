@@ -30,12 +30,14 @@
           <template #title>
             <span>
               <user-outlined />
-              <span>我的选课</span>
+              <span v-if="store.userInfo.role == 0">
+                我的选课
+              </span>
+              <span v-else>
+                我的课程
+              </span>
             </span>
           </template>
-          <!-- <a-menu-item key="3">Tom</a-menu-item>
-          <a-menu-item key="4">Bill</a-menu-item>
-          <a-menu-item key="5">Alex</a-menu-item> -->
           <a-menu-item
             v-for="course in courses"
             :key="course.courseid"
@@ -49,20 +51,6 @@
             ></a-menu-item
           >
         </a-sub-menu>
-        <!-- <a-menu-item key="109" @click="router.push({ name: 'discenter' }); setDiscussionTitle()">
-          <file-outlined />
-          <span>交流区</span>
-        </a-menu-item> -->
-        <!-- <a-menu-item
-          key="109"
-          @click="
-            router.push({ name: 'discenter' });
-            setDiscussionTitle();
-          "
-        >
-          <file-outlined />
-          <span>批改页面</span>
-        </a-menu-item> -->
         <div v-if="store.userInfo.role == 0">
           <a-menu-item key="110" @click="router.push({ name: 'selectCourse' })">
             <team-outlined />
