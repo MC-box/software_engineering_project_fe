@@ -61,7 +61,7 @@
           <div class="title">题目选项</div>
           <div class="doing">
             <a-checkbox-group name="checkboxgroup" :options="selectedOptions" style="display: grid; gap: 24px"
-              v-model:value="selectedAnswer" />
+              v-model:value="selectedAnswer" :disabled="isSubmit"/>
             <a-button type="primary" style="float: right; margin-top: 15px; width: 80px" @click="submitSelected"
               :disabled="isSubmit">提交</a-button>
           </div>
@@ -267,7 +267,7 @@ const submitSelected = async () => {
     message.error("请选择答案");
     return;
   }
-  const result = selectedAnswer.value.join("");
+  const result = selectedAnswer.value.join(" ");
   message.success("提交成功");
   // TODO: 选择题：接下来直接读取selectedAnswer的数据并与交互即可
   const pid = parseInt(rExp.exec(route.path)[0]);
@@ -489,6 +489,7 @@ onBeforeMount(async () => {
   );
 
   if ("content" in attempt) {
+    console.log(attempt)
     if (result.problemType === "choice") {
       selectedAnswer.value = attempt.content.split(" ");
     } else {

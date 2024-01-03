@@ -13,9 +13,13 @@
         <div v-if="record.point === -1">
           暂无分数
         </div>
+        
         <div v-else>
           {{ record.point }}
         </div>
+      </template>
+      <template v-else-if="column.key === 'delete'">
+        <a-button type="primary" danger @click="deleteAttempt(record)">删除</a-button>
       </template>
     </template>
   </a-table>
@@ -44,11 +48,16 @@ let columns = [
     dataIndex: "point",
     key: "point",
   },
+  {
+    title: "",
+    dataIndex: "delete",
+    key: "delete",
+  }
 ];
 
 let data = ref<Attempt.attemptInfo_return[]>();
 onBeforeMount(async () => {
-  let pid = parseInt(rExp.exec(route.path)[0]);
+  const pid = parseInt(rExp.exec(route.path)[0]);
   const result = await attemptApi.GetAttemptByProblemid(pid);
   // 检测一下
   data.value = result;
@@ -56,5 +65,14 @@ onBeforeMount(async () => {
 });
 const enter = (record: any) => {
   router.push({ name: "correcting", params: { id: record.problemid, stuid: record.studentid } });
-}   
+}
+
+const deleteAttempt = async (record: any) => {
+  await attemptApi.DeleteAttempt(record.problemid, record.studentid);
+  const pid = parseInt(rExp.exec(route.path)[0]);
+  const result = await attemptApi.GetAttemptByProblemid(pid);
+  // 检测一下
+  data.value = result;
+  console.log(data);
+} 
 </script>

@@ -141,7 +141,7 @@ async function handleEdit() {
     const mychoice : Choice[] = inputValues.value.map((inputValue, index) => {
         return { 
                  content: inputValue,
-                 label: String.fromCharCode(index + 65 - 1),
+                 label: String.fromCharCode(index + 65),
                  iscorrect: true
                 }
     })

@@ -45,12 +45,24 @@ function TeacherUpdateAttempt(data: Attempt.attemptInfo_point): Promise<string>{
     })
 }
 
+function DeleteAttempt(problemid: number, studentid: number): Promise<string>{
+    return service({
+        method: "DELETE",
+        url: "/api/v1/attempt/delete",
+        params: {
+            problemid: problemid.toString(),
+            studentid: studentid.toString()
+        }
+    })
+}
+
 const attemptApi = {
     GetAttemptByProblemid,
     GetAttempt,
     CreateAttempt,
     StudentUpdateAttempt,
     TeacherUpdateAttempt,
+    DeleteAttempt,
 }
 
 export default attemptApi
