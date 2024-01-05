@@ -36,7 +36,7 @@ service.interceptors.response.use(
     },
     (error) => {
       console.error(error)
-      message.error(error.message, 2)
+      // message.error(error.message, 2)
     }
   )
   
