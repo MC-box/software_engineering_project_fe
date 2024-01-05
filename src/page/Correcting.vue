@@ -1,6 +1,7 @@
 <template>
   <h2>请老师批改作业:</h2>
-  <label>当前分数：{{ attemptInfo.point === -1 ? '暂无分数' : attemptInfo.point }}</label>
+  <label style="margin-right: 50px;">当前分数：{{ attemptInfo.point === -1 ? '暂无分数' : attemptInfo.point }}</label>
+  <label>总分: {{ exerciseInfo.point }}</label>  
   <a-divider />
   <h3>题目描述：</h3>
   <!-- <p
