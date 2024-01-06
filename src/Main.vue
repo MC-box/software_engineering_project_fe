@@ -12,8 +12,6 @@
           "
         >
           <pie-chart-outlined />
-          <!-- <span><router-link to="/page/Home.vue">主页面</router-link></span>
-           -->
           <span>主页面</span>
         </a-menu-item>
         <a-menu-item
