@@ -38,7 +38,7 @@
           </template>
           <a-menu-item
             v-for="course in courses"
-            :key="'/unit/'+course.courseid"
+            :key="'/unit/' + course.courseid"
             @click="
               TurningChoose(course.courseid);
               router.push({ name: 'unit', params: { id: course.courseid } });
@@ -109,7 +109,7 @@ import {
   TeamOutlined,
 } from "@ant-design/icons-vue";
 import { ref, onBeforeMount, UnwrapRef } from "vue";
-import { useRouter, RouterView} from "vue-router";
+import { useRouter, RouterView } from "vue-router";
 import {
   BellOutlined,
   SettingOutlined,
@@ -141,7 +141,8 @@ let isLogin: boolean;
 let courses: UnwrapRef<Course.courseInfo>[];
 
 function logout() {
-  sessionStorage.removeItem("access_token");
+  // sessionStorage.removeItem("access_token");
+  sessionStorage.clear();
   Cookies.remove("access_token");
   router.push("/login");
 }
@@ -186,11 +187,16 @@ const TurningCourse = () => {
 };
 
 const TurningChoose = (id: any) => {
-  sessionStorage.setItem("PresentKey", '/unit/' + id);
+  sessionStorage.setItem("PresentKey", "/unit/" + id);
 };
 
 const TurningEdit = () => {
   sessionStorage.setItem("PresentKey", "/edit");
+};
+
+window.onunload = () => {
+  console.log("关闭页面");
+  Cookies.remove("access_token");
 };
 </script>
 
