@@ -15,8 +15,9 @@
                     <!-- <div class="remember">
                         <input type="radio" name="" id="psd" class="radio"><label for="psd"></label>记住密码
                     </div> -->
-                    <span style="float: left; margin: 10px 0 0 35px"><a href="/#/register">注册</a></span>
-                    <a-checkbox v-model:checked="checked" style="margin: 8px 0 0 55px;">记住密码</a-checkbox>
+                    <span style="float: left; margin: 10px 0 10px 35px"><a href="/#/register">注册</a></span>
+                    <!-- <a-checkbox v-model:checked="checked" style="margin: 8px 0 0 55px;">记住密码</a-checkbox> -->
+                    <a-divider style="margin-bottom: 10px;"></a-divider>
 
                     <!-- <div class="message">
                         <span v-html="error"></span>
