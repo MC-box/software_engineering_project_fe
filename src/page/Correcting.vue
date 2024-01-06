@@ -1,5 +1,6 @@
 <template>
   <h2>请老师批改作业:</h2>
+  <a-button type="primary" style="float: right" @click="router.back()">返回</a-button>
   <label style="margin-right: 50px;">当前分数：{{ attemptInfo.point === -1 ? '暂无分数' : attemptInfo.point }}</label>
   <label>总分: {{ exerciseInfo.point }}</label>  
   <a-divider />
@@ -50,7 +51,7 @@ import { ref, onBeforeMount, reactive } from "vue";
 import { Attempt, Exercise } from "@/paking/store";
 import attemptApi from "@/api/attempt";
 import exerciseApi from "@/api/exercise";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { isNumber } from "undraw-ui";
 import { message } from "ant-design-vue";
 
@@ -58,6 +59,7 @@ const point = ref<number>();
 const route = useRoute();
 const pid = parseInt(route.params.id.toString());
 const stuid = parseInt(route.params.stuid.toString());
+const router = useRouter();
 
 
 const attemptInfo = reactive<Attempt.attemptInfo_return>({
@@ -125,6 +127,7 @@ const submit = async () => {
 
   point.value = undefined;
   message.success("评分成功");
+  router.back();
 };
 
 interface OptionsItem {

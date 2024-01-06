@@ -92,7 +92,7 @@ const data = ref<Homework.homework_return[]>();
 
 onBeforeMount(async () => {
     const result = await homeworkApi.GetHomeworks(parseInt(rExp.exec(route.path)[0]));
-    console.log(result)
+    // console.log(result)
     if (result.length !== 0 && "homeworkname" in result[0]) {
         data.value = result
         console.log(data)

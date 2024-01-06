@@ -127,19 +127,27 @@ export const mainRoutes: RouteRecordRaw = {
     ]
 }
 
-export const Loginroute: RouteRecordRaw =
+export const LoginRoutes: RouteRecordRaw[] =
+[
   {
     path: "/login",
     component: () => import("../page/Login.vue"),
     meta: { title: "登陆界面"}
-  }
-
-export const Forgetroute: RouteRecordRaw =
+  },
   {
     path: "/register",
     component: () => import("../page/Register.vue"),
     meta: { title: "注册界面"}
   }
+
+]
+
+// export const Forgetroute: RouteRecordRaw =
+//   {
+//     path: "/register",
+//     component: () => import("../page/Register.vue"),
+//     meta: { title: "注册界面"}
+//   }
 
 export const ExerciseRoutes : RouteRecordRaw[] = 
 [
@@ -205,7 +213,7 @@ export const Routes404: RouteRecordRaw[] =
 
 const router = createRouter({
   history: createWebHashHistory(),
-  routes: [ mainRoutes, Loginroute, Forgetroute, ...Routes404],
+  routes: [ mainRoutes, ...LoginRoutes, ...Routes404],
 })
 
 

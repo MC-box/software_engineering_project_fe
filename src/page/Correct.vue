@@ -1,4 +1,6 @@
 <template>
+  <ArrowLeftOutlined two-tone-color="#686868" style="font-size: 20px;" />
+    &nbsp;<span style="margin-top:10px;" @click="router.back();">返回</span>
   <a-table :columns="columns" :data-source="data">
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'id'">
@@ -29,6 +31,7 @@ import { onBeforeMount, ref } from "vue";
 import attemptApi from "@/api/attempt";
 import { Attempt } from "@/paking/store";
 import { useRoute, useRouter } from "vue-router";
+import { ArrowLeftOutlined } from "@ant-design/icons-vue"
 let rExp = new RegExp("\\d+");
 const route = useRoute();
 const router = useRouter();

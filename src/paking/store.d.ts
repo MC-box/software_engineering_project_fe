@@ -244,7 +244,7 @@ export namespace Homework{
 
 export namespace Register{
   interface registerInfo{
-    userid: 0,
+    userid: int,
     username: string,
     password: string,
     email: string,

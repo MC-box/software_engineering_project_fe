@@ -4,10 +4,11 @@
       <div class="logo" />
       <a-menu v-model:selectedKeys="selectedKeys" theme="dark" mode="inline">
         <a-menu-item
-          key="101"
+          key="/home"
           @click="
             router.push({ name: 'home' });
             setHomeTitle();
+            TurningHome();
           "
         >
           <pie-chart-outlined />
@@ -16,10 +17,11 @@
           <span>主页面</span>
         </a-menu-item>
         <a-menu-item
-          key="102"
+          key="/edit"
           @click="
             router.push({ name: 'edit' });
             setEditTitle();
+            TurningEdit();
           "
           v-if="store.userInfo.role > 0"
         >
@@ -30,21 +32,17 @@
           <template #title>
             <span>
               <user-outlined />
-              <span v-if="store.userInfo.role == 0">
-                我的选课
-              </span>
-              <span v-else>
-                我的课程
-              </span>
+              <span v-if="store.userInfo.role == 0"> 我的选课 </span>
+              <span v-else> 我的课程 </span>
             </span>
           </template>
           <a-menu-item
             v-for="course in courses"
-            :key="course.courseid"
+            :key="'/unit/'+course.courseid"
             @click="
+              TurningChoose(course.courseid);
               router.push({ name: 'unit', params: { id: course.courseid } });
               setCourseTitle();
-              console.log(route.path);
             "
             ><a-tooltip placement="right"
               ><template #title>你好</template>{{ course.name }}</a-tooltip
@@ -52,7 +50,13 @@
           >
         </a-sub-menu>
         <div v-if="store.userInfo.role == 0">
-          <a-menu-item key="110" @click="router.push({ name: 'selectCourse' })">
+          <a-menu-item
+            key="/selectCourse"
+            @click="
+              router.push({ name: 'selectCourse' });
+              TurningCourse();
+            "
+          >
             <team-outlined />
             <span>选课</span>
           </a-menu-item>
@@ -103,10 +107,9 @@ import {
   DesktopOutlined,
   UserOutlined,
   TeamOutlined,
-  FileOutlined,
 } from "@ant-design/icons-vue";
 import { ref, onBeforeMount, UnwrapRef } from "vue";
-import { useRouter, RouterView, useRoute } from "vue-router";
+import { useRouter, RouterView} from "vue-router";
 import {
   BellOutlined,
   SettingOutlined,
@@ -117,10 +120,9 @@ import userStore from "@/store/user";
 import courseApi from "@/api/course";
 import Cookies from "js-cookie";
 const router = useRouter();
-const route = useRoute();
 const store = userStore();
 const collapsed = ref<boolean>(false);
-const selectedKeys = ref<string[]>(["101"]);
+const selectedKeys = ref<string[]>(["home"]);
 let isLogin: boolean;
 
 // let menu_show = new Map([
@@ -159,14 +161,12 @@ const setEditTitle = (): void => {
   document.title = "编辑题目";
 };
 
-const setDiscussionTitle = (): void => {
-  document.title = "讨论区";
-};
-
 onBeforeMount(async () => {
-  console.log(sessionStorage.getItem("access_token"));
+  console.log(sessionStorage.getItem("PresentKey"));
+  selectedKeys.value[0] = sessionStorage.getItem("PresentKey");
+  // console.log(sessionStorage.getItem("access_token"));
   isLogin = sessionStorage.getItem("access_token") ? false : true;
-  console.log(isLogin);
+  // console.log(isLogin);
   // 获取课程信息
   if (store.userInfo.role === 0) {
     // 学生
@@ -176,6 +176,22 @@ onBeforeMount(async () => {
     console.log(courses);
   }
 });
+
+const TurningHome = () => {
+  sessionStorage.setItem("PresentKey", "/home");
+};
+
+const TurningCourse = () => {
+  sessionStorage.setItem("PresentKey", "/selectCourse");
+};
+
+const TurningChoose = (id: any) => {
+  sessionStorage.setItem("PresentKey", '/unit/' + id);
+};
+
+const TurningEdit = () => {
+  sessionStorage.setItem("PresentKey", "/edit");
+};
 </script>
 
 <style scoped>
